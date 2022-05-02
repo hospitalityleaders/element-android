@@ -156,6 +156,8 @@ class VectorApplication :
 
         //testing23
 
+        //testing 24
+
         notificationUtils.createNotificationChannels()
 
         // It can takes time, but do we care?
