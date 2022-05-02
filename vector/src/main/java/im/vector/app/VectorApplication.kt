@@ -152,6 +152,8 @@ class VectorApplication :
 
         emojiCompatWrapper.init(fontRequest)
 
+        //testing12
+
         notificationUtils.createNotificationChannels()
 
         // It can takes time, but do we care?
