@@ -41,7 +41,7 @@ import com.squareup.moshi.JsonClass
  *              }
  *          ]
  *    }
- *     "im.vector.riot.jitsi": {
+ *     "com.holedo.riot.jitsi": {
  *         "preferredDomain": "https://jitsi.riot.im/"
  *     }
  * }
@@ -89,6 +89,6 @@ class WellKnown {
     }
 
     @JvmField
-    @Json(name = "im.vector.riot.jitsi")
+    @Json(name = "com.holedo.riot.jitsi")
     var jitsiServer: WellKnownPreferredConfig? = null
 }

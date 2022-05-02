@@ -22,7 +22,7 @@ import java.io.ObjectInputStream
 import java.io.ObjectStreamClass
 
 /**
- * Package has been renamed from `im.vector.matrix.android` to `org.matrix.android.sdk`
+ * Package has been renamed from `com.holedo.matrix.android` to `org.matrix.android.sdk`
  * so ensure deserialization of previously stored objects still works
  *
  * Ref: https://stackoverflow.com/questions/3884492/how-can-i-change-package-for-a-bunch-of-java-serializable-classes
@@ -36,8 +36,8 @@ internal class SafeObjectInputStream(inputStream: InputStream) : ObjectInputStre
     @Throws(IOException::class, ClassNotFoundException::class)
     override fun readClassDescriptor(): ObjectStreamClass {
         val read = super.readClassDescriptor()
-        if (read.name.startsWith("im.vector.matrix.android.")) {
-            return ObjectStreamClass.lookup(Class.forName(read.name.replace("im.vector.matrix.android.", "org.matrix.android.sdk.")))
+        if (read.name.startsWith("com.holedo.matrix.android.")) {
+            return ObjectStreamClass.lookup(Class.forName(read.name.replace("com.holedo.matrix.android.", "org.matrix.android.sdk.")))
         }
         return read
     }

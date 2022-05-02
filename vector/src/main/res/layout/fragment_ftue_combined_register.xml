@@ -275,7 +275,7 @@
             app:layout_constraintStart_toStartOf="@id/createAccountGutterStart"
             app:layout_constraintTop_toBottomOf="@id/createAccountSubmit" />
 
-        <im.vector.app.features.login.SocialLoginButtonsView
+        <com.holedo.app.features.login.SocialLoginButtonsView
             android:id="@+id/ssoButtons"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

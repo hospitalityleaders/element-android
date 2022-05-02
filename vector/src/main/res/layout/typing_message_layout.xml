@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <im.vector.app.core.ui.views.TypingMessageAvatar
+    <com.holedo.app.core.ui.views.TypingMessageAvatar
         android:id="@+id/avatars"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
         app:layout_constraintStart_toEndOf="@id/avatars"
         app:layout_constraintTop_toTopOf="@id/avatars" />
 
-    <im.vector.app.core.ui.views.TypingMessageDotsView
+    <com.holedo.app.core.ui.views.TypingMessageDotsView
         android:id="@+id/viewDots"
         android:layout_width="wrap_content"
         android:layout_height="0dp"

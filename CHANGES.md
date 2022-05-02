@@ -1546,8 +1546,8 @@ Translations 🗣:
  - Add PlayStore description resources in the Triple-T format, to let Weblate handle them
 
 SDK API changes ⚠️:
- - Rename package `im.vector.matrix.android` to `org.matrix.android.sdk`
- - Rename package `im.vector.matrix.rx` to `org.matrix.android.sdk.rx`
+ - Rename package `com.holedo.matrix.android` to `org.matrix.android.sdk`
+ - Rename package `com.holedo.matrix.rx` to `org.matrix.android.sdk.rx`
 
 Build 🧱:
  - Fix RtlHardcoded issues (use `Start` and `End` instead of `Left` and `Right` layout attributes)
@@ -1555,9 +1555,9 @@ Build 🧱:
 Other changes:
  - Use `Context#getSystemService` extension function provided by `core-ktx` (#1702)
  - Hide Flair settings, this is not implemented yet.
- - Rename package `im.vector.riotx.attachmentviewer` to `im.vector.lib.attachmentviewer`
- - Rename package `im.vector.riotx.multipicker` to `im.vector.lib.multipicker`
- - Rename package `im.vector.riotx` to `im.vector.app`
+ - Rename package `com.holedo.riotx.attachmentviewer` to `com.holedo.lib.attachmentviewer`
+ - Rename package `com.holedo.riotx.multipicker` to `com.holedo.lib.multipicker`
+ - Rename package `com.holedo.riotx` to `com.holedo.app`
  - Remove old code that was used on devices with api level <21
  - Add Official Gradle Wrapper Validation Action
 

@@ -1,9 +1,9 @@
 [![Buildkite](https://badge.buildkite.com/ad0065c1b70f557cd3b1d3d68f9c2154010f83c4d6f71706a9.svg?branch=develop)](https://buildkite.com/matrix-dot-org/element-android/builds?branch=develop)
 [![Weblate](https://translate.element.io/widgets/element-android/-/svg-badge.svg)](https://translate.element.io/engage/element-android/?utm_source=widget)
 [![Element Android Matrix room #element-android:matrix.org](https://img.shields.io/matrix/element-android:matrix.org.svg?label=%23element-android:matrix.org&logo=matrix&server_fqdn=matrix.org)](https://matrix.to/#/#element-android:matrix.org)
-[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=im.vector.app.android&metric=alert_status)](https://sonarcloud.io/dashboard?id=im.vector.app.android)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=im.vector.app.android&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=im.vector.app.android)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=im.vector.app.android&metric=bugs)](https://sonarcloud.io/dashboard?id=im.vector.app.android)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.holedo.app.android&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.holedo.app.android)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=com.holedo.app.android&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=com.holedo.app.android)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=com.holedo.app.android&metric=bugs)](https://sonarcloud.io/dashboard?id=com.holedo.app.android)
 
 # Element Android
 
@@ -11,8 +11,8 @@ Element Android is an Android Matrix Client provided by [Element](https://elemen
 
 It is a total rewrite of [Riot-Android](https://github.com/vector-im/riot-android) with a new user experience.
 
-[<img src="resources/img/google-play-badge.png" alt="Get it on Google Play" height="60">](https://play.google.com/store/apps/details?id=im.vector.app)
-[<img src="resources/img/f-droid-badge.png" alt="Get it on F-Droid" height="60">](https://f-droid.org/app/im.vector.app)
+[<img src="resources/img/google-play-badge.png" alt="Get it on Google Play" height="60">](https://play.google.com/store/apps/details?id=com.holedo.app)
+[<img src="resources/img/f-droid-badge.png" alt="Get it on F-Droid" height="60">](https://f-droid.org/app/com.holedo.app)
 
 Nightly build: [![Buildkite](https://badge.buildkite.com/ad0065c1b70f557cd3b1d3d68f9c2154010f83c4d6f71706a9.svg?branch=develop)](https://buildkite.com/matrix-dot-org/element-android/builds?branch=develop) Nighly test status: [![allScreensTest](https://github.com/vector-im/element-android/actions/workflows/nightly.yml/badge.svg)](https://github.com/vector-im/element-android/actions/workflows/nightly.yml)
 
@@ -38,7 +38,7 @@ There is some delay between when a release is created and when it appears in the
 
 If you would like to receive releases more quickly (bearing in mind that they may not be stable) you have a number of options:
 
-1. [Sign up to receive beta releases](https://play.google.com/apps/testing/im.vector.app) via the Google Play Store.
+1. [Sign up to receive beta releases](https://play.google.com/apps/testing/com.holedo.app) via the Google Play Store.
 2. Install a [release APK](https://github.com/vector-im/element-android/releases) directly - download the relevant .apk file and allow installing from untrusted sources in your device settings.  Note: these releases are the Google Play version, which depend on some Google services.  If you prefer to avoid that, try the latest dev builds, and choose the F-Droid version.
 3. If you're really brave, install the [very latest dev build](https://buildkite.com/matrix-dot-org/element-android/builds/latest?branch=develop&state=passed) - click on *Assemble (GPlay or FDroid) Debug version* then on *Artifacts*.
 

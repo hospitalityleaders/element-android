@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <im.vector.app.features.location.MapTilerMapView
+    <com.holedo.app.features.location.MapTilerMapView
         android:id="@+id/mapView"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -35,7 +35,7 @@
         app:layout_constraintStart_toStartOf="@id/mapView"
         app:layout_constraintTop_toTopOf="@id/mapView" />
 
-    <im.vector.app.features.location.option.LocationSharingOptionPickerView
+    <com.holedo.app.features.location.option.LocationSharingOptionPickerView
         android:id="@+id/shareLocationOptionsPicker"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

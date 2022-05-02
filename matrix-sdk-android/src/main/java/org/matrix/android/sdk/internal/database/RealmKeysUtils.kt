@@ -44,7 +44,7 @@ internal class RealmKeysUtils @Inject constructor(context: Context,
     private val rng = SecureRandom()
 
     // Keep legacy preferences name for compatibility reason
-    private val sharedPreferences = context.getSharedPreferences("im.vector.matrix.android.keys", Context.MODE_PRIVATE)
+    private val sharedPreferences = context.getSharedPreferences("com.holedo.matrix.android.keys", Context.MODE_PRIVATE)
 
     private fun generateKeyForRealm(): ByteArray {
         val keyForRealm = ByteArray(Realm.ENCRYPTION_KEY_LENGTH)

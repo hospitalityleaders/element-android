@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent">
 
-        <im.vector.app.core.ui.views.CurrentCallsView
+        <com.holedo.app.core.ui.views.CurrentCallsView
             android:id="@+id/currentCallsView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
         app:barrierDirection="top"
         app:constraint_referenced_ids="composerLayout,notificationAreaView,failedMessagesWarningStub" />
 
-    <im.vector.app.features.sync.widget.SyncStateView
+    <com.holedo.app.features.sync.widget.SyncStateView
         android:id="@+id/syncStateView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appBarLayout" />
 
-    <im.vector.app.features.location.live.LocationLiveStatusView
+    <com.holedo.app.features.location.live.LocationLiveStatusView
         android:id="@+id/locationLiveStatusIndicator"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
         app:layout_constraintTop_toBottomOf="@id/syncStateView"
         tools:visibility="visible" />
 
-    <im.vector.app.features.call.conference.RemoveJitsiWidgetView
+    <com.holedo.app.features.call.conference.RemoveJitsiWidgetView
         android:id="@+id/removeJitsiWidgetView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/removeJitsiWidgetView" />
 
-    <im.vector.app.core.ui.views.TypingMessageView
+    <com.holedo.app.core.ui.views.TypingMessageView
         android:id="@+id/typingMessageView"
         android:layout_width="0dp"
         android:layout_height="20dp"
@@ -112,7 +112,7 @@
         app:layout_constraintTop_toBottomOf="@id/timelineRecyclerView"
         tools:visibility="visible" />
 
-    <im.vector.app.core.ui.views.NotificationAreaView
+    <com.holedo.app.core.ui.views.NotificationAreaView
         android:id="@+id/notificationAreaView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <im.vector.app.features.home.room.detail.composer.MessageComposerView
+    <com.holedo.app.features.home.room.detail.composer.MessageComposerView
         android:id="@+id/composerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <im.vector.app.features.home.room.detail.composer.voice.VoiceMessageRecorderView
+    <com.holedo.app.features.home.room.detail.composer.voice.VoiceMessageRecorderView
         android:id="@+id/voiceMessageRecorderView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -172,7 +172,7 @@
         app:barrierDirection="top"
         app:constraint_referenced_ids="composerLayout,notificationAreaView, failedMessagesWarningStub" />
 
-    <im.vector.app.core.platform.BadgeFloatingActionButton
+    <com.holedo.app.core.platform.BadgeFloatingActionButton
         android:id="@+id/jumpToBottomView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
