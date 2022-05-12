@@ -562,7 +562,7 @@ class OnboardingViewModel @AssistedInject constructor(
     private suspend fun createPersonalizationState(session: Session, state: OnboardingViewState): PersonalizationState {
         return when {
             vectorFeatures.isOnboardingPersonalizeEnabled() -> {
-                val homeServerCapabilities = session.homeServerCapabilitiesService().getHomeServerCapabilities()
+                val homeServerCapabilities = session.getHomeServerCapabilities()
                 val capabilityOverrides = vectorOverrides.forceHomeserverCapabilities?.firstOrNull()
                 state.personalizationState.copy(
                         supportsChangingDisplayName = capabilityOverrides?.canChangeDisplayName ?: homeServerCapabilities.canChangeDisplayName,
@@ -645,7 +645,7 @@ class OnboardingViewModel @AssistedInject constructor(
                     when (awaitState().onboardingFlow) {
                         OnboardingFlow.SignIn -> {
                             updateSignMode(SignMode.SignIn)
-                            _viewEvents.post(OnboardingViewEvents.OnSignModeSelected(SignMode.SignIn))
+                            internalRegisterAction(RegisterAction.StartRegistration, ::emitFlowResultViewEvent)
                         }
                         OnboardingFlow.SignUp -> {
                             updateSignMode(SignMode.SignUp)
@@ -705,7 +705,7 @@ class OnboardingViewModel @AssistedInject constructor(
         viewModelScope.launch {
             val activeSession = activeSessionHolder.getActiveSession()
             try {
-                activeSession.profileService().setDisplayName(activeSession.myUserId, displayName)
+                activeSession.setDisplayName(activeSession.myUserId, displayName)
                 setState {
                     copy(
                             isLoading = false,
@@ -760,7 +760,7 @@ class OnboardingViewModel @AssistedInject constructor(
                     viewModelScope.launch {
                         val activeSession = activeSessionHolder.getActiveSession()
                         try {
-                            activeSession.profileService().updateAvatar(
+                            activeSession.updateAvatar(
                                     activeSession.myUserId,
                                     pictureUri,
                                     uriFilenameResolver.getFilenameFromUri(pictureUri) ?: UUID.randomUUID().toString()

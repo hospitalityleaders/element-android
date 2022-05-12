@@ -15,7 +15,6 @@
  */
 
 package org.matrix.android.sdk.internal.network
-
 import org.matrix.android.sdk.internal.network.executeRequest as internalExecuteRequest
 
 internal interface RequestExecutor {

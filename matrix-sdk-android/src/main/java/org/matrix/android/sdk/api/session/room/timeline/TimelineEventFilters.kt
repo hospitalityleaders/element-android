@@ -16,7 +16,6 @@
 
 package org.matrix.android.sdk.api.session.room.timeline
 
-// TODO Move to internal, strange?
 data class TimelineEventFilters(
         /**
          * A flag to filter edit events

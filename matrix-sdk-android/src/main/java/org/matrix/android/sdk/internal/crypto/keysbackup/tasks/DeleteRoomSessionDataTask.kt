@@ -40,8 +40,7 @@ internal class DefaultDeleteRoomSessionDataTask @Inject constructor(
             roomKeysApi.deleteRoomSessionData(
                     params.roomId,
                     params.sessionId,
-                    params.version
-            )
+                    params.version)
         }
     }
 }

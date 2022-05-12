@@ -33,8 +33,6 @@ import im.vector.app.core.platform.VectorViewModel
 import im.vector.app.features.home.room.detail.timeline.action.TimelineEventFragmentArgs
 import kotlinx.coroutines.flow.map
 import org.matrix.android.sdk.api.session.Session
-import org.matrix.android.sdk.api.session.getRoom
-import org.matrix.android.sdk.api.session.room.getTimelineEvent
 import org.matrix.android.sdk.flow.flow
 import org.matrix.android.sdk.flow.unwrap
 

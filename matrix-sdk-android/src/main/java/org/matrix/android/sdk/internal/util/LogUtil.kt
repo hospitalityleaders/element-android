@@ -18,7 +18,6 @@ package org.matrix.android.sdk.internal.util
 
 import org.matrix.android.sdk.BuildConfig
 import org.matrix.android.sdk.api.logger.LoggerTag
-import org.matrix.android.sdk.internal.util.time.Clock
 import timber.log.Timber
 
 internal fun <T> Collection<T>.logLimit(maxQuantity: Int = 5): String {
@@ -35,14 +34,13 @@ internal fun <T> Collection<T>.logLimit(maxQuantity: Int = 5): String {
 
 internal suspend fun <T> logDuration(message: String,
                                      loggerTag: LoggerTag,
-                                     clock: Clock,
                                      block: suspend () -> T): T {
     Timber.tag(loggerTag.value).d("$message -- BEGIN")
-    val start = clock.epochMillis()
+    val start = System.currentTimeMillis()
     val result = logRamUsage(message) {
         block()
     }
-    val duration = clock.epochMillis() - start
+    val duration = System.currentTimeMillis() - start
     Timber.tag(loggerTag.value).d("$message -- END duration: $duration ms")
 
     return result

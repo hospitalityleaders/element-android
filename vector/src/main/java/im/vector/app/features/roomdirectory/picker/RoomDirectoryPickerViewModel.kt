@@ -152,7 +152,7 @@ class RoomDirectoryPickerViewModel @AssistedInject constructor(
                 copy(addServerAsync = Loading())
             }
             try {
-                session.roomDirectoryService().getPublicRooms(
+                session.getPublicRooms(
                         server = enteredServer,
                         publicRoomsParams = PublicRoomsParams(limit = 1)
                 )

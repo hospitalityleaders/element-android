@@ -31,14 +31,11 @@ internal fun ContentScanResultEntity.Companion.get(realm: Realm, attachmentUrl: 
             .findFirst()
 }
 
-internal fun ContentScanResultEntity.Companion.getOrCreate(realm: Realm,
-                                                           attachmentUrl: String,
-                                                           contentScannerUrl: String?,
-                                                           currentTimeMillis: Long): ContentScanResultEntity {
+internal fun ContentScanResultEntity.Companion.getOrCreate(realm: Realm, attachmentUrl: String, contentScannerUrl: String?): ContentScanResultEntity {
     return ContentScanResultEntity.get(realm, attachmentUrl, contentScannerUrl)
             ?: realm.createObject<ContentScanResultEntity>().also {
                 it.mediaUrl = attachmentUrl
-                it.scanDateTimestamp = currentTimeMillis
+                it.scanDateTimestamp = System.currentTimeMillis()
                 it.scannerUrl = contentScannerUrl
             }
 }

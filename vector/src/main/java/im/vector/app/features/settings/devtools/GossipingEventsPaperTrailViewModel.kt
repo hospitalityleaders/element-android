@@ -32,15 +32,15 @@ import im.vector.app.core.platform.EmptyAction
 import im.vector.app.core.platform.EmptyViewEvents
 import im.vector.app.core.platform.VectorViewModel
 import org.matrix.android.sdk.api.session.Session
-import org.matrix.android.sdk.api.session.crypto.model.AuditTrail
+import org.matrix.android.sdk.api.session.events.model.Event
 
 data class GossipingEventsPaperTrailState(
-        val events: Async<PagedList<AuditTrail>> = Uninitialized
+        val events: Async<PagedList<Event>> = Uninitialized
 ) : MavericksState
 
 class GossipingEventsPaperTrailViewModel @AssistedInject constructor(@Assisted initialState: GossipingEventsPaperTrailState,
                                                                      private val session: Session) :
-        VectorViewModel<GossipingEventsPaperTrailState, EmptyAction, EmptyViewEvents>(initialState) {
+    VectorViewModel<GossipingEventsPaperTrailState, EmptyAction, EmptyViewEvents>(initialState) {
 
     init {
         refresh()

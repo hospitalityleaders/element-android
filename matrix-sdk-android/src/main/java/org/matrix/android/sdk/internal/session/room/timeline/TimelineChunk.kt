@@ -49,24 +49,21 @@ import java.util.concurrent.atomic.AtomicBoolean
  * It does mainly listen to the db timeline events.
  * It also triggers pagination to the server when needed, or dispatch to the prev or next chunk if any.
  */
-internal class TimelineChunk(
-        private val chunkEntity: ChunkEntity,
-        private val timelineSettings: TimelineSettings,
-        private val roomId: String,
-        private val timelineId: String,
-        private val fetchThreadTimelineTask: FetchThreadTimelineTask,
-        private val eventDecryptor: TimelineEventDecryptor,
-        private val paginationTask: PaginationTask,
-        private val realmConfiguration: RealmConfiguration,
-        private val fetchTokenAndPaginateTask: FetchTokenAndPaginateTask,
-        private val timelineEventMapper: TimelineEventMapper,
-        private val uiEchoManager: UIEchoManager?,
-        private val threadsAwarenessHandler: ThreadsAwarenessHandler,
-        private val lightweightSettingsStorage: LightweightSettingsStorage,
-        private val initialEventId: String?,
-        private val onBuiltEvents: (Boolean) -> Unit,
-        private val onEventsDeleted: () -> Unit,
-) {
+internal class TimelineChunk(private val chunkEntity: ChunkEntity,
+                             private val timelineSettings: TimelineSettings,
+                             private val roomId: String,
+                             private val timelineId: String,
+                             private val fetchThreadTimelineTask: FetchThreadTimelineTask,
+                             private val eventDecryptor: TimelineEventDecryptor,
+                             private val paginationTask: PaginationTask,
+                             private val realmConfiguration: RealmConfiguration,
+                             private val fetchTokenAndPaginateTask: FetchTokenAndPaginateTask,
+                             private val timelineEventMapper: TimelineEventMapper,
+                             private val uiEchoManager: UIEchoManager? = null,
+                             private val threadsAwarenessHandler: ThreadsAwarenessHandler,
+                             private val lightweightSettingsStorage: LightweightSettingsStorage,
+                             private val initialEventId: String?,
+                             private val onBuiltEvents: (Boolean) -> Unit) {
 
     private val isLastForward = AtomicBoolean(chunkEntity.isLastForward)
     private val isLastBackward = AtomicBoolean(chunkEntity.isLastBackward)
@@ -136,7 +133,6 @@ internal class TimelineChunk(
             val prevEvents = prevChunk?.builtItems(includesNext = false, includesPrev = true).orEmpty()
             deepBuiltItems.addAll(prevEvents)
         }
-
         return deepBuiltItems
     }
 
@@ -181,14 +177,12 @@ internal class TimelineChunk(
         val rootThreadEventId = timelineSettings.rootThreadEventId ?: return LoadMoreResult.FAILURE
         return if (direction == Timeline.Direction.BACKWARDS) {
             try {
-                fetchThreadTimelineTask.execute(
-                        FetchThreadTimelineTask.Params(
-                                roomId,
-                                rootThreadEventId,
-                                chunkEntity.prevToken,
-                                count
-                        )
-                ).toLoadMoreResult()
+                fetchThreadTimelineTask.execute(FetchThreadTimelineTask.Params(
+                        roomId,
+                        rootThreadEventId,
+                        chunkEntity.prevToken,
+                        count
+                )).toLoadMoreResult()
             } catch (failure: Throwable) {
                 Timber.e(failure, "Failed to fetch thread timeline events from the server")
                 LoadMoreResult.FAILURE
@@ -242,12 +236,10 @@ internal class TimelineChunk(
      * Simple log that displays the number and timeline of loaded events
      */
     private fun logLoadedFromStorage(loadedFromStorage: LoadedFromStorage, direction: Timeline.Direction) {
-        Timber.v(
-                "[" +
-                        "${if (timelineSettings.isThreadTimeline()) "ThreadTimeLine" else "Timeline"}] Has loaded " +
-                        "${loadedFromStorage.numberOfEvents} items from storage in $direction " +
-                        if (timelineSettings.isThreadTimeline() && loadedFromStorage.threadReachedEnd) "[Reached End]" else ""
-        )
+        Timber.v("[" +
+                "${if (timelineSettings.isThreadTimeline()) "ThreadTimeLine" else "Timeline"}] Has loaded " +
+                "${loadedFromStorage.numberOfEvents} items from storage in $direction " +
+                if (timelineSettings.isThreadTimeline() && loadedFromStorage.threadReachedEnd) "[Reached End]" else "")
     }
 
     fun getBuiltEventIndex(eventId: String, searchInNext: Boolean, searchInPrev: Boolean): Int? {
@@ -366,8 +358,7 @@ internal class TimelineChunk(
                 }
         return LoadedFromStorage(
                 threadReachedEnd = threadReachedEnd(timelineEvents),
-                numberOfEvents = timelineEvents.size
-        )
+                numberOfEvents = timelineEvents.size)
     }
 
     /**
@@ -514,11 +505,6 @@ internal class TimelineChunk(
         if (insertions.isNotEmpty() || modifications.isNotEmpty()) {
             onBuiltEvents(true)
         }
-
-        val deletions = changeSet.deletions
-        if (deletions.isNotEmpty()) {
-            onEventsDeleted()
-        }
     }
 
     private fun getNextDisplayIndex(direction: Timeline.Direction): Int? {
@@ -557,8 +543,7 @@ internal class TimelineChunk(
                 threadsAwarenessHandler = threadsAwarenessHandler,
                 lightweightSettingsStorage = lightweightSettingsStorage,
                 initialEventId = null,
-                onBuiltEvents = this.onBuiltEvents,
-                onEventsDeleted = this.onEventsDeleted
+                onBuiltEvents = this.onBuiltEvents
         )
     }
 

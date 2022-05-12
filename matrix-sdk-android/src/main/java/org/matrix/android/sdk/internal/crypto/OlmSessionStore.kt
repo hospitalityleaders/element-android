@@ -66,8 +66,7 @@ internal class OlmSessionStore @Inject constructor(private val store: IMXCryptoS
         olmSessions.getOrPut(deviceKey) { mutableListOf() }.forEach { cached ->
             getSafeSessionIdentifier(cached.olmSession)?.let { cachedSessionId ->
                 if (!persistedKnownSessions.contains(cachedSessionId)) {
-                    // as it's in cache put in on top
-                    persistedKnownSessions.add(0, cachedSessionId)
+                    persistedKnownSessions.add(cachedSessionId)
                 }
             }
         }

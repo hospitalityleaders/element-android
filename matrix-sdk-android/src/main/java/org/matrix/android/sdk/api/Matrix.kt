@@ -43,8 +43,7 @@ import javax.inject.Inject
 
 /**
  * This is the main entry point to the matrix sdk.
- * <br/>
- * See [Companion.createInstance] to create an instance. The app should create and manage the instance itself.
+ * To get the singleton instance, use getInstance static method.
  */
 class Matrix private constructor(context: Context, matrixConfiguration: MatrixConfiguration) {
 
@@ -75,7 +74,9 @@ class Matrix private constructor(context: Context, matrixConfiguration: MatrixCo
 
     fun getUserAgent() = userAgentHolder.userAgent
 
-    fun authenticationService() = authenticationService
+    fun authenticationService(): AuthenticationService {
+        return authenticationService
+    }
 
     fun rawService() = rawService
 
@@ -83,7 +84,9 @@ class Matrix private constructor(context: Context, matrixConfiguration: MatrixCo
 
     fun homeServerHistoryService() = homeServerHistoryService
 
-    fun legacySessionImporter() = legacySessionImporter
+    fun legacySessionImporter(): LegacySessionImporter {
+        return legacySessionImporter
+    }
 
     fun workerFactory(): WorkerFactory = matrixWorkerFactory
 
@@ -132,19 +135,14 @@ class Matrix private constructor(context: Context, matrixConfiguration: MatrixCo
                     val matrixConfiguration = (appContext as MatrixConfiguration.Provider).providesMatrixConfiguration()
                     instance = Matrix(appContext, matrixConfiguration)
                 } else {
-                    throw IllegalStateException(
-                            "Matrix is not initialized properly." +
-                                    " If you want to manage your own Matrix instance use Matrix.createInstance" +
-                                    " otherwise you should call Matrix.initialize or let your application implement MatrixConfiguration.Provider."
-                    )
+                    throw IllegalStateException("Matrix is not initialized properly." +
+                            " If you want to manage your own Matrix instance use Matrix.createInstance" +
+                            " otherwise you should call Matrix.initialize or let your application implement MatrixConfiguration.Provider.")
                 }
             }
             return instance
         }
 
-        /**
-         * @return a String with details about the Matrix SDK version
-         */
         fun getSdkVersion(): String {
             return BuildConfig.SDK_VERSION + " (" + BuildConfig.GIT_SDK_REVISION + ")"
         }

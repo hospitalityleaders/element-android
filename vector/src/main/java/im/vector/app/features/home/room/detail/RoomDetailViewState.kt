@@ -87,12 +87,7 @@ data class RoomDetailViewState(
             rootThreadEventId = args.threadTimelineArgs?.rootThreadEventId
     )
 
-    fun isCallOptionAvailable(): Boolean {
-        return asyncRoomSummary.invoke()?.isDirect ?: true ||
-                // When there is only one member, a warning will be displayed when the user
-                // clicks on the menu item to start a call
-                asyncRoomSummary.invoke()?.joinedMembersCount == 1
-    }
+    fun isCallOptionAvailable() = asyncRoomSummary.invoke()?.isDirect ?: true
 
     fun isSearchAvailable() = asyncRoomSummary()?.isEncrypted == false
 

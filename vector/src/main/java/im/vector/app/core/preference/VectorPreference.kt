@@ -33,7 +33,6 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import im.vector.app.R
 import im.vector.app.features.themes.ThemeUtils
-import org.matrix.android.sdk.api.extensions.orFalse
 import timber.log.Timber
 
 /**
@@ -153,12 +152,16 @@ open class VectorPreference : Preference {
      */
     private fun addClickListeners(view: View) {
         view.setOnLongClickListener {
-            onPreferenceLongClickListener?.onPreferenceLongClick(this@VectorPreference).orFalse()
+            if (null != onPreferenceLongClickListener) {
+                onPreferenceLongClickListener!!.onPreferenceLongClick(this@VectorPreference)
+            } else false
         }
 
         view.setOnClickListener {
             // call only the click listener
-            onPreferenceClickListener?.onPreferenceClick(this@VectorPreference)
+            if (onPreferenceClickListener != null) {
+                onPreferenceClickListener.onPreferenceClick(this@VectorPreference)
+            }
         }
     }
 }

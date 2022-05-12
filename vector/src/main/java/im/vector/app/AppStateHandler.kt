@@ -38,8 +38,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.matrix.android.sdk.api.extensions.tryOrNull
 import org.matrix.android.sdk.api.session.Session
-import org.matrix.android.sdk.api.session.getRoom
-import org.matrix.android.sdk.api.session.getRoomSummary
 import org.matrix.android.sdk.api.session.group.model.GroupSummary
 import org.matrix.android.sdk.api.session.initsync.SyncStatusService
 import org.matrix.android.sdk.api.session.room.model.RoomSummary
@@ -80,7 +78,7 @@ class AppStateHandler @Inject constructor(
         return selectedSpaceDataSource.currentValue?.orNull()?.let {
             if (it is RoomGroupingMethod.BySpace) {
                 // try to refresh sum?
-                it.spaceSummary?.roomId?.let { activeSessionHolder.getSafeActiveSession()?.roomService()?.getRoomSummary(it) }?.let {
+                it.spaceSummary?.roomId?.let { activeSessionHolder.getSafeActiveSession()?.getRoomSummary(it) }?.let {
                     RoomGroupingMethod.BySpace(it)
                 } ?: it
             } else it
@@ -102,7 +100,7 @@ class AppStateHandler @Inject constructor(
         if (spaceId != null) {
             uSession.coroutineScope.launch(Dispatchers.IO) {
                 tryOrNull {
-                    uSession.getRoom(spaceId)?.membershipService()?.loadRoomMembersIfNeeded()
+                    uSession.getRoom(spaceId)?.loadRoomMembersIfNeeded()
                 }
             }
         }
@@ -112,12 +110,12 @@ class AppStateHandler @Inject constructor(
         val uSession = session ?: activeSessionHolder.getSafeActiveSession() ?: return
         if (selectedSpaceDataSource.currentValue?.orNull() is RoomGroupingMethod.ByLegacyGroup &&
                 groupId == selectedSpaceDataSource.currentValue?.orNull()?.group()?.groupId) return
-        val activeGroup = groupId?.let { uSession.groupService().getGroupSummary(groupId) }
+        val activeGroup = groupId?.let { uSession.getGroupSummary(groupId) }
         selectedSpaceDataSource.post(Option.just(RoomGroupingMethod.ByLegacyGroup(activeGroup)))
         if (groupId != null) {
             uSession.coroutineScope.launch {
                 tryOrNull {
-                    uSession.groupService().getGroup(groupId)?.fetchGroupData()
+                    uSession.getGroup(groupId)?.fetchGroupData()
                 }
             }
         }
@@ -141,7 +139,7 @@ class AppStateHandler @Inject constructor(
     }
 
     private fun observeSyncStatus(session: Session) {
-        session.syncStatusService().getSyncStatusLive()
+        session.getSyncStatusLive()
                 .asFlow()
                 .filterIsInstance<SyncStatusService.Status.IncrementalSyncDone>()
                 .map { session.spaceService().getRootSpaceSummaries().size }

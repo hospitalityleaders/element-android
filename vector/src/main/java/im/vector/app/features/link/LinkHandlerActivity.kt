@@ -133,7 +133,7 @@ class LinkHandlerActivity : VectorBaseActivity<ActivityProgressBinding>() {
         } else {
             lifecycleScope.launch {
                 try {
-                    session.signOutService().signOut(true)
+                    session.signOut(true)
                     Timber.d("## displayAlreadyLoginPopup(): logout succeeded")
                     sessionHolder.clearActiveSession()
                     startLoginActivity(uri)

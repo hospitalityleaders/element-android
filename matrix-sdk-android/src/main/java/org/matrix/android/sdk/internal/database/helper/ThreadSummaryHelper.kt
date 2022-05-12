@@ -20,7 +20,6 @@ import io.realm.Realm
 import io.realm.RealmQuery
 import io.realm.Sort
 import io.realm.kotlin.createObject
-import kotlinx.coroutines.runBlocking
 import org.matrix.android.sdk.api.session.crypto.CryptoService
 import org.matrix.android.sdk.api.session.crypto.MXCryptoError
 import org.matrix.android.sdk.api.session.crypto.model.OlmDecryptionResult
@@ -128,7 +127,7 @@ private fun EventEntity.toTimelineEventEntity(roomMemberContentsByUser: HashMap<
     return timelineEventEntity
 }
 
-internal fun ThreadSummaryEntity.Companion.createOrUpdate(
+internal suspend fun ThreadSummaryEntity.Companion.createOrUpdate(
         threadSummaryType: ThreadSummaryUpdateType,
         realm: Realm,
         roomId: String,
@@ -137,8 +136,7 @@ internal fun ThreadSummaryEntity.Companion.createOrUpdate(
         roomMemberContentsByUser: HashMap<String, RoomMemberContent?>,
         roomEntity: RoomEntity,
         userId: String,
-        cryptoService: CryptoService? = null,
-        currentTimeMillis: Long,
+        cryptoService: CryptoService? = null
 ) {
     when (threadSummaryType) {
         ThreadSummaryUpdateType.REPLACE -> {
@@ -154,19 +152,11 @@ internal fun ThreadSummaryEntity.Companion.createOrUpdate(
                 Timber.i("###THREADS ThreadSummaryHelper REPLACE eventId:${it.rootThreadEventId} ")
             }
 
-            val rootThreadEventEntity = createEventEntity(realm, roomId, rootThreadEvent, currentTimeMillis).also {
-                try {
-                    decryptIfNeeded(cryptoService, it, roomId)
-                } catch (e: InterruptedException) {
-                    Timber.i("Decryption got interrupted")
-                }
+            val rootThreadEventEntity = createEventEntity(roomId, rootThreadEvent, realm).also {
+                decryptIfNeeded(cryptoService, it, roomId)
             }
-            val latestThreadEventEntity = createLatestEventEntity(realm, roomId, rootThreadEvent, roomMemberContentsByUser, currentTimeMillis)?.also {
-                try {
-                    decryptIfNeeded(cryptoService, it, roomId)
-                } catch (e: InterruptedException) {
-                    Timber.i("Decryption got interrupted")
-                }
+            val latestThreadEventEntity = createLatestEventEntity(roomId, rootThreadEvent, roomMemberContentsByUser, realm)?.also {
+                decryptIfNeeded(cryptoService, it, roomId)
             }
             val isUserParticipating = rootThreadEvent.unsignedData.relations.latestThread.isUserParticipating == true || rootThreadEvent.senderId == userId
             roomMemberContentsByUser.addSenderState(realm, roomId, rootThreadEvent.senderId)
@@ -214,15 +204,14 @@ internal fun ThreadSummaryEntity.Companion.createOrUpdate(
     }
 }
 
-private fun decryptIfNeeded(cryptoService: CryptoService?, eventEntity: EventEntity, roomId: String) {
+private suspend fun decryptIfNeeded(cryptoService: CryptoService?, eventEntity: EventEntity, roomId: String) {
     cryptoService ?: return
     val event = eventEntity.asDomain()
     if (event.isEncrypted() && event.mxDecryptionResult == null && event.eventId != null) {
         try {
             Timber.i("###THREADS ThreadSummaryHelper request decryption for eventId:${event.eventId}")
             // Event from sync does not have roomId, so add it to the event first
-            // note: runBlocking should be used here while we are in realm single thread executor, to avoid thread switching
-            val result = runBlocking { cryptoService.decryptEvent(event.copy(roomId = roomId), "") }
+            val result = cryptoService.decryptEvent(event.copy(roomId = roomId), "")
             event.mxDecryptionResult = OlmDecryptionResult(
                     payload = result.clearEvent,
                     senderKey = result.senderCurve25519Key,
@@ -269,8 +258,8 @@ private fun HashMap<String, RoomMemberContent?>.addSenderState(realm: Realm, roo
 /**
  * Create an EventEntity for the root thread event or get an existing one
  */
-private fun createEventEntity(realm: Realm, roomId: String, event: Event, currentTimeMillis: Long): EventEntity {
-    val ageLocalTs = event.unsignedData?.age?.let { currentTimeMillis - it }
+private fun createEventEntity(roomId: String, event: Event, realm: Realm): EventEntity {
+    val ageLocalTs = event.unsignedData?.age?.let { System.currentTimeMillis() - it }
     return event.toEntity(roomId, SendState.SYNCED, ageLocalTs).copyToRealmOrIgnore(realm, EventInsertType.PAGINATION)
 }
 
@@ -279,17 +268,15 @@ private fun createEventEntity(realm: Realm, roomId: String, event: Event, curren
  * state
  */
 private fun createLatestEventEntity(
-        realm: Realm,
         roomId: String,
         rootThreadEvent: Event,
         roomMemberContentsByUser: HashMap<String, RoomMemberContent?>,
-        currentTimeMillis: Long,
-): EventEntity? {
+        realm: Realm): EventEntity? {
     return getLatestEvent(rootThreadEvent)?.let {
         it.senderId?.let { senderId ->
             roomMemberContentsByUser.addSenderState(realm, roomId, senderId)
         }
-        createEventEntity(realm, roomId, it, currentTimeMillis)
+        createEventEntity(roomId, it, realm)
     }
 }
 

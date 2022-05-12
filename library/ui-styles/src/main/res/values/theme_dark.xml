@@ -150,4 +150,18 @@
 
     <style name="Theme.Vector.Dark" parent="Base.Theme.Vector.Dark" />
 
+
+<!--    <style name="Widget.Vector.Button.Text.impo" parent="Widget.MaterialComponents.Button.TextButton">-->
+<!--        <item name="colorControlHighlight">@color/element_accent_light</item>-->
+<!--        <item name="materialThemeOverlay">@style/VectorMaterialNew</item>-->
+<!--        <item name="colorPrimary">@color/element_accent_light</item>-->
+<!--        <item name="colorSecondary">@color/element_accent_light</item>-->
+<!--        <item name="android:textAppearance">@style/TextAppearance.Vector.Button</item>-->
+<!--        <item name="cornerRadius">8dp</item>-->
+<!--        <item name="lineHeight">24sp</item>-->
+<!--    </style>-->
+
+
+
+
 </resources>

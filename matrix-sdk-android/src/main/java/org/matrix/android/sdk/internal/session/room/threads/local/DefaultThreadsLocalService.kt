@@ -83,8 +83,7 @@ internal class DefaultThreadsLocalService @AssistedInject constructor(
                     realm = it,
                     roomId = roomId,
                     rootThreadEventId = rootThreadEventId,
-                    senderId = userId
-            )
+                    senderId = userId)
         }
     }
 
@@ -98,8 +97,7 @@ internal class DefaultThreadsLocalService @AssistedInject constructor(
         monarchy.awaitTransaction {
             EventEntity.where(
                     realm = it,
-                    eventId = rootThreadEventId
-            ).findFirst()?.threadNotificationState = ThreadNotificationState.NO_NEW_MESSAGE
+                    eventId = rootThreadEventId).findFirst()?.threadNotificationState = ThreadNotificationState.NO_NEW_MESSAGE
         }
     }
 }

@@ -26,7 +26,6 @@ import im.vector.app.R
 import im.vector.app.core.di.ActiveSessionHolder
 import im.vector.app.core.di.DefaultSharedPreferences
 import im.vector.app.core.pushers.PushersManager
-import im.vector.app.core.time.Clock
 import im.vector.app.features.settings.VectorPreferences
 import timber.log.Timber
 
@@ -108,10 +107,7 @@ object FcmHelper {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    fun onEnterBackground(context: Context,
-                          vectorPreferences: VectorPreferences,
-                          activeSessionHolder: ActiveSessionHolder,
-                          clock: Clock) {
+    fun onEnterBackground(context: Context, vectorPreferences: VectorPreferences, activeSessionHolder: ActiveSessionHolder) {
         // No op
     }
 }

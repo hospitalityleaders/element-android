@@ -18,7 +18,6 @@ package org.matrix.android.sdk.internal.database.model
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import org.matrix.android.sdk.internal.database.model.livelocation.LiveLocationShareAggregatedSummaryEntity
 import timber.log.Timber
 
 internal open class EventAnnotationsSummaryEntity(
@@ -28,8 +27,7 @@ internal open class EventAnnotationsSummaryEntity(
         var reactionsSummary: RealmList<ReactionAggregatedSummaryEntity> = RealmList(),
         var editSummary: EditAggregatedSummaryEntity? = null,
         var referencesSummaryEntity: ReferencesAggregatedSummaryEntity? = null,
-        var pollResponseSummary: PollResponseAggregatedSummaryEntity? = null,
-        var liveLocationShareAggregatedSummary: LiveLocationShareAggregatedSummaryEntity? = null,
+        var pollResponseSummary: PollResponseAggregatedSummaryEntity? = null
 ) : RealmObject() {
 
     /**

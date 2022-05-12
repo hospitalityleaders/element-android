@@ -35,10 +35,8 @@ internal fun RealmQuery<RoomSummaryEntity>.process(sortOrder: RoomSortOrder): Re
                     arrayOf(
                             RoomSummaryEntityFields.IS_FAVOURITE,
                             RoomSummaryEntityFields.IS_LOW_PRIORITY,
-                            RoomSummaryEntityFields.LAST_ACTIVITY_TIME
-                    ),
-                    arrayOf(Sort.DESCENDING, Sort.ASCENDING, Sort.DESCENDING)
-            )
+                            RoomSummaryEntityFields.LAST_ACTIVITY_TIME),
+                    arrayOf(Sort.DESCENDING, Sort.ASCENDING, Sort.DESCENDING))
         }
         RoomSortOrder.NONE                  -> {
         }

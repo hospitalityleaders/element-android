@@ -131,8 +131,7 @@ internal class DefaultRelationService @AssistedInject constructor(
                 replyText = replyText,
                 autoMarkdown = autoMarkdown,
                 rootThreadEventId = rootThreadEventId,
-                showInThread = showInThread
-        )
+                showInThread = showInThread)
                 ?.also { saveLocalEcho(it) }
                 ?: return null
 
@@ -187,8 +186,7 @@ internal class DefaultRelationService @AssistedInject constructor(
                     text = replyInThreadText,
                     msgType = msgType,
                     autoMarkdown = autoMarkdown,
-                    formattedText = formattedText
-            )
+                    formattedText = formattedText)
                     .also {
                         saveLocalEcho(it)
                     }

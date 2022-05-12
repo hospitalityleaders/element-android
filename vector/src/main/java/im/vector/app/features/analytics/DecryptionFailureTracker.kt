@@ -38,7 +38,6 @@ private data class DecryptionFailure(
         val failedEventId: String,
         val error: MXCryptoError.ErrorType
 )
-private typealias DetailedErrorName = Pair<String, Error.Name>
 
 private const val GRACE_PERIOD_MILLIS = 4_000
 private const val CHECK_INTERVAL = 2_000L
@@ -113,7 +112,7 @@ class DecryptionFailureTracker @Inject constructor(
 
     private fun checkFailures() {
         val now = clock.epochMillis()
-        val aggregatedErrors: Map<DetailedErrorName, List<String>>
+        val aggregatedErrors: Map<Error.Name, List<String>>
         synchronized(failures) {
             val toReport = mutableListOf<DecryptionFailure>()
             failures.removeAll { failure ->
@@ -137,21 +136,20 @@ class DecryptionFailureTracker @Inject constructor(
                     // for now we ignore events already reported even if displayed again?
                     .filter { alreadyReported.contains(it).not() }
                     .forEach { failedEventId ->
-                        analyticsTracker.capture(Error(aggregation.key.first, Error.Domain.E2EE, aggregation.key.second))
+                        analyticsTracker.capture(Error(failedEventId, Error.Domain.E2EE, aggregation.key))
                         alreadyReported.add(failedEventId)
                     }
         }
     }
 
-    private fun MXCryptoError.ErrorType.toAnalyticsErrorName(): DetailedErrorName {
-        val detailed = "$name | mxc_crypto_error_type"
-        val errorName = when (this) {
-            MXCryptoError.ErrorType.UNKNOWN_INBOUND_SESSION_ID,
-            MXCryptoError.ErrorType.KEYS_WITHHELD         -> Error.Name.OlmKeysNotSentError
-            MXCryptoError.ErrorType.OLM                   -> Error.Name.OlmUnspecifiedError
-            MXCryptoError.ErrorType.UNKNOWN_MESSAGE_INDEX -> Error.Name.OlmIndexError
-            else                                          -> Error.Name.UnknownError
+    private fun MXCryptoError.ErrorType.toAnalyticsErrorName(): Error.Name {
+        return when (this) {
+            MXCryptoError.ErrorType.UNKNOWN_INBOUND_SESSION_ID -> Error.Name.OlmKeysNotSentError
+            MXCryptoError.ErrorType.OLM                        -> {
+                Error.Name.OlmUnspecifiedError
+            }
+            MXCryptoError.ErrorType.UNKNOWN_MESSAGE_INDEX      -> Error.Name.OlmIndexError
+            else                                               -> Error.Name.UnknownError
         }
-        return DetailedErrorName(detailed, errorName)
     }
 }

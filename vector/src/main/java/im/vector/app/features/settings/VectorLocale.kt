@@ -62,8 +62,7 @@ object VectorLocale {
         val preferences = DefaultSharedPreferences.getInstance(context)
 
         if (preferences.contains(APPLICATION_LOCALE_LANGUAGE_KEY)) {
-            applicationLocale = Locale(
-                    preferences.getString(APPLICATION_LOCALE_LANGUAGE_KEY, "")!!,
+            applicationLocale = Locale(preferences.getString(APPLICATION_LOCALE_LANGUAGE_KEY, "")!!,
                     preferences.getString(APPLICATION_LOCALE_COUNTRY_KEY, "")!!,
                     preferences.getString(APPLICATION_LOCALE_VARIANT_KEY, "")!!
             )

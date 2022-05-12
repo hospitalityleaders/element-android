@@ -16,8 +16,9 @@
 
 package org.matrix.android.sdk.api.session.crypto.keyshare
 
+import org.matrix.android.sdk.api.session.crypto.model.IncomingRequestCancellation
 import org.matrix.android.sdk.api.session.crypto.model.IncomingRoomKeyRequest
-import org.matrix.android.sdk.api.session.crypto.model.SecretShareRequest
+import org.matrix.android.sdk.api.session.crypto.model.IncomingSecretShareRequest
 
 /**
  * Room keys events listener
@@ -34,12 +35,12 @@ interface GossipingRequestListener {
      * Returns the secret value to be shared
      * @return true if is handled
      */
-    fun onSecretShareRequest(request: SecretShareRequest): Boolean
+    fun onSecretShareRequest(request: IncomingSecretShareRequest): Boolean
 
     /**
      * A room key request cancellation has been received.
      *
      * @param request the cancellation request
      */
-    fun onRequestCancelled(request: IncomingRoomKeyRequest)
+    fun onRoomKeyRequestCancellation(request: IncomingRequestCancellation)
 }

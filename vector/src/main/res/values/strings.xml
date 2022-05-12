@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-
     <string name="notice_room_invite_no_invitee">%s\'s invitation</string>
     <string name="notice_room_invite_no_invitee_by_you">Your invitation</string>
     <string name="notice_room_created">%1$s created the room</string>
@@ -177,9 +176,6 @@
     <string name="initial_sync_start_importing_account_groups">Initial sync:\nImporting communities</string>
     <string name="initial_sync_start_importing_account_data">Initial sync:\nImporting account data</string>
 
-    <string name="initial_sync_request_title">Initial sync request</string>
-    <string name="initial_sync_request_content">${app_name} needs to perform a clear cache to be up to date, for the following reason:\n%s\n\nNote that this action will restart the app and it may take some time.</string>
-    <string name="initial_sync_request_reason_unignored_users">- Some users have been unignored</string>
 
     <string name="event_status_sent_message">Message sent</string>
     <string name="event_status_sending_message">Sending message…</string>
@@ -484,8 +480,6 @@
     <string name="call_camera_back">Back</string>
     <string name="call_format_turn_hd_off">Turn HD off</string>
     <string name="call_format_turn_hd_on">Turn HD on</string>
-    <string name="call_start_screen_sharing">Share screen</string>
-    <string name="call_stop_screen_sharing">Stop screen sharing</string>
 
     <string name="option_send_files">Send files</string>
     <string name="option_send_sticker">Send sticker</string>
@@ -640,7 +634,7 @@
     <string name="room_participants_action_ignore">Ignore</string>
 
     <string name="room_participants_action_unignore_title">Unignore user</string>
-    <string name="room_participants_action_unignore_prompt_msg">Unignoring this user will show all messages from them again.</string>
+    <string name="room_participants_action_unignore_prompt_msg">Unignoring this user will show all messages from them again.\n\nNote that this action will restart the app and it may take some time.</string>
     <string name="room_participants_action_unignore">Unignore</string>
 
     <string name="room_participants_action_cancel_invite_title">Cancel invite</string>
@@ -996,9 +990,9 @@
     <!-- Note to translators: the translation MUST contain the string "${app_name}", which will be replaced by the application name -->
     <string name="settings_opt_in_of_analytics_summary">${app_name} collects anonymous analytics to allow us to improve the application.</string>
 
-    <string name="analytics_opt_in_title">Help improve ${app_name}</string>
+    <string name="analytics_opt_in_title">Help improve Holedo</string>
     <!-- The template will be replaced by the value of the resource analytics_opt_in_content_link -->
-    <string name="analytics_opt_in_content">Help us identify issues and improve ${app_name} by sharing anonymous usage data. To understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.\n\nYou can read all our terms %s.</string>
+    <string name="analytics_opt_in_content">Help us identify issues and improve Holedo by sharing anonymous usage data. To understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.\n\nYou can read all our terms %s.</string>
     <string name="analytics_opt_in_content_link">here</string>
     <string name="analytics_opt_in_list_item_1">We <b>don\'t</b> record or profile any account data</string>
     <string name="analytics_opt_in_list_item_2">We <b>don\'t</b> share information with third parties</string>
@@ -1041,7 +1035,7 @@
     <string name="settings_fail_to_update_password">Failed to update password</string>
     <string name="settings_fail_to_update_password_invalid_current_password">The password is not valid</string>
     <string name="settings_password_updated">Your password has been updated</string>
-    <string name="settings_unignore_user">Show all messages from %s?</string>
+    <string name="settings_unignore_user">Show all messages from %s?\n\nNote that this action will restart the app and it may take some time.</string>
 
     <string name="settings_emails_and_phone_numbers_title">Emails and phone numbers</string>
     <string name="settings_emails_and_phone_numbers_summary">Manage emails and phone numbers linked to your Matrix account</string>
@@ -1057,7 +1051,7 @@
     <string name="settings_play_shutter_sound">Play shutter sound</string>
 
     <!-- TODO Remove -->
-    <string name="settings_flair" tools:ignore="UnusedResources">Flair</string>
+    <string name="settings_flair" tools:ignore="MissingTranslation">Flair</string>
 
     <!-- medias saving settings -->
     <string name="media_saving_period_3_days">3 days</string>
@@ -1868,14 +1862,14 @@
     <string name="timeline_unread_messages">Unread messages</string>
 
     <!--  Onboarding -->
-    <string name="ftue_auth_carousel_secure_title">Own your conversations.</string>
-    <string name="ftue_auth_carousel_control_title">You\'re in control.</string>
-    <string name="ftue_auth_carousel_encrypted_title">Secure messaging.</string>
+    <string name="ftue_auth_carousel_secure_title">Welcome to Holedo.</string>
+    <string name="ftue_auth_carousel_control_title">Own your conversations.</string>
+    <string name="ftue_auth_carousel_encrypted_title">Global Talent Cloud</string>
     <string name="ftue_auth_carousel_workplace_title">Messaging for your team.</string>
 
-    <string name="ftue_auth_carousel_secure_body">Secure and independent communication that gives you the same level of privacy as a face-to-face conversation in your own home.</string>
-    <string name="ftue_auth_carousel_control_body">Choose where your conversations are kept, giving you control and independence. Connected via Matrix.</string>
-    <string name="ftue_auth_carousel_encrypted_body">End-to-end encrypted and no phone number required. No ads or datamining.</string>
+    <string name="ftue_auth_carousel_secure_body">Join the global community of hospitality professionals. Registration is free and simple. You don\'t even need a phone number.</string>
+    <string name="ftue_auth_carousel_control_body">Secure and independent communication that gives you the same level of privacy as a face-to-face conversation in your own home.</string>
+    <string name="ftue_auth_carousel_encrypted_body">Holedo connects hospitality leaders and top talent worldwide. Build a community or participate in any of our member\'s many groups and topics.</string>
     <!-- Note to translators: the translation MUST contain the string "${app_name}", which will be replaced by the application name -->
     <string name="ftue_auth_carousel_workplace_body">${app_name} is also great for the workplace. It’s trusted by the world’s most secure organisations.</string>
 
@@ -1917,9 +1911,9 @@
     <string name="login_splash_create_account">Create account</string>
     <string name="login_splash_already_have_account">I already have an account</string>
 
-    <string name="login_server_title">Select a server</string>
+    <string name="login_server_title">Sign in </string>
     <string name="login_server_text">Just like email, accounts have one home, although you can talk to anyone</string>
-    <string name="login_server_matrix_org_text">Join millions for free on the largest public server</string>
+    <string name="login_server_matrix_org_text">Better hospitality networking</string>
     <string name="login_server_modular_text">Premium hosting for organisations</string>
     <string name="login_server_modular_learn_more">Learn more</string>
     <string name="login_server_other_title">Other</string>
@@ -2178,7 +2172,7 @@
     <string name="direct_room_profile_section_more_leave">Leave</string>
     <string name="room_profile_leaving_room">"Leaving the room…"</string>
 
-    <string name="room_member_override_nick_color">Override display name color</string>
+    <string name="room_member_override_nick_color">Override nick color</string>
 
     <string name="room_member_power_level_admins">Admins</string>
     <string name="room_member_power_level_moderators">Moderators</string>
@@ -2510,7 +2504,7 @@
     <string name="invite_users_to_room_title">Invite Users</string>
     <string name="invite_friends">Invite friends</string>
     <!-- Note to translators: the translation MUST contain the string "${app_name}", which will be replaced by the application name -->
-    <string name="invite_friends_text">Hey, talk to me on ${app_name}: %s</string>
+    <string name="invite_friends_text">Hi, please talk with me on ${app_name}: %s</string>
     <!-- Note to translators: the translation MUST contain the string "${app_name}", which will be replaced by the application name -->
     <string name="invite_friends_rich_title">🔐️ Join me on ${app_name}</string>
     <string name="invitation_sent_to_one_user">Invitation sent to %1$s</string>
@@ -2852,8 +2846,6 @@
     <string name="labs_auto_report_uisi_desc">Your system will automatically send logs when an unable to decrypt error occurs</string>
     <string name="labs_enable_thread_messages">Enable Thread Messages</string>
     <string name="labs_enable_thread_messages_desc">Note: app will be restarted</string>
-    <string name="settings_show_latest_profile">Show latest user info</string>
-    <string name="settings_show_latest_profile_description">Show the latest profile info (avatar and display name) for all the messages.</string>
 
     <string name="user_invites_you">%s invites you</string>
 
@@ -3035,8 +3027,11 @@
     <string name="room_message_notify_everyone">Notify the whole room</string>
     <string name="room_message_autocomplete_users">Users</string>
     <string name="room_message_autocomplete_notification">Room notification</string>
-
-    <!-- Screen sharing -->
-    <string name="screen_sharing_notification_title">${app_name} Screen Sharing</string>
-    <string name="screen_sharing_notification_description">Screen sharing is in progress</string>
+    <string name="holedo_newss">News</string>
+    <string name="holedo_jobss">Jobs</string>
+    <string name="holedo_profilee">Profile</string>
+    <string name="holedo_communityy">Community</string>
+    <string name="holedo_aboutt">About Holedo</string>
+    <string name="holedo_badgess">Badges</string>
+    <string name="holedo_helpp">Help</string>
 </resources>

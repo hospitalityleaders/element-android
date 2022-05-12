@@ -56,8 +56,7 @@ internal sealed class QrCodeData(
             transactionId,
             userMasterCrossSigningPublicKey,
             otherUserMasterCrossSigningPublicKey,
-            sharedSecret
-    )
+            sharedSecret)
 
     /**
      * self-verifying in which the current device does trust the master key
@@ -78,8 +77,7 @@ internal sealed class QrCodeData(
             transactionId,
             userMasterCrossSigningPublicKey,
             otherDeviceKey,
-            sharedSecret
-    )
+            sharedSecret)
 
     /**
      * self-verifying in which the current device does not yet trust the master key
@@ -100,6 +98,5 @@ internal sealed class QrCodeData(
             transactionId,
             deviceKey,
             userMasterCrossSigningPublicKey,
-            sharedSecret
-    )
+            sharedSecret)
 }

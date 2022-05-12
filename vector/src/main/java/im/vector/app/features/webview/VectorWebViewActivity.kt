@@ -18,9 +18,14 @@ package im.vector.app.features.webview
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
+import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
+import im.vector.app.R
 import im.vector.app.core.di.ActiveSessionHolder
 import im.vector.app.core.platform.VectorBaseActivity
 import im.vector.app.databinding.ActivityVectorWebViewBinding
@@ -48,6 +53,20 @@ class VectorWebViewActivity : VectorBaseActivity<ActivityVectorWebViewBinding>()
                 .allowBack()
         waitingView = views.simpleWebviewLoader
 
+        window.statusBarColor = ContextCompat.getColor(this, R.color.palette_element_greenetc)
+//        actionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24)
+//        actionBar.setBackgroundDrawable(R.color.palette_black_800)
+
+//        val colorDrawable = ColorDrawable(Color.parseColor("#f6f7fd"))
+//        actionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24)
+
+//        actionBar?.setBackgroundDrawable(colorDrawable)
+
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+//        supportActionBar?.setHomeAsUpIndicator(R.color.mapbox_blue);
+
+        views.simpleWebviewLoader.visibility = View.VISIBLE
+
         views.simpleWebview.settings.apply {
             // Enable Javascript
             javaScriptEnabled = true
@@ -68,12 +87,25 @@ class VectorWebViewActivity : VectorBaseActivity<ActivityVectorWebViewBinding>()
             allowUniversalAccessFromFileURLs = true
 
             displayZoomControls = false
+
+            javaScriptCanOpenWindowsAutomatically = true
+
+
+
+//            val progresso = findViewById<ProgressBar>(R.id.simple_webview_loader)
+//
+//            progresso.visibility = View.VISIBLE
+
         }
+
+
+
+
 
         val cookieManager = android.webkit.CookieManager.getInstance()
         cookieManager.setAcceptThirdPartyCookies(views.simpleWebview, true)
 
-        val url = intent.extras?.getString(EXTRA_URL) ?: return
+        val url = intent.extras?.getString(EXTRA_URL)?: return
         val title = intent.extras?.getString(EXTRA_TITLE, USE_TITLE_FROM_WEB_PAGE)
         if (title != USE_TITLE_FROM_WEB_PAGE) {
             setTitle(title)
@@ -88,13 +120,65 @@ class VectorWebViewActivity : VectorBaseActivity<ActivityVectorWebViewBinding>()
                     setTitle(title)
                 }
             }
+
         }
         views.simpleWebview.loadUrl(url)
+
+        views.simpleWebview.webViewClient = object : android.webkit.WebViewClient() {
+            override fun onPageFinished(view: WebView, url: String) {
+
+
+                views.simpleWebviewLoader.visibility = View.GONE
+
+                super.onPageFinished(view, url)
+
+//                val progresso = findViewById<ProgressBar>(R.id.simple_webview_loader)
+//
+//                progresso.visibility = View.GONE
+
+
+
+
+            }
+        }
+
+
+
+
+
+
+
+
+
     }
 
     /* ==========================================================================================
      * UI event
      * ========================================================================================== */
+
+    // Overriding WebViewClient functions
+
+//    inner class WebViewClient : android.webkit.WebViewClient() {
+//        override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+//
+//            val progresso = findViewById<ProgressBar>(R.id.simple_webview_loader)
+//
+//            progresso.visibility = View.VISIBLE
+//
+//            view.loadUrl(url)
+//
+//            return false
+//        }
+//        override fun onPageFinished(view: WebView, url: String) {
+//            super.onPageFinished(view, url)
+//            val progresso = findViewById<ProgressBar>(R.id.simple_webview_loader)
+//            progresso.visibility = View.INVISIBLE
+//
+//
+//        }
+//    }
+
+
 
     override fun onBackPressed() {
         if (views.simpleWebview.canGoBack()) {

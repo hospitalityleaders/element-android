@@ -45,7 +45,6 @@ import im.vector.app.core.preference.UserAvatarPreference
 import im.vector.app.core.preference.VectorPreference
 import im.vector.app.core.preference.VectorSwitchPreference
 import im.vector.app.core.resources.ColorProvider
-import im.vector.app.core.time.Clock
 import im.vector.app.core.utils.TextUtils
 import im.vector.app.core.utils.getSizeOfFiles
 import im.vector.app.core.utils.toast
@@ -65,7 +64,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.matrix.android.sdk.api.failure.isInvalidPassword
-import org.matrix.android.sdk.api.session.getUser
 import org.matrix.android.sdk.api.session.integrationmanager.IntegrationManagerConfig
 import org.matrix.android.sdk.api.session.integrationmanager.IntegrationManagerService
 import org.matrix.android.sdk.flow.flow
@@ -75,8 +73,7 @@ import java.util.UUID
 import javax.inject.Inject
 
 class VectorSettingsGeneralFragment @Inject constructor(
-        colorProvider: ColorProvider,
-        clock: Clock,
+        colorProvider: ColorProvider
 ) :
         VectorSettingsBaseFragment(),
         GalleryOrCameraDialogHelper.Listener {
@@ -84,7 +81,7 @@ class VectorSettingsGeneralFragment @Inject constructor(
     override var titleRes = R.string.settings_general_title
     override val preferenceXmlRes = R.xml.vector_settings_general
 
-    private val galleryOrCameraDialogHelper = GalleryOrCameraDialogHelper(this, colorProvider, clock)
+    private val galleryOrCameraDialogHelper = GalleryOrCameraDialogHelper(this, colorProvider)
 
     private val mUserSettingsCategory by lazy {
         findPreference<PreferenceCategory>(VectorPreferences.SETTINGS_USER_SETTINGS_PREFERENCE_KEY)!!
@@ -180,7 +177,7 @@ class VectorSettingsGeneralFragment @Inject constructor(
 
         // Password
         // Hide the preference if password can not be updated
-        if (session.homeServerCapabilitiesService().getHomeServerCapabilities().canChangePassword) {
+        if (session.getHomeServerCapabilities().canChangePassword) {
             mPasswordPreference.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 onPasswordUpdateClick()
                 false
@@ -335,7 +332,7 @@ class VectorSettingsGeneralFragment @Inject constructor(
 
         lifecycleScope.launch {
             val result = runCatching {
-                session.profileService().updateAvatar(session.myUserId, uri, getFilenameFromUri(context, uri) ?: UUID.randomUUID().toString())
+                session.updateAvatar(session.myUserId, uri, getFilenameFromUri(context, uri) ?: UUID.randomUUID().toString())
             }
             if (!isAdded) return@launch
 
@@ -447,7 +444,7 @@ class VectorSettingsGeneralFragment @Inject constructor(
                     showPasswordLoadingView(true)
                     lifecycleScope.launch {
                         val result = runCatching {
-                            session.accountService().changePassword(oldPwd, newPwd)
+                            session.changePassword(oldPwd, newPwd)
                         }
                         if (!isAdded) {
                             return@launch
@@ -479,7 +476,7 @@ class VectorSettingsGeneralFragment @Inject constructor(
             displayLoadingView()
 
             lifecycleScope.launch {
-                val result = runCatching { session.profileService().setDisplayName(session.myUserId, value) }
+                val result = runCatching { session.setDisplayName(session.myUserId, value) }
                 if (!isAdded) return@launch
                 result.fold(
                         onSuccess = {

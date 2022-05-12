@@ -35,16 +35,13 @@ import org.matrix.android.sdk.internal.crypto.model.rest.VERIFICATION_METHOD_SAS
 import org.matrix.android.sdk.internal.crypto.tasks.SendToDeviceTask
 import org.matrix.android.sdk.internal.task.TaskExecutor
 import org.matrix.android.sdk.internal.task.configureWith
-import org.matrix.android.sdk.internal.util.time.Clock
 import timber.log.Timber
 
-// TODO var could be val
 internal class VerificationTransportToDevice(
         private var tx: DefaultVerificationTransaction?,
         private var sendToDeviceTask: SendToDeviceTask,
         private val myDeviceId: String?,
-        private var taskExecutor: TaskExecutor,
-        private val clock: Clock,
+        private var taskExecutor: TaskExecutor
 ) : VerificationTransport {
 
     override fun sendVerificationRequest(supportedMethods: List<String>,
@@ -59,7 +56,7 @@ internal class VerificationTransportToDevice(
                 transactionId = localId,
                 fromDevice = myDeviceId ?: "",
                 methods = supportedMethods,
-                timestamp = clock.epochMillis()
+                timestamp = System.currentTimeMillis()
         )
         val keyReq = KeyVerificationRequest(
                 fromDevice = validKeyReq.fromDevice,
@@ -204,8 +201,7 @@ internal class VerificationTransportToDevice(
             hash,
             commitment,
             messageAuthenticationCode,
-            shortAuthenticationStrings
-    )
+            shortAuthenticationStrings)
 
     override fun createKey(tid: String, pubKey: String): VerificationInfoKey = KeyVerificationKey.create(tid, pubKey)
 
@@ -225,8 +221,7 @@ internal class VerificationTransportToDevice(
                 hashes,
                 messageAuthenticationCodes,
                 shortAuthenticationStrings,
-                null
-        )
+                null)
     }
 
     override fun createStartForQrCode(fromDevice: String,
@@ -240,8 +235,7 @@ internal class VerificationTransportToDevice(
                 null,
                 null,
                 null,
-                sharedSecret
-        )
+                sharedSecret)
     }
 
     override fun createReady(tid: String, fromDevice: String, methods: List<String>): VerificationInfoReady {

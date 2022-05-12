@@ -93,11 +93,9 @@ class ExportEncryptionTest {
             fail("## checkExportDecrypt1() failed : " + e.message)
         }
 
-        assertEquals(
-                "## checkExportDecrypt1() : expectedString $expectedString -- decodedString $decodedString",
+        assertEquals("## checkExportDecrypt1() : expectedString $expectedString -- decodedString $decodedString",
                 expectedString,
-                decodedString
-        )
+                decodedString)
     }
 
     @Test
@@ -113,11 +111,9 @@ class ExportEncryptionTest {
             fail("## checkExportDecrypt2() failed : " + e.message)
         }
 
-        assertEquals(
-                "## checkExportDecrypt2() : expectedString $expectedString -- decodedString $decodedString",
+        assertEquals("## checkExportDecrypt2() : expectedString $expectedString -- decodedString $decodedString",
                 expectedString,
-                decodedString
-        )
+                decodedString)
     }
 
     @Test
@@ -133,11 +129,9 @@ class ExportEncryptionTest {
             fail("## checkExportDecrypt3() failed : " + e.message)
         }
 
-        assertEquals(
-                "## checkExportDecrypt3() : expectedString $expectedString -- decodedString $decodedString",
+        assertEquals("## checkExportDecrypt3() : expectedString $expectedString -- decodedString $decodedString",
                 expectedString,
-                decodedString
-        )
+                decodedString)
     }
 
     @Test
@@ -153,11 +147,9 @@ class ExportEncryptionTest {
             fail("## checkExportEncrypt1() failed : " + e.message)
         }
 
-        assertEquals(
-                "## checkExportEncrypt1() : expectedString $expectedString -- decodedString $decodedString",
+        assertEquals("## checkExportEncrypt1() : expectedString $expectedString -- decodedString $decodedString",
                 expectedString,
-                decodedString
-        )
+                decodedString)
     }
 
     @Test
@@ -173,11 +165,9 @@ class ExportEncryptionTest {
             fail("## checkExportEncrypt2() failed : " + e.message)
         }
 
-        assertEquals(
-                "## checkExportEncrypt2() : expectedString $expectedString -- decodedString $decodedString",
+        assertEquals("## checkExportEncrypt2() : expectedString $expectedString -- decodedString $decodedString",
                 expectedString,
-                decodedString
-        )
+                decodedString)
     }
 
     @Test
@@ -193,11 +183,9 @@ class ExportEncryptionTest {
             fail("## checkExportEncrypt3() failed : " + e.message)
         }
 
-        assertEquals(
-                "## checkExportEncrypt3() : expectedString $expectedString -- decodedString $decodedString",
+        assertEquals("## checkExportEncrypt3() : expectedString $expectedString -- decodedString $decodedString",
                 expectedString,
-                decodedString
-        )
+                decodedString)
     }
 
     @Test
@@ -213,10 +201,8 @@ class ExportEncryptionTest {
             fail("## checkExportEncrypt4() failed : " + e.message)
         }
 
-        assertEquals(
-                "## checkExportEncrypt4() : expectedString $expectedString -- decodedString $decodedString",
+        assertEquals("## checkExportEncrypt4() : expectedString $expectedString -- decodedString $decodedString",
                 expectedString,
-                decodedString
-        )
+                decodedString)
     }
 }

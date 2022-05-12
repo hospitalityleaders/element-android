@@ -29,10 +29,8 @@ import org.matrix.android.sdk.api.session.crypto.attachments.toElementToDecrypt
 import org.matrix.android.sdk.api.session.crypto.model.EncryptedFileInfo
 import org.matrix.android.sdk.api.session.crypto.model.EncryptedFileKey
 import org.matrix.android.sdk.internal.crypto.attachments.MXEncryptedAttachments
-import org.matrix.android.sdk.internal.util.time.DefaultClock
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
-import java.util.UUID
 
 /**
  * Unit tests AttachmentEncryptionTest.
@@ -50,18 +48,13 @@ class AttachmentEncryptionTest {
         inputStream = if (inputAsByteArray.isEmpty()) {
             inputAsByteArray.inputStream()
         } else {
-            val memoryFile = MemoryFile("file_" + UUID.randomUUID(), inputAsByteArray.size)
+            val memoryFile = MemoryFile("file" + System.currentTimeMillis(), inputAsByteArray.size)
             memoryFile.outputStream.write(inputAsByteArray)
             memoryFile.inputStream
         }
 
         val decryptedStream = ByteArrayOutputStream()
-        val result = MXEncryptedAttachments.decryptAttachment(
-                attachmentStream = inputStream,
-                elementToDecrypt = encryptedFileInfo.toElementToDecrypt()!!,
-                outputStream = decryptedStream,
-                clock = DefaultClock()
-        )
+        val result = MXEncryptedAttachments.decryptAttachment(inputStream, encryptedFileInfo.toElementToDecrypt()!!, decryptedStream)
 
         assert(result)
 
@@ -124,13 +117,9 @@ class AttachmentEncryptionTest {
                 url = "dummyUrl"
         )
 
-        assertEquals(
-                "YWxwaGFudW1lcmljYWxseWFscGhhbnVtZXJpY2FsbHlhbHBoYW51bWVyaWNhbGx5YWxwaGFudW1lcmljYWxseQ",
-                checkDecryption(
-                        "zhtFStAeFx0s+9L/sSQO+WQMtldqYEHqTxMduJrCIpnkyer09kxJJuA4K+adQE4w+7jZe/vR9kIcqj9rOhDR8Q",
-                        encryptedFileInfo
-                )
-        )
+        assertEquals("YWxwaGFudW1lcmljYWxseWFscGhhbnVtZXJpY2FsbHlhbHBoYW51bWVyaWNhbGx5YWxwaGFudW1lcmljYWxseQ",
+                checkDecryption("zhtFStAeFx0s+9L/sSQO+WQMtldqYEHqTxMduJrCIpnkyer09kxJJuA4K+adQE4w+7jZe/vR9kIcqj9rOhDR8Q",
+                        encryptedFileInfo))
     }
 
     @Test
@@ -149,12 +138,8 @@ class AttachmentEncryptionTest {
                 url = "dummyUrl"
         )
 
-        assertNotEquals(
-                "YWxwaGFudW1lcmljYWxseWFscGhhbnVtZXJpY2FsbHlhbHBoYW51bWVyaWNhbGx5YWxwaGFudW1lcmljYWxseQ",
-                checkDecryption(
-                        "tJVNBVJ/vl36UQt4Y5e5m84bRUrQHhcdLPvS/7EkDvlkDLZXamBB6k8THbiawiKZ5Mnq9PZMSSbgOCvmnUBOMA",
-                        encryptedFileInfo
-                )
-        )
+        assertNotEquals("YWxwaGFudW1lcmljYWxseWFscGhhbnVtZXJpY2FsbHlhbHBoYW51bWVyaWNhbGx5YWxwaGFudW1lcmljYWxseQ",
+                checkDecryption("tJVNBVJ/vl36UQt4Y5e5m84bRUrQHhcdLPvS/7EkDvlkDLZXamBB6k8THbiawiKZ5Mnq9PZMSSbgOCvmnUBOMA",
+                        encryptedFileInfo))
     }
 }

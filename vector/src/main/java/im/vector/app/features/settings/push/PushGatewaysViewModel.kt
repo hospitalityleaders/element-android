@@ -49,7 +49,7 @@ class PushGatewaysViewModel @AssistedInject constructor(@Assisted initialState: 
     init {
         observePushers()
         // Force a refresh
-        session.pushersService().refreshPushers()
+        session.refreshPushers()
     }
 
     private fun observePushers() {
@@ -70,7 +70,7 @@ class PushGatewaysViewModel @AssistedInject constructor(@Assisted initialState: 
     private fun removePusher(pusher: Pusher) {
         viewModelScope.launch {
             kotlin.runCatching {
-                session.pushersService().removePusher(pusher)
+                session.removePusher(pusher)
             }.onFailure {
                 _viewEvents.post(PushGatewayViewEvents.RemovePusherFailed(it))
             }
@@ -78,6 +78,6 @@ class PushGatewaysViewModel @AssistedInject constructor(@Assisted initialState: 
     }
 
     private fun handleRefresh() {
-        session.pushersService().refreshPushers()
+        session.refreshPushers()
     }
 }

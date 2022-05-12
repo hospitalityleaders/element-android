@@ -33,7 +33,6 @@ import org.matrix.android.sdk.internal.session.contentscanner.tasks.GetServerPub
 import org.matrix.android.sdk.internal.session.contentscanner.tasks.ScanEncryptedTask
 import org.matrix.android.sdk.internal.session.contentscanner.tasks.ScanMediaTask
 import org.matrix.android.sdk.internal.task.TaskExecutor
-import org.matrix.android.sdk.internal.util.time.Clock
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -47,8 +46,7 @@ internal class DefaultContentScannerService @Inject constructor(
         private val getServerPublicKeyTask: GetServerPublicKeyTask,
         private val scanEncryptedTask: ScanEncryptedTask,
         private val scanMediaTask: ScanMediaTask,
-        private val taskExecutor: TaskExecutor,
-        private val clock: Clock,
+        private val taskExecutor: TaskExecutor
 ) : ContentScannerService {
 
     // Cache public key in memory
@@ -73,13 +71,11 @@ internal class DefaultContentScannerService @Inject constructor(
 
     override suspend fun getScanResultForAttachment(mxcUrl: String, fileInfo: ElementToDecrypt?): ScanStatusInfo {
         val result = if (fileInfo != null) {
-            scanEncryptedTask.execute(
-                    ScanEncryptedTask.Params(
-                            mxcUrl = mxcUrl,
-                            publicServerKey = getServerPublicKey(false),
-                            encryptedInfo = fileInfo
-                    )
-            )
+            scanEncryptedTask.execute(ScanEncryptedTask.Params(
+                    mxcUrl = mxcUrl,
+                    publicServerKey = getServerPublicKey(false),
+                    encryptedInfo = fileInfo
+            ))
         } else {
             scanMediaTask.execute(ScanMediaTask.Params(mxcUrl))
         }
@@ -87,7 +83,7 @@ internal class DefaultContentScannerService @Inject constructor(
         return ScanStatusInfo(
                 state = if (result.clean) ScanState.TRUSTED else ScanState.INFECTED,
                 humanReadableMessage = result.info,
-                scanDateTimestamp = clock.epochMillis()
+                scanDateTimestamp = System.currentTimeMillis()
         )
     }
 

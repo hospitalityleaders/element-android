@@ -34,7 +34,6 @@ import org.matrix.android.sdk.api.session.room.model.call.CallSelectAnswerConten
 import org.matrix.android.sdk.api.session.room.model.call.CallSignalingContent
 import org.matrix.android.sdk.internal.di.UserId
 import org.matrix.android.sdk.internal.session.SessionScope
-import org.matrix.android.sdk.internal.util.time.Clock
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -42,12 +41,9 @@ private val loggerTag = LoggerTag("CallSignalingHandler", LoggerTag.VOIP)
 private const val MAX_AGE_TO_RING = 40_000
 
 @SessionScope
-internal class CallSignalingHandler @Inject constructor(
-        private val activeCallHandler: ActiveCallHandler,
-        private val mxCallFactory: MxCallFactory,
-        @UserId private val userId: String,
-        private val clock: Clock,
-) {
+internal class CallSignalingHandler @Inject constructor(private val activeCallHandler: ActiveCallHandler,
+                                                        private val mxCallFactory: MxCallFactory,
+                                                        @UserId private val userId: String) {
 
     private val invitedCallIds = mutableSetOf<String>()
     private val callListeners = mutableSetOf<CallListener>()
@@ -188,7 +184,7 @@ internal class CallSignalingHandler @Inject constructor(
         if (event.roomId == null || event.senderId == null) {
             return
         }
-        val now = clock.epochMillis()
+        val now = System.currentTimeMillis()
         val age = now - (event.ageLocalTs ?: now)
         if (age > MAX_AGE_TO_RING) {
             Timber.tag(loggerTag.value).w("Call invite is too old to ring.")

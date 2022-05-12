@@ -66,7 +66,7 @@ class AnalyticsAccountDataViewModel @AssistedInject constructor(
 
     private fun observeInitSync() {
         combine(
-                session.syncStatusService().getSyncStatusLive().asFlow(),
+                session.getSyncStatusLive().asFlow(),
                 analytics.getUserConsent(),
                 analytics.getAnalyticsId()
         ) { status, userConsent, analyticsId ->

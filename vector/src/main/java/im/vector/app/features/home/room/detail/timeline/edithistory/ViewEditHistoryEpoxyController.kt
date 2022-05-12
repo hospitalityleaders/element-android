@@ -26,7 +26,6 @@ import im.vector.app.core.date.DateFormatKind
 import im.vector.app.core.date.VectorDateFormatter
 import im.vector.app.core.resources.ColorProvider
 import im.vector.app.core.resources.StringProvider
-import im.vector.app.core.time.Clock
 import im.vector.app.core.ui.list.genericFooterItem
 import im.vector.app.core.ui.list.genericHeaderItem
 import im.vector.app.core.ui.list.genericItem
@@ -50,8 +49,7 @@ class ViewEditHistoryEpoxyController @Inject constructor(
         private val stringProvider: StringProvider,
         private val colorProvider: ColorProvider,
         private val eventHtmlRenderer: EventHtmlRenderer,
-        private val dateFormatter: VectorDateFormatter,
-        private val clock: Clock,
+        private val dateFormatter: VectorDateFormatter
 ) : TypedEpoxyController<ViewEditHistoryViewState>() {
 
     override fun buildModels(state: ViewEditHistoryViewState) {
@@ -88,7 +86,7 @@ class ViewEditHistoryEpoxyController @Inject constructor(
 
                 val evDate = Calendar.getInstance().apply {
                     timeInMillis = timelineEvent.originServerTs
-                            ?: clock.epochMillis()
+                            ?: System.currentTimeMillis()
                 }
                 if (lastDate?.get(Calendar.DAY_OF_YEAR) != evDate.get(Calendar.DAY_OF_YEAR)) {
                     // need to display header with day

@@ -21,7 +21,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import im.vector.app.core.dialogs.UnrecognizedCertificateDialog
 import im.vector.app.core.error.ErrorFormatter
-import im.vector.app.core.time.Clock
 import im.vector.app.features.analytics.AnalyticsTracker
 import im.vector.app.features.call.webrtc.WebRtcCallManager
 import im.vector.app.features.home.AvatarRenderer
@@ -46,8 +45,6 @@ interface SingletonEntryPoint {
     fun unrecognizedCertificateDialog(): UnrecognizedCertificateDialog
 
     fun navigator(): Navigator
-
-    fun clock(): Clock
 
     fun errorFormatter(): ErrorFormatter
 

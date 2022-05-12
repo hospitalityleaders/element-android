@@ -20,8 +20,6 @@ import org.matrix.android.sdk.api.auth.UIABaseAuth
 import org.matrix.android.sdk.api.auth.UserInteractiveAuthInterceptor
 import org.matrix.android.sdk.api.failure.Failure
 import org.matrix.android.sdk.api.failure.toRegistrationFlowResponse
-import org.matrix.android.sdk.api.session.uia.UiaResult
-import org.matrix.android.sdk.api.session.uia.exceptions.UiaCancelledException
 import timber.log.Timber
 import kotlin.coroutines.suspendCoroutine
 
@@ -32,15 +30,14 @@ import kotlin.coroutines.suspendCoroutine
  * @param interceptor see doc in [UserInteractiveAuthInterceptor]
  * @param retryBlock called at the end of the process, in this block generally retry executing the task, with
  * provided authUpdate
- * @return UiaResult if UIA handled, failed or cancelled
- *
+ * @return true if UIA is handled without error
  */
 internal suspend fun handleUIA(failure: Throwable,
                                interceptor: UserInteractiveAuthInterceptor,
-                               retryBlock: suspend (UIABaseAuth) -> Unit): UiaResult {
+                               retryBlock: suspend (UIABaseAuth) -> Unit): Boolean {
     Timber.d("## UIA: check error ${failure.message}")
     val flowResponse = failure.toRegistrationFlowResponse()
-            ?: return UiaResult.FAILURE.also {
+            ?: return false.also {
                 Timber.d("## UIA: not a UIA error")
             }
 
@@ -53,19 +50,14 @@ internal suspend fun handleUIA(failure: Throwable,
             interceptor.performStage(flowResponse, (failure as? Failure.ServerError)?.error?.code, continuation)
         }
     } catch (failure2: Throwable) {
-        return if (failure2 is UiaCancelledException) {
-            Timber.w(failure2, "## UIA: cancelled")
-            UiaResult.CANCELLED
-        } else {
-            Timber.w(failure2, "## UIA: failed to participate")
-            UiaResult.FAILURE
-        }
+        Timber.w(failure2, "## UIA: failed to participate")
+        return false
     }
 
     Timber.d("## UIA: updated auth")
     return try {
         retryBlock(authUpdate)
-        UiaResult.SUCCESS
+        true
     } catch (failure3: Throwable) {
         handleUIA(failure3, interceptor, retryBlock)
     }

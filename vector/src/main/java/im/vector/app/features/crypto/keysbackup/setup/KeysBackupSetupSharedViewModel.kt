@@ -22,7 +22,6 @@ import androidx.lifecycle.ViewModel
 import com.nulabinc.zxcvbn.Strength
 import im.vector.app.R
 import im.vector.app.core.platform.WaitingViewData
-import im.vector.app.core.time.Clock
 import im.vector.app.core.utils.LiveEvent
 import org.matrix.android.sdk.api.MatrixCallback
 import org.matrix.android.sdk.api.listeners.ProgressListener
@@ -38,9 +37,7 @@ import javax.inject.Inject
 /**
  * The shared view model between all fragments.
  */
-class KeysBackupSetupSharedViewModel @Inject constructor(
-        private val clock: Clock,
-) : ViewModel() {
+class KeysBackupSetupSharedViewModel @Inject constructor() : ViewModel() {
 
     companion object {
         const val NAVIGATE_TO_STEP_2 = "NAVIGATE_TO_STEP_2"
@@ -88,7 +85,7 @@ class KeysBackupSetupSharedViewModel @Inject constructor(
 
     fun prepareRecoveryKey(context: Context, withPassphrase: String?) {
         // Update requestId
-        currentRequestId.value = clock.epochMillis()
+        currentRequestId.value = System.currentTimeMillis()
         isCreatingBackupVersion.value = true
 
         recoveryKey.value = null
@@ -104,11 +101,9 @@ class KeysBackupSetupSharedViewModel @Inject constructor(
                                 return
                             }
 
-                            loadingStatus.value = WaitingViewData(
-                                    context.getString(R.string.keys_backup_setup_step3_generating_key_status),
+                            loadingStatus.value = WaitingViewData(context.getString(R.string.keys_backup_setup_step3_generating_key_status),
                                     progress,
-                                    total
-                            )
+                                    total)
                         }
                     },
                     object : MatrixCallback<MegolmBackupCreationInfo> {

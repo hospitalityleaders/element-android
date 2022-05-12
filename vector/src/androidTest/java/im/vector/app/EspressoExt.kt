@@ -43,7 +43,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import im.vector.app.core.platform.VectorBaseBottomSheetDialogFragment
-import im.vector.app.core.time.DefaultClock
 import im.vector.app.espresso.tools.waitUntilViewVisible
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
@@ -53,7 +52,6 @@ import org.matrix.android.sdk.api.session.crypto.crosssigning.PrivateKeysInfo
 import org.matrix.android.sdk.api.session.sync.SyncState
 import org.matrix.android.sdk.api.util.Optional
 import java.util.concurrent.TimeoutException
-import kotlin.random.Random
 
 object EspressoHelper {
     fun getCurrentActivity(): Activity? {
@@ -91,8 +89,6 @@ fun getString(@StringRes id: Int): String {
 
 fun waitForView(viewMatcher: Matcher<View>, timeout: Long = 10_000, waitForDisplayed: Boolean = true): ViewAction {
     return object : ViewAction {
-        private val clock = DefaultClock()
-
         override fun getConstraints(): Matcher<View> {
             return Matchers.any(View::class.java)
         }
@@ -106,14 +102,14 @@ fun waitForView(viewMatcher: Matcher<View>, timeout: Long = 10_000, waitForDispl
         override fun perform(uiController: UiController, view: View) {
             println("*** waitForView 1 $view")
             uiController.loopMainThreadUntilIdle()
-            val startTime = clock.epochMillis()
+            val startTime = System.currentTimeMillis()
             val endTime = startTime + timeout
             val visibleMatcher = isDisplayed()
 
             uiController.loopMainThreadForAtLeast(100)
 
             do {
-                println("*** waitForView loop $view end:$endTime current:${clock.epochMillis()}")
+                println("*** waitForView loop $view end:$endTime current:${System.currentTimeMillis()}")
                 val viewVisible = TreeIterables.breadthFirstViewTraversal(view)
                         .any { viewMatcher.matches(it) && visibleMatcher.matches(it) }
 
@@ -122,7 +118,7 @@ fun waitForView(viewMatcher: Matcher<View>, timeout: Long = 10_000, waitForDispl
                 println("*** waitForView loop loopMainThreadForAtLeast...")
                 uiController.loopMainThreadForAtLeast(50)
                 println("*** waitForView loop ...loopMainThreadForAtLeast")
-            } while (clock.epochMillis() < endTime)
+            } while (System.currentTimeMillis() < endTime)
 
             println("*** waitForView timeout $view")
             // Timeout happens.
@@ -172,9 +168,9 @@ fun activityIdlingResource(activityClass: Class<*>): IdlingResource {
     val res = object : IdlingResource, ActivityLifecycleCallback {
         private var callback: IdlingResource.ResourceCallback? = null
         private var resumedActivity: Activity? = null
-        private val uniqueSuffix = Random.nextLong()
+        private val uniqTS = System.currentTimeMillis()
 
-        override fun getName() = "activityIdlingResource_${activityClass.name}_$uniqueSuffix"
+        override fun getName() = "activityIdlingResource_${activityClass.name}_$uniqTS"
 
         override fun isIdleNow(): Boolean {
             val activity = resumedActivity ?: ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED).firstOrNull {
@@ -202,7 +198,7 @@ fun activityIdlingResource(activityClass: Class<*>): IdlingResource {
                         println("*** [$name]  onActivityLifecycleChanged callback: $callback")
                         callback?.onTransitionToIdle()
                     }
-                    else          -> {
+                    else -> {
                         // do nothing, we're blocking until the activity resumes
                     }
                 }

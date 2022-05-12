@@ -32,8 +32,6 @@ import im.vector.app.core.di.hiltMavericksViewModelFactory
 import im.vector.app.core.platform.VectorViewModel
 import im.vector.app.core.resources.StringProvider
 import im.vector.app.features.analytics.AnalyticsTracker
-import im.vector.app.features.analytics.extensions.toAnalyticsJoinedRoom
-import im.vector.app.features.analytics.plan.JoinedRoom
 import im.vector.app.features.displayname.getBestName
 import im.vector.app.features.invite.AutoAcceptInvites
 import im.vector.app.features.settings.VectorPreferences
@@ -44,8 +42,6 @@ import kotlinx.coroutines.launch
 import org.matrix.android.sdk.api.extensions.orFalse
 import org.matrix.android.sdk.api.query.QueryStringValue
 import org.matrix.android.sdk.api.session.Session
-import org.matrix.android.sdk.api.session.getRoom
-import org.matrix.android.sdk.api.session.getRoomSummary
 import org.matrix.android.sdk.api.session.room.UpdatableLivePageResult
 import org.matrix.android.sdk.api.session.room.members.ChangeMembershipState
 import org.matrix.android.sdk.api.session.room.model.tag.RoomTag
@@ -170,7 +166,7 @@ class RoomListViewModel @AssistedInject constructor(
     }
 
     fun isPublicRoom(roomId: String): Boolean {
-        return session.getRoom(roomId)?.stateService()?.isPublic().orFalse()
+        return session.getRoom(roomId)?.isPublic().orFalse()
     }
 
     // PRIVATE METHODS *****************************************************************************
@@ -237,7 +233,7 @@ class RoomListViewModel @AssistedInject constructor(
 
         viewModelScope.launch {
             try {
-                session.roomService().leaveRoom(roomId)
+                session.leaveRoom(roomId)
                 // We do not update the rejectingRoomsIds here, because, the room is not rejected yet regarding the sync data.
                 // Instead, we wait for the room to be rejected
                 // Known bug: if the user is invited again (after rejecting the first invitation), the loading will be displayed instead of the buttons.
@@ -254,7 +250,7 @@ class RoomListViewModel @AssistedInject constructor(
         if (room != null) {
             viewModelScope.launch {
                 try {
-                    room.roomPushRuleService().setRoomNotificationState(action.notificationState)
+                    room.setRoomNotificationState(action.notificationState)
                 } catch (failure: Exception) {
                     _viewEvents.post(RoomListViewEvents.Failure(failure))
                 }
@@ -269,7 +265,7 @@ class RoomListViewModel @AssistedInject constructor(
 
         viewModelScope.launch {
             try {
-                session.roomService().joinRoom(action.roomId, null, action.viaServers ?: emptyList())
+                session.joinRoom(action.roomId, null, action.viaServers ?: emptyList())
 
                 suggestedRoomJoiningState.postValue(suggestedRoomJoiningState.value.orEmpty().toMutableMap().apply {
                     this[action.roomId] = Success(Unit)
@@ -279,8 +275,6 @@ class RoomListViewModel @AssistedInject constructor(
                     this[action.roomId] = Fail(failure)
                 }.toMap())
             }
-            session.getRoomSummary(action.roomId)
-                    ?.let { analyticsTracker.capture(it.toAnalyticsJoinedRoom(JoinedRoom.Trigger.RoomDirectory)) }
         }
     }
 
@@ -299,13 +293,13 @@ class RoomListViewModel @AssistedInject constructor(
                         action.tag.otherTag()
                                 ?.takeIf { room.roomSummary()?.hasTag(it).orFalse() }
                                 ?.let { tagToRemove ->
-                                    room.tagsService().deleteTag(tagToRemove)
+                                    room.deleteTag(tagToRemove)
                                 }
 
                         // Set the tag. We do not handle the order for the moment
-                        room.tagsService().addTag(action.tag, 0.5)
+                        room.addTag(action.tag, 0.5)
                     } else {
-                        room.tagsService().deleteTag(action.tag)
+                        room.deleteTag(action.tag)
                     }
                 } catch (failure: Throwable) {
                     _viewEvents.post(RoomListViewEvents.Failure(failure))
@@ -325,7 +319,7 @@ class RoomListViewModel @AssistedInject constructor(
     private fun handleLeaveRoom(action: RoomListAction.LeaveRoom) {
         _viewEvents.post(RoomListViewEvents.Loading(null))
         viewModelScope.launch {
-            val value = runCatching { session.roomService().leaveRoom(action.roomId) }
+            val value = runCatching { session.leaveRoom(action.roomId) }
                     .fold({ RoomListViewEvents.Done }, { RoomListViewEvents.Failure(it) })
             _viewEvents.post(value)
         }

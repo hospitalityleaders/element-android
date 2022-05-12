@@ -20,7 +20,6 @@ import com.squareup.moshi.JsonClass
 import okio.buffer
 import okio.source
 import org.matrix.android.sdk.internal.di.MoshiProvider
-import org.matrix.android.sdk.internal.util.time.Clock
 import timber.log.Timber
 import java.io.File
 
@@ -47,10 +46,7 @@ internal interface InitialSyncStatusRepository {
 /**
  * This class handle the current status of an initial sync and persist it on the disk, to be robust against crash
  */
-internal class FileInitialSyncStatusRepository(
-        directory: File,
-        private val clock: Clock,
-) : InitialSyncStatusRepository {
+internal class FileInitialSyncStatusRepository(directory: File) : InitialSyncStatusRepository {
 
     companion object {
         // After 2 hours, we consider that the downloaded file is outdated:
@@ -68,7 +64,7 @@ internal class FileInitialSyncStatusRepository(
         ensureCache()
         val state = cache?.step ?: InitialSyncStatus.STEP_INIT
         return if (state >= InitialSyncStatus.STEP_DOWNLOADED &&
-                clock.epochMillis() > (cache?.downloadedDate ?: 0) + INIT_SYNC_FILE_LIFETIME) {
+                System.currentTimeMillis() > (cache?.downloadedDate ?: 0) + INIT_SYNC_FILE_LIFETIME) {
             Timber.d("INIT_SYNC downloaded file is outdated, download it again")
             // The downloaded file is outdated
             setStep(InitialSyncStatus.STEP_INIT)
@@ -83,7 +79,7 @@ internal class FileInitialSyncStatusRepository(
         if (step == InitialSyncStatus.STEP_DOWNLOADED) {
             // Also store the downloaded date
             newStatus = newStatus.copy(
-                    downloadedDate = clock.epochMillis()
+                    downloadedDate = System.currentTimeMillis()
             )
         }
         cache = newStatus

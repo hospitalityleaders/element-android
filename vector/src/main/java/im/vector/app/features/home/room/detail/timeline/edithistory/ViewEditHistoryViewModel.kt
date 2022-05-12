@@ -32,7 +32,6 @@ import org.matrix.android.sdk.api.session.Session
 import org.matrix.android.sdk.api.session.crypto.MXCryptoError
 import org.matrix.android.sdk.api.session.crypto.model.OlmDecryptionResult
 import org.matrix.android.sdk.api.session.events.model.isReply
-import org.matrix.android.sdk.api.session.getRoom
 import timber.log.Timber
 import java.util.UUID
 
@@ -62,7 +61,7 @@ class ViewEditHistoryViewModel @AssistedInject constructor(
 
         viewModelScope.launch {
             val data = try {
-                room.relationService().fetchEditHistory(eventId)
+                room.fetchEditHistory(eventId)
             } catch (failure: Throwable) {
                 setState {
                     copy(editList = Fail(failure))

@@ -19,7 +19,6 @@ package im.vector.app.features.rageshake
 import android.content.Context
 import android.util.Log
 import im.vector.app.features.settings.VectorPreferences
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -89,7 +88,7 @@ class VectorFileLogger @Inject constructor(
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
+    @Suppress("EXPERIMENTAL_API_USAGE")
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
         fileHandler ?: return
         GlobalScope.launch(Dispatchers.IO) {

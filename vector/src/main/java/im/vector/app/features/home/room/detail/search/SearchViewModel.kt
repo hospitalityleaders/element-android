@@ -30,12 +30,11 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.matrix.android.sdk.api.session.Session
-import org.matrix.android.sdk.api.session.getRoom
 import org.matrix.android.sdk.api.session.search.SearchResult
 
 class SearchViewModel @AssistedInject constructor(
         @Assisted private val initialState: SearchViewState,
-        private val session: Session
+        session: Session
 ) : VectorViewModel<SearchViewState, SearchAction, SearchViewEvents>(initialState) {
 
     private val room = session.getRoom(initialState.roomId)
@@ -101,9 +100,8 @@ class SearchViewModel @AssistedInject constructor(
 
         currentTask = viewModelScope.launch {
             try {
-                val result = session.searchService().search(
+                val result = room.search(
                         searchTerm = state.searchTerm,
-                        roomId = initialState.roomId,
                         nextBatch = nextBatch,
                         orderByRecent = true,
                         beforeLimit = 0,

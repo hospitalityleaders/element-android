@@ -32,7 +32,6 @@ abstract class SasEmojiItem : VectorEpoxyModel<SasEmojiItem.Holder>() {
 
     @EpoxyAttribute
     var index: Int = 0
-
     @EpoxyAttribute
     lateinit var emojiRepresentation: EmojiRepresentation
 

@@ -58,8 +58,9 @@ class FtueAuthSignUpSignInSelectionFragment @Inject constructor() : AbstractSSOF
 
     private fun render(state: OnboardingViewState) {
         when (state.serverType) {
+
             ServerType.MatrixOrg -> renderServerInformation(
-                    icon = R.drawable.ic_logo_matrix_org,
+                    icon = R.drawable.holo5,
                     title = getString(R.string.login_connect_to, state.selectedHomeserver.userFacingUrl.toReducedUrl()),
                     subtitle = getString(R.string.login_server_matrix_org_text)
             )
@@ -73,6 +74,7 @@ class FtueAuthSignUpSignInSelectionFragment @Inject constructor() : AbstractSSOF
                     title = getString(R.string.login_server_other_title),
                     subtitle = getString(R.string.login_connect_to, state.selectedHomeserver.userFacingUrl.toReducedUrl())
             )
+
             ServerType.Unknown   -> Unit /* Should not happen */
         }
 

@@ -17,15 +17,13 @@
 package org.matrix.android.sdk.internal.database.model
 
 import io.realm.annotations.RealmModule
-import org.matrix.android.sdk.internal.database.model.livelocation.LiveLocationShareAggregatedSummaryEntity
 import org.matrix.android.sdk.internal.database.model.presence.UserPresenceEntity
 import org.matrix.android.sdk.internal.database.model.threads.ThreadSummaryEntity
 
 /**
  * Realm module for Session
  */
-@RealmModule(
-        library = true,
+@RealmModule(library = true,
         classes = [
             ChunkEntity::class,
             EventEntity::class,
@@ -49,7 +47,6 @@ import org.matrix.android.sdk.internal.database.model.threads.ThreadSummaryEntit
             EditAggregatedSummaryEntity::class,
             EditionOfEvent::class,
             PollResponseAggregatedSummaryEntity::class,
-            LiveLocationShareAggregatedSummaryEntity::class,
             ReferencesAggregatedSummaryEntity::class,
             PushRulesEntity::class,
             PushRuleEntity::class,
@@ -72,6 +69,5 @@ import org.matrix.android.sdk.internal.database.model.threads.ThreadSummaryEntit
             SpaceParentSummaryEntity::class,
             UserPresenceEntity::class,
             ThreadSummaryEntity::class
-        ]
-)
+        ])
 internal class SessionRealmModule

@@ -20,13 +20,11 @@ import android.content.Context
 import android.os.Build
 import com.arthenica.ffmpegkit.FFmpegKit
 import com.arthenica.ffmpegkit.ReturnCode
-import im.vector.app.core.time.Clock
 import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
 class VoicePlayerHelper @Inject constructor(
-        private val clock: Clock,
         context: Context
 ) {
     private val outputDirectory: File by lazy {
@@ -48,9 +46,9 @@ class VoicePlayerHelper @Inject constructor(
             if (targetFile.exists()) {
                 targetFile.delete()
             }
-            val start = clock.epochMillis()
+            val start = System.currentTimeMillis()
             val session = FFmpegKit.execute("-i \"${file.path}\" -c:a aac \"${targetFile.path}\"")
-            val duration = clock.epochMillis() - start
+            val duration = System.currentTimeMillis() - start
             Timber.d("Convert to mp4 in $duration ms. Size in bytes from ${file.length()} to ${targetFile.length()}")
             return when {
                 ReturnCode.isSuccess(session.returnCode) -> {

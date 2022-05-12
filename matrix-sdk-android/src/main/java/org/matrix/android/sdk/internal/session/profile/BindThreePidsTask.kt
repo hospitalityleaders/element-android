@@ -50,8 +50,7 @@ internal class DefaultBindThreePidsTask @Inject constructor(private val profileA
                             identityServerUrlWithoutProtocol = identityServerUrlWithoutProtocol,
                             identityServerAccessToken = identityServerAccessToken,
                             sid = identityPendingBinding.sid
-                    )
-            )
+                    ))
         }
 
         // Binding is over, cleanup the store

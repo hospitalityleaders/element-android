@@ -29,21 +29,19 @@ import im.vector.app.core.platform.VectorViewModel
 import im.vector.app.features.session.coroutineScope
 import kotlinx.coroutines.launch
 import org.matrix.android.sdk.api.session.Session
-import org.matrix.android.sdk.api.session.getRoom
-import org.matrix.android.sdk.api.session.getRoomSummary
 
 class MigrateRoomViewModel @AssistedInject constructor(
         @Assisted initialState: MigrateRoomViewState,
         private val session: Session,
         private val upgradeRoomViewModelTask: UpgradeRoomViewModelTask) :
-        VectorViewModel<MigrateRoomViewState, MigrateRoomAction, EmptyViewEvents>(initialState) {
+    VectorViewModel<MigrateRoomViewState, MigrateRoomAction, EmptyViewEvents>(initialState) {
 
     init {
         val room = session.getRoom(initialState.roomId)
         val summary = session.getRoomSummary(initialState.roomId)
         setState {
             copy(
-                    currentVersion = room?.roomVersionService()?.getRoomVersion(),
+                    currentVersion = room?.getRoomVersion(),
                     isPublic = summary?.isPublic ?: false,
                     otherMemberCount = summary?.otherMemberIds?.count() ?: 0,
                     knownParents = summary?.flattenParentIds ?: emptyList()
@@ -60,7 +58,7 @@ class MigrateRoomViewModel @AssistedInject constructor(
 
     override fun handle(action: MigrateRoomAction) {
         when (action) {
-            is MigrateRoomAction.SetAutoInvite -> {
+            is MigrateRoomAction.SetAutoInvite             -> {
                 setState {
                     copy(shouldIssueInvites = action.autoInvite)
                 }
@@ -70,7 +68,7 @@ class MigrateRoomViewModel @AssistedInject constructor(
                     copy(shouldUpdateKnownParents = action.update)
                 }
             }
-            MigrateRoomAction.UpgradeRoom -> {
+            MigrateRoomAction.UpgradeRoom                  -> {
                 handleUpgradeRoom()
             }
         }

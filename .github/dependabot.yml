@@ -10,8 +10,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    reviewers:
-      - "vector-im/element-android-reviewers"
     ignore:
       - dependency-name: "*github-script*"
   # Updates for Gradle dependencies used in the app
@@ -21,6 +19,6 @@ updates:
       interval: "daily"
     open-pull-requests-limit: 200
     reviewers:
-      - "vector-im/element-android-reviewers"
+      - "bmarty"
     ignore:
       - dependency-name: com.google.zxing:core

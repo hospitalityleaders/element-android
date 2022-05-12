@@ -40,7 +40,6 @@ import org.matrix.android.sdk.api.extensions.orFalse
 import org.matrix.android.sdk.api.extensions.tryOrNull
 import org.matrix.android.sdk.api.raw.RawService
 import org.matrix.android.sdk.api.session.Session
-import org.matrix.android.sdk.api.session.getRoomSummary
 import org.matrix.android.sdk.api.session.homeserver.HomeServerCapabilities
 import org.matrix.android.sdk.api.session.room.alias.RoomAliasError
 import org.matrix.android.sdk.api.session.room.failure.CreateRoomFailure
@@ -75,8 +74,7 @@ class CreateRoomViewModel @AssistedInject constructor(
 
         val parentSpaceId = initialState.parentSpaceId ?: appStateHandler.safeActiveSpaceId()
 
-        val restrictedSupport = session.homeServerCapabilitiesService().getHomeServerCapabilities()
-                .isFeatureSupported(HomeServerCapabilities.ROOM_CAP_RESTRICTED)
+        val restrictedSupport = session.getHomeServerCapabilities().isFeatureSupported(HomeServerCapabilities.ROOM_CAP_RESTRICTED)
         val createRestricted = restrictedSupport == HomeServerCapabilities.RoomCapabilitySupport.SUPPORTED
 
         val defaultJoinRules = if (parentSpaceId != null && createRestricted) {
@@ -267,7 +265,7 @@ class CreateRoomViewModel @AssistedInject constructor(
                         RoomJoinRules.RESTRICTED -> {
                             state.parentSpaceId?.let {
                                 featurePreset = RestrictedRoomPreset(
-                                        session.homeServerCapabilitiesService().getHomeServerCapabilities(),
+                                        session.getHomeServerCapabilities(),
                                         listOf(RoomJoinRulesAllowEntry.restrictedToRoom(state.parentSpaceId))
                                 )
                             }
@@ -299,7 +297,7 @@ class CreateRoomViewModel @AssistedInject constructor(
 
         // TODO: Should this be non-cancellable?
         viewModelScope.launch {
-            runCatching { session.roomService().createRoom(createRoomParams) }.fold(
+            runCatching { session.createRoom(createRoomParams) }.fold(
                     { roomId ->
                         analyticsTracker.capture(CreatedRoom(isDM = createRoomParams.isDirect.orFalse()))
                         if (state.parentSpaceId != null) {

@@ -93,8 +93,7 @@ data class CryptoCrossSigningKey(
                     userId = userId,
                     usages = listOf(usage.value),
                     keys = mapOf("ed25519:$b64key" to b64key),
-                    signatures = signMap
-            )
+                    signatures = signMap)
         }
     }
 }

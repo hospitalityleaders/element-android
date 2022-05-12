@@ -18,8 +18,13 @@ package im.vector.app.features
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.View
+import android.view.Window
+import android.view.WindowInsets
+import android.view.WindowManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -115,6 +120,7 @@ class MainActivity : VectorBaseActivity<ActivityMainBinding>(), UnlockedActivity
         }
     }
 
+
     private fun clearNotifications() {
         // Dismiss all notifications
         notificationDrawerManager.clearAllEvents()
@@ -160,7 +166,7 @@ class MainActivity : VectorBaseActivity<ActivityMainBinding>(), UnlockedActivity
             args.clearCredentials     -> {
                 lifecycleScope.launch {
                     try {
-                        session.signOutService().signOut(!args.isUserLoggedOut)
+                        session.signOut(!args.isUserLoggedOut)
                     } catch (failure: Throwable) {
                         displayError(failure)
                         return@launch

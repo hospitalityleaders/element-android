@@ -116,8 +116,7 @@ internal class CreateRoomBodyBuilder @Inject constructor(
                 fileUploader.uploadFromUri(
                         uri = avatarUri,
                         filename = UUID.randomUUID().toString(),
-                        mimeType = MimeTypes.Jpeg
-                )
+                        mimeType = MimeTypes.Jpeg)
             }
         }?.let { response ->
             Event(

@@ -21,7 +21,6 @@ import im.vector.app.features.home.room.detail.arguments.TimelineArgs
 import im.vector.app.features.home.room.detail.composer.voice.VoiceMessageRecorderView
 import org.matrix.android.sdk.api.extensions.orFalse
 import org.matrix.android.sdk.api.session.room.timeline.TimelineEvent
-import kotlin.random.Random
 
 /**
  * Describes the current send mode:
@@ -36,7 +35,7 @@ sealed interface SendMode {
             val text: String,
             val fromSharing: Boolean,
             // This is necessary for forcing refresh on selectSubscribe
-            private val random: Int = Random.nextInt()
+            private val ts: Long = System.currentTimeMillis()
     ) : SendMode
 
     data class Quote(val timelineEvent: TimelineEvent, val text: String) : SendMode
@@ -84,8 +83,7 @@ data class MessageComposerViewState(
     constructor(args: TimelineArgs) : this(
             roomId = args.roomId,
             startsThread = args.threadTimelineArgs?.startsThread.orFalse(),
-            rootThreadEventId = args.threadTimelineArgs?.rootThreadEventId
-    )
+            rootThreadEventId = args.threadTimelineArgs?.rootThreadEventId)
 
     fun isInThreadTimeline(): Boolean = rootThreadEventId != null
 }

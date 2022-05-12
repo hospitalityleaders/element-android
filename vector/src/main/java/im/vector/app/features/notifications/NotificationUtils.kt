@@ -51,7 +51,6 @@ import im.vector.app.core.extensions.createIgnoredUri
 import im.vector.app.core.platform.PendingIntentCompat
 import im.vector.app.core.resources.StringProvider
 import im.vector.app.core.services.CallService
-import im.vector.app.core.time.Clock
 import im.vector.app.core.utils.startNotificationChannelSettingsIntent
 import im.vector.app.features.call.VectorCallActivity
 import im.vector.app.features.call.service.CallHeadsUpActionReceiver
@@ -73,12 +72,9 @@ import kotlin.random.Random
  * Note: Cannot inject ColorProvider in the constructor, because it requires an Activity
  */
 @Singleton
-class NotificationUtils @Inject constructor(
-        private val context: Context,
-        private val stringProvider: StringProvider,
-        private val vectorPreferences: VectorPreferences,
-        private val clock: Clock,
-) {
+class NotificationUtils @Inject constructor(private val context: Context,
+                                            private val stringProvider: StringProvider,
+                                            private val vectorPreferences: VectorPreferences) {
 
     companion object {
         /* ==========================================================================================
@@ -174,11 +170,9 @@ class NotificationUtils @Inject constructor(
          * Default notification importance: shows everywhere, makes noise, but does not visually
          * intrude.
          */
-        notificationManager.createNotificationChannel(NotificationChannel(
-                NOISY_NOTIFICATION_CHANNEL_ID,
+        notificationManager.createNotificationChannel(NotificationChannel(NOISY_NOTIFICATION_CHANNEL_ID,
                 stringProvider.getString(R.string.notification_noisy_notifications).ifEmpty { "Noisy notifications" },
-                NotificationManager.IMPORTANCE_DEFAULT
-        )
+                NotificationManager.IMPORTANCE_DEFAULT)
                 .apply {
                     description = stringProvider.getString(R.string.notification_noisy_notifications)
                     enableVibration(true)
@@ -189,11 +183,9 @@ class NotificationUtils @Inject constructor(
         /**
          * Low notification importance: shows everywhere, but is not intrusive.
          */
-        notificationManager.createNotificationChannel(NotificationChannel(
-                SILENT_NOTIFICATION_CHANNEL_ID,
+        notificationManager.createNotificationChannel(NotificationChannel(SILENT_NOTIFICATION_CHANNEL_ID,
                 stringProvider.getString(R.string.notification_silent_notifications).ifEmpty { "Silent notifications" },
-                NotificationManager.IMPORTANCE_LOW
-        )
+                NotificationManager.IMPORTANCE_LOW)
                 .apply {
                     description = stringProvider.getString(R.string.notification_silent_notifications)
                     setSound(null, null)
@@ -201,22 +193,18 @@ class NotificationUtils @Inject constructor(
                     lightColor = accentColor
                 })
 
-        notificationManager.createNotificationChannel(NotificationChannel(
-                LISTENING_FOR_EVENTS_NOTIFICATION_CHANNEL_ID,
+        notificationManager.createNotificationChannel(NotificationChannel(LISTENING_FOR_EVENTS_NOTIFICATION_CHANNEL_ID,
                 stringProvider.getString(R.string.notification_listening_for_events).ifEmpty { "Listening for events" },
-                NotificationManager.IMPORTANCE_MIN
-        )
+                NotificationManager.IMPORTANCE_MIN)
                 .apply {
                     description = stringProvider.getString(R.string.notification_listening_for_events)
                     setSound(null, null)
                     setShowBadge(false)
                 })
 
-        notificationManager.createNotificationChannel(NotificationChannel(
-                CALL_NOTIFICATION_CHANNEL_ID,
+        notificationManager.createNotificationChannel(NotificationChannel(CALL_NOTIFICATION_CHANNEL_ID,
                 stringProvider.getString(R.string.call).ifEmpty { "Call" },
-                NotificationManager.IMPORTANCE_HIGH
-        )
+                NotificationManager.IMPORTANCE_HIGH)
                 .apply {
                     description = stringProvider.getString(R.string.call)
                     setSound(null, null)
@@ -274,13 +262,11 @@ class NotificationUtils @Inject constructor(
             // reflection at runtime, to avoid compiler error: "Cannot resolve method.."
             try {
                 val deprecatedMethod = notification.javaClass
-                        .getMethod(
-                                "setLatestEventInfo",
+                        .getMethod("setLatestEventInfo",
                                 Context::class.java,
                                 CharSequence::class.java,
                                 CharSequence::class.java,
-                                PendingIntent::class.java
-                        )
+                                PendingIntent::class.java)
                 deprecatedMethod.invoke(notification, context, stringProvider.getString(R.string.app_name), stringProvider.getString(subTitleResId), pi)
             } catch (ex: Exception) {
                 Timber.e(ex, "## buildNotification(): Exception - setLatestEventInfo() Msg=")
@@ -337,7 +323,7 @@ class NotificationUtils @Inject constructor(
         }
         val contentPendingIntent = PendingIntent.getActivity(
                 context,
-                clock.epochMillis().toInt(),
+                System.currentTimeMillis().toInt(),
                 contentIntent,
                 PendingIntentCompat.FLAG_IMMUTABLE
         )
@@ -351,7 +337,7 @@ class NotificationUtils @Inject constructor(
                                 mode = VectorCallActivity.INCOMING_ACCEPT
                         )
                 )
-                .getPendingIntent(clock.epochMillis().toInt(), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntentCompat.FLAG_IMMUTABLE)
+                .getPendingIntent(System.currentTimeMillis().toInt(), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntentCompat.FLAG_IMMUTABLE)
 
         val rejectCallPendingIntent = buildRejectCallPendingIntent(call.callId)
 
@@ -400,14 +386,13 @@ class NotificationUtils @Inject constructor(
         val contentIntent = VectorCallActivity.newIntent(
                 context = context,
                 call = call,
-                mode = null
-        ).apply {
+                mode = null).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             data = createIgnoredUri(call.callId)
         }
         val contentPendingIntent = PendingIntent.getActivity(
                 context,
-                clock.epochMillis().toInt(),
+                System.currentTimeMillis().toInt(),
                 contentIntent,
                 PendingIntentCompat.FLAG_IMMUTABLE
         )
@@ -468,7 +453,7 @@ class NotificationUtils @Inject constructor(
         val contentPendingIntent = TaskStackBuilder.create(context)
                 .addNextIntentWithParentStack(HomeActivity.newIntent(context))
                 .addNextIntent(VectorCallActivity.newIntent(context, call, null))
-                .getPendingIntent(clock.epochMillis().toInt(), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntentCompat.FLAG_IMMUTABLE)
+                .getPendingIntent(System.currentTimeMillis().toInt(), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntentCompat.FLAG_IMMUTABLE)
 
         builder.setContentIntent(contentPendingIntent)
 
@@ -482,7 +467,7 @@ class NotificationUtils @Inject constructor(
         }
         return PendingIntent.getBroadcast(
                 context,
-                clock.epochMillis().toInt(),
+                System.currentTimeMillis().toInt(),
                 rejectCallActionReceiver,
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntentCompat.FLAG_IMMUTABLE
         )
@@ -530,7 +515,7 @@ class NotificationUtils @Inject constructor(
         val contentPendingIntent = TaskStackBuilder.create(context)
                 .addNextIntentWithParentStack(HomeActivity.newIntent(context))
                 .addNextIntent(RoomDetailActivity.newIntent(context, TimelineArgs(callInformation.nativeRoomId)))
-                .getPendingIntent(clock.epochMillis().toInt(), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntentCompat.FLAG_IMMUTABLE)
+                .getPendingIntent(System.currentTimeMillis().toInt(), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntentCompat.FLAG_IMMUTABLE)
 
         builder.setContentIntent(contentPendingIntent)
         return builder.build()
@@ -550,20 +535,6 @@ class NotificationUtils @Inject constructor(
                 .build()
     }
 
-    /**
-     * Creates a notification that indicates the application is capturing the screen.
-     */
-    fun buildScreenSharingNotification(): Notification {
-        return NotificationCompat.Builder(context, SILENT_NOTIFICATION_CHANNEL_ID)
-                .setContentTitle(stringProvider.getString(R.string.screen_sharing_notification_title))
-                .setContentText(stringProvider.getString(R.string.screen_sharing_notification_description))
-                .setSmallIcon(R.drawable.ic_share_screen)
-                .setColor(ThemeUtils.getColor(context, android.R.attr.colorPrimary))
-                .setCategory(NotificationCompat.CATEGORY_SERVICE)
-                .setContentIntent(buildOpenHomePendingIntentForSummary())
-                .build()
-    }
-
     fun buildDownloadFileNotification(uri: Uri, fileName: String, mimeType: String): Notification {
         return NotificationCompat.Builder(context, SILENT_NOTIFICATION_CHANNEL_ID)
                 .setGroup(stringProvider.getString(R.string.app_name))
@@ -577,7 +548,7 @@ class NotificationUtils @Inject constructor(
                     }
                     PendingIntent.getActivity(
                             context,
-                            clock.epochMillis().toInt(),
+                            System.currentTimeMillis().toInt(),
                             intent,
                             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntentCompat.FLAG_IMMUTABLE
                     ).let {
@@ -603,7 +574,7 @@ class NotificationUtils @Inject constructor(
 
         val channelID = if (roomInfo.shouldBing) NOISY_NOTIFICATION_CHANNEL_ID else SILENT_NOTIFICATION_CHANNEL_ID
         return NotificationCompat.Builder(context, channelID)
-                .setOnlyAlertOnce(roomInfo.isUpdated)
+                .setOnlyAlertOnce(true)
                 .setWhen(lastMessageTimestamp)
                 // MESSAGING_STYLE sets title and content for API 16 and above devices.
                 .setStyle(messageStyle)
@@ -651,15 +622,13 @@ class NotificationUtils @Inject constructor(
                     markRoomReadIntent.putExtra(NotificationBroadcastReceiver.KEY_ROOM_ID, roomInfo.roomId)
                     val markRoomReadPendingIntent = PendingIntent.getBroadcast(
                             context,
-                            clock.epochMillis().toInt(),
+                            System.currentTimeMillis().toInt(),
                             markRoomReadIntent,
                             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntentCompat.FLAG_IMMUTABLE
                     )
 
-                    NotificationCompat.Action.Builder(
-                            R.drawable.ic_material_done_all_white,
-                            stringProvider.getString(R.string.action_mark_room_read), markRoomReadPendingIntent
-                    )
+                    NotificationCompat.Action.Builder(R.drawable.ic_material_done_all_white,
+                            stringProvider.getString(R.string.action_mark_room_read), markRoomReadPendingIntent)
                             .setSemanticAction(NotificationCompat.Action.SEMANTIC_ACTION_MARK_AS_READ)
                             .setShowsUserInterface(false)
                             .build()
@@ -671,10 +640,8 @@ class NotificationUtils @Inject constructor(
                             val remoteInput = RemoteInput.Builder(NotificationBroadcastReceiver.KEY_TEXT_REPLY)
                                     .setLabel(stringProvider.getString(R.string.action_quick_reply))
                                     .build()
-                            NotificationCompat.Action.Builder(
-                                    R.drawable.vector_notification_quick_reply,
-                                    stringProvider.getString(R.string.action_quick_reply), replyPendingIntent
-                            )
+                            NotificationCompat.Action.Builder(R.drawable.vector_notification_quick_reply,
+                                    stringProvider.getString(R.string.action_quick_reply), replyPendingIntent)
                                     .addRemoteInput(remoteInput)
                                     .setSemanticAction(NotificationCompat.Action.SEMANTIC_ACTION_REPLY)
                                     .setShowsUserInterface(false)
@@ -696,7 +663,7 @@ class NotificationUtils @Inject constructor(
                     intent.action = DISMISS_ROOM_NOTIF_ACTION
                     val pendingIntent = PendingIntent.getBroadcast(
                             context.applicationContext,
-                            clock.epochMillis().toInt(),
+                            System.currentTimeMillis().toInt(),
                             intent,
                             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntentCompat.FLAG_IMMUTABLE
                     )
@@ -731,7 +698,7 @@ class NotificationUtils @Inject constructor(
                     rejectIntent.putExtra(NotificationBroadcastReceiver.KEY_ROOM_ID, roomId)
                     val rejectIntentPendingIntent = PendingIntent.getBroadcast(
                             context,
-                            clock.epochMillis().toInt(),
+                            System.currentTimeMillis().toInt(),
                             rejectIntent,
                             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntentCompat.FLAG_IMMUTABLE
                     )
@@ -749,7 +716,7 @@ class NotificationUtils @Inject constructor(
                     joinIntent.putExtra(NotificationBroadcastReceiver.KEY_ROOM_ID, roomId)
                     val joinIntentPendingIntent = PendingIntent.getBroadcast(
                             context,
-                            clock.epochMillis().toInt(),
+                            System.currentTimeMillis().toInt(),
                             joinIntent,
                             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntentCompat.FLAG_IMMUTABLE
                     )
@@ -830,7 +797,7 @@ class NotificationUtils @Inject constructor(
                 .addNextIntentWithParentStack(HomeActivity.newIntent(context))
                 .addNextIntent(roomIntentTap)
                 .getPendingIntent(
-                        clock.epochMillis().toInt(),
+                        System.currentTimeMillis().toInt(),
                         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntentCompat.FLAG_IMMUTABLE
                 )
     }
@@ -863,7 +830,7 @@ class NotificationUtils @Inject constructor(
             intent.putExtra(NotificationBroadcastReceiver.KEY_ROOM_ID, roomId)
             return PendingIntent.getBroadcast(
                     context,
-                    clock.epochMillis().toInt(),
+                    System.currentTimeMillis().toInt(),
                     intent,
                     // PendingIntents attached to actions with remote inputs must be mutable
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntentCompat.FLAG_MUTABLE

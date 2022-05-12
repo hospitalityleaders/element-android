@@ -36,8 +36,6 @@ import okhttp3.internal.toImmutableList
 import org.matrix.android.sdk.api.query.ActiveSpaceFilter
 import org.matrix.android.sdk.api.query.RoomCategoryFilter
 import org.matrix.android.sdk.api.session.Session
-import org.matrix.android.sdk.api.session.getRoom
-import org.matrix.android.sdk.api.session.getRoomSummary
 import org.matrix.android.sdk.api.session.room.model.Membership
 import org.matrix.android.sdk.api.session.room.roomSummaryQueryParams
 import org.matrix.android.sdk.flow.flow
@@ -74,7 +72,7 @@ class SpaceLeaveAdvancedViewModel @AssistedInject constructor(
                     try {
                         state.selectedRooms.forEach {
                             try {
-                                session.roomService().leaveRoom(it)
+                                session.leaveRoom(it)
                             } catch (failure: Throwable) {
                                 // silently ignore?
                                 Timber.e(failure, "Fail to leave sub rooms/spaces")
@@ -112,7 +110,7 @@ class SpaceLeaveAdvancedViewModel @AssistedInject constructor(
         }
 
         viewModelScope.launch {
-            val children = session.roomService().getRoomSummaries(
+            val children = session.getRoomSummaries(
                     roomSummaryQueryParams {
                         includeType = null
                         memberships = listOf(Membership.JOIN)

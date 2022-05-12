@@ -31,5 +31,4 @@ data class RoomEventGroupInfo(
     var shouldBing: Boolean = false
     var customSound: String? = null
     var hasSmartReplyError: Boolean = false
-    var isUpdated: Boolean = false
 }

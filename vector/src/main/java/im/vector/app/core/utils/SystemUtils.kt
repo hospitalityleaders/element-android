@@ -43,20 +43,21 @@ import im.vector.app.features.notifications.NotificationUtils
  * This user option appears on Android M but Android O enforces its usage and kills apps not
  * authorised by the user to run in background.
  *
+ * @param context the context
  * @return true if battery optimisations are ignored
  */
-fun Context.isIgnoringBatteryOptimizations(): Boolean {
+fun isIgnoringBatteryOptimizations(context: Context): Boolean {
     // no issue before Android M, battery optimisations did not exist
     return Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
-            getSystemService<PowerManager>()?.isIgnoringBatteryOptimizations(packageName) == true
+            context.getSystemService<PowerManager>()?.isIgnoringBatteryOptimizations(context.packageName) == true
 }
 
-fun Context.isAirplaneModeOn(): Boolean {
-    return Settings.Global.getInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) != 0
+fun isAirplaneModeOn(context: Context): Boolean {
+    return Settings.Global.getInt(context.contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) != 0
 }
 
-fun Context.isAnimationEnabled(): Boolean {
-    return Settings.Global.getFloat(contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f) != 0f
+fun isAnimationDisabled(context: Context): Boolean {
+    return Settings.Global.getFloat(context.contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f) == 0f
 }
 
 /**

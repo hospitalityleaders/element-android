@@ -76,12 +76,10 @@ class WellKnown {
                         if (apiUrl != null &&
                                 apiUrl.startsWith("https://") &&
                                 uiUrl!!.startsWith("https://")) {
-                            managers.add(
-                                    WellKnownManagerConfig(
-                                            apiUrl = apiUrl,
-                                            uiUrl = uiUrl
-                                    )
-                            )
+                            managers.add(WellKnownManagerConfig(
+                                    apiUrl = apiUrl,
+                                    uiUrl = uiUrl
+                            ))
                         }
                     }
                 }

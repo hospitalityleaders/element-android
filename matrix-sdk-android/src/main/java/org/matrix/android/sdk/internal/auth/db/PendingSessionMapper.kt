@@ -44,8 +44,7 @@ internal class PendingSessionMapper @Inject constructor(moshi: Moshi) {
                 resetPasswordData = resetPasswordData,
                 currentSession = entity.currentSession,
                 isRegistrationStarted = entity.isRegistrationStarted,
-                currentThreePidData = threePidData
-        )
+                currentThreePidData = threePidData)
     }
 
     fun map(sessionData: PendingSessionData?): PendingSessionEntity? {

@@ -28,7 +28,6 @@ import org.matrix.android.sdk.internal.session.call.model.MxCallImpl
 import org.matrix.android.sdk.internal.session.profile.GetProfileInfoTask
 import org.matrix.android.sdk.internal.session.room.send.LocalEchoEventFactory
 import org.matrix.android.sdk.internal.session.room.send.queue.EventSenderProcessor
-import org.matrix.android.sdk.internal.util.time.Clock
 import javax.inject.Inject
 
 internal class MxCallFactory @Inject constructor(
@@ -37,8 +36,7 @@ internal class MxCallFactory @Inject constructor(
         private val eventSenderProcessor: EventSenderProcessor,
         private val matrixConfiguration: MatrixConfiguration,
         private val getProfileInfoTask: GetProfileInfoTask,
-        @UserId private val userId: String,
-        private val clock: Clock,
+        @UserId private val userId: String
 ) {
 
     fun createIncomingCall(roomId: String, opponentUserId: String, content: CallInviteContent): MxCall? {
@@ -53,8 +51,7 @@ internal class MxCallFactory @Inject constructor(
                 localEchoEventFactory = localEchoEventFactory,
                 eventSenderProcessor = eventSenderProcessor,
                 matrixConfiguration = matrixConfiguration,
-                getProfileInfoTask = getProfileInfoTask,
-                clock = clock,
+                getProfileInfoTask = getProfileInfoTask
         ).apply {
             updateOpponentData(opponentUserId, content, content.capabilities)
         }
@@ -71,8 +68,7 @@ internal class MxCallFactory @Inject constructor(
                 localEchoEventFactory = localEchoEventFactory,
                 eventSenderProcessor = eventSenderProcessor,
                 matrixConfiguration = matrixConfiguration,
-                getProfileInfoTask = getProfileInfoTask,
-                clock = clock,
+                getProfileInfoTask = getProfileInfoTask
         ).apply {
             // Setup with this userId, might be updated when processing the Answer event
             this.opponentUserId = opponentUserId

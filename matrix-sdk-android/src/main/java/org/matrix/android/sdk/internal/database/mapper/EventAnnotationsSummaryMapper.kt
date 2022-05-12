@@ -25,6 +25,7 @@ import org.matrix.android.sdk.internal.database.model.EventAnnotationsSummaryEnt
 internal object EventAnnotationsSummaryMapper {
     fun map(annotationsSummary: EventAnnotationsSummaryEntity): EventAnnotationsSummary {
         return EventAnnotationsSummary(
+                eventId = annotationsSummary.eventId,
                 reactionsSummary = annotationsSummary.reactionsSummary.toList().map {
                     ReactionAggregatedSummary(
                             it.key,
@@ -49,6 +50,7 @@ internal object EventAnnotationsSummaryMapper {
                         },
                 referencesAggregatedSummary = annotationsSummary.referencesSummaryEntity?.let {
                     ReferencesAggregatedSummary(
+                            it.eventId,
                             ContentMapper.map(it.content),
                             it.sourceEvents.toList(),
                             it.sourceLocalEcho.toList()
@@ -56,10 +58,8 @@ internal object EventAnnotationsSummaryMapper {
                 },
                 pollResponseSummary = annotationsSummary.pollResponseSummary?.let {
                     PollResponseAggregatedSummaryEntityMapper.map(it)
-                },
-                liveLocationShareAggregatedSummary = annotationsSummary.liveLocationShareAggregatedSummary?.let {
-                    LiveLocationShareAggregatedSummaryMapper.map(it)
                 }
+
         )
     }
 }

@@ -38,6 +38,7 @@ internal interface UpdateIgnoredUserIdsTask : Task<UpdateIgnoredUserIdsTask.Para
 internal class DefaultUpdateIgnoredUserIdsTask @Inject constructor(
         private val accountDataApi: AccountDataAPI,
         @SessionDatabase private val monarchy: Monarchy,
+        private val saveIgnoredUsersTask: SaveIgnoredUsersTask,
         @UserId private val userId: String,
         private val globalErrorReceiver: GlobalErrorReceiver
 ) : UpdateIgnoredUserIdsTask {
@@ -65,5 +66,8 @@ internal class DefaultUpdateIgnoredUserIdsTask @Inject constructor(
         executeRequest(globalErrorReceiver) {
             accountDataApi.setAccountData(userId, UserAccountDataTypes.TYPE_IGNORED_USER_LIST, body)
         }
+
+        // Update the DB right now (do not wait for the sync to come back with updated data, for a faster UI update)
+        saveIgnoredUsersTask.execute(SaveIgnoredUsersTask.Params(list))
     }
 }

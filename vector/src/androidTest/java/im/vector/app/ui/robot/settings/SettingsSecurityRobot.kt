@@ -36,8 +36,5 @@ class SettingsSecurityRobot {
 
         clickOnPreference(R.string.settings_opt_in_of_analytics)
         Espresso.pressBack()
-
-        clickOnPreference(R.string.settings_ignored_users)
-        Espresso.pressBack()
     }
 }

@@ -40,6 +40,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.launch
@@ -49,7 +50,6 @@ import org.matrix.android.sdk.api.query.QueryStringValue
 import org.matrix.android.sdk.api.session.Session
 import org.matrix.android.sdk.api.session.events.model.toContent
 import org.matrix.android.sdk.api.session.events.model.toModel
-import org.matrix.android.sdk.api.session.getRoom
 import org.matrix.android.sdk.api.session.group.groupSummaryQueryParams
 import org.matrix.android.sdk.api.session.room.RoomSortOrder
 import org.matrix.android.sdk.api.session.room.accountdata.RoomAccountDataTypes
@@ -82,7 +82,7 @@ class SpaceListViewModel @AssistedInject constructor(@Assisted initialState: Spa
 
     init {
 
-        session.userService().getUserLive(session.myUserId)
+        session.getUserLive(session.myUserId)
                 .asFlow()
                 .setOnEach {
                     copy(
@@ -100,14 +100,14 @@ class SpaceListViewModel @AssistedInject constructor(@Assisted initialState: Spa
                     )
                 }
 
-        session.groupService().getGroupSummariesLive(groupSummaryQueryParams {})
+        session.getGroupSummariesLive(groupSummaryQueryParams {})
                 .asFlow()
                 .setOnEach {
                     copy(legacyGroups = it)
                 }
 
         // XXX there should be a way to refactor this and share it
-        session.roomService().getPagedRoomSummariesLive(
+        session.getPagedRoomSummariesLive(
                 roomSummaryQueryParams {
                     this.memberships = listOf(Membership.JOIN)
                     this.activeSpaceFilter = ActiveSpaceFilter.ActiveSpace(null).takeIf {
@@ -120,11 +120,11 @@ class SpaceListViewModel @AssistedInject constructor(@Assisted initialState: Spa
                     val inviteCount = if (autoAcceptInvites.hideInvites) {
                         0
                     } else {
-                        session.roomService().getRoomSummaries(
+                        session.getRoomSummaries(
                                 roomSummaryQueryParams { this.memberships = listOf(Membership.INVITE) }
                         ).size
                     }
-                    val totalCount = session.roomService().getNotificationCountForRooms(
+                    val totalCount = session.getNotificationCountForRooms(
                             roomSummaryQueryParams {
                                 this.memberships = listOf(Membership.JOIN)
                                 this.activeSpaceFilter = ActiveSpaceFilter.ActiveSpace(null).takeIf {
@@ -212,8 +212,7 @@ class SpaceListViewModel @AssistedInject constructor(@Assisted initialState: Spa
         }
         session.coroutineScope.launch {
             orderCommands.forEach {
-                session.getRoom(it.spaceId)?.roomAccountDataService()?.updateAccountData(
-                        RoomAccountDataTypes.EVENT_TYPE_SPACE_ORDER,
+                session.getRoom(it.spaceId)?.updateAccountData(RoomAccountDataTypes.EVENT_TYPE_SPACE_ORDER,
                         SpaceOrderContent(order = it.order).toContent()
                 )
             }
@@ -279,24 +278,31 @@ class SpaceListViewModel @AssistedInject constructor(@Assisted initialState: Spa
             displayName = QueryStringValue.IsNotEmpty
         }
 
+        val flowSession = session.flow()
+
         combine(
-                session.flow()
+                flowSession
+                        .liveUser(session.myUserId)
+                        .map {
+                            it.getOrNull()
+                        },
+                flowSession
                         .liveSpaceSummaries(params),
-                session.accountDataService()
+                session
+                        .accountDataService()
                         .getLiveRoomAccountDataEvents(setOf(RoomAccountDataTypes.EVENT_TYPE_SPACE_ORDER))
                         .asFlow()
-        ) { spaces, _ ->
-            spaces
+        ) { _, communityGroups, _ ->
+            communityGroups
         }
                 .execute { async ->
-                    val rootSpaces = async.invoke().orEmpty().filter { it.flattenParentIds.isEmpty() }
-                    val orders = rootSpaces.associate {
+                    val rootSpaces = session.spaceService().getRootSpaceSummaries()
+                    val orders = rootSpaces.map {
                         it.roomId to session.getRoom(it.roomId)
-                                ?.roomAccountDataService()
                                 ?.getAccountDataEvent(RoomAccountDataTypes.EVENT_TYPE_SPACE_ORDER)
                                 ?.content.toModel<SpaceOrderContent>()
                                 ?.safeOrder()
-                    }
+                    }.toMap()
                     copy(
                             asyncSpaces = async,
                             rootSpacesOrdered = rootSpaces.sortedWith(TopLevelSpaceComparator(orders)),

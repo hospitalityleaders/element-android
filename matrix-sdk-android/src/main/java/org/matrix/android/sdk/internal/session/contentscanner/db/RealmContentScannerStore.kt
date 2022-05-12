@@ -32,14 +32,12 @@ import org.matrix.android.sdk.internal.di.ContentScannerDatabase
 import org.matrix.android.sdk.internal.session.SessionScope
 import org.matrix.android.sdk.internal.session.contentscanner.data.ContentScannerStore
 import org.matrix.android.sdk.internal.util.isValidUrl
-import org.matrix.android.sdk.internal.util.time.Clock
 import javax.inject.Inject
 
 @SessionScope
 internal class RealmContentScannerStore @Inject constructor(
         @ContentScannerDatabase
-        private val realmConfiguration: RealmConfiguration,
-        private val clock: Clock,
+        private val realmConfiguration: RealmConfiguration
 ) : ContentScannerStore {
 
     private val monarchy = Monarchy.Builder()
@@ -84,15 +82,15 @@ internal class RealmContentScannerStore @Inject constructor(
 
     override fun updateStateForContent(mxcUrl: String, state: ScanState, scannerUrl: String?) {
         monarchy.runTransactionSync {
-            ContentScanResultEntity.getOrCreate(it, mxcUrl, scannerUrl, clock.epochMillis()).scanResult = state
+            ContentScanResultEntity.getOrCreate(it, mxcUrl, scannerUrl).scanResult = state
         }
     }
 
     override fun updateScanResultForContent(mxcUrl: String, scannerUrl: String?, state: ScanState, humanReadable: String) {
         monarchy.runTransactionSync {
-            ContentScanResultEntity.getOrCreate(it, mxcUrl, scannerUrl, clock.epochMillis()).apply {
+            ContentScanResultEntity.getOrCreate(it, mxcUrl, scannerUrl).apply {
                 scanResult = state
-                scanDateTimestamp = clock.epochMillis()
+                scanDateTimestamp = System.currentTimeMillis()
                 humanReadableMessage = humanReadable
             }
         }

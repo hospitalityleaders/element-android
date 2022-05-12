@@ -50,8 +50,7 @@ internal class DefaultIdentitySubmitTokenForBindingTask @Inject constructor(
                             clientSecret = identityPendingBinding.clientSecret,
                             sid = identityPendingBinding.sid,
                             token = params.token
-                    )
-            )
+                    ))
         }
 
         if (!tokenResponse.isSuccess()) {

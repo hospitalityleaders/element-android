@@ -34,7 +34,6 @@ import kotlinx.coroutines.flow.sample
 import org.matrix.android.sdk.api.query.QueryStringValue
 import org.matrix.android.sdk.api.session.Session
 import org.matrix.android.sdk.api.session.content.ContentAttachmentData
-import org.matrix.android.sdk.api.session.getRoom
 import org.matrix.android.sdk.api.session.room.model.Membership
 import org.matrix.android.sdk.api.session.room.roomSummaryQueryParams
 import org.matrix.android.sdk.flow.flow
@@ -43,7 +42,7 @@ class IncomingShareViewModel @AssistedInject constructor(
         @Assisted initialState: IncomingShareViewState,
         private val session: Session,
         private val breadcrumbsRoomComparator: BreadcrumbsRoomComparator) :
-        VectorViewModel<IncomingShareViewState, IncomingShareAction, IncomingShareViewEvents>(initialState) {
+    VectorViewModel<IncomingShareViewState, IncomingShareAction, IncomingShareViewEvents>(initialState) {
 
     @AssistedFactory
     interface Factory : MavericksAssistedViewModelFactory<IncomingShareViewModel, IncomingShareViewState> {
@@ -119,7 +118,7 @@ class IncomingShareViewModel @AssistedInject constructor(
                 is SharedData.Text        -> {
                     state.selectedRoomIds.forEach { roomId ->
                         val room = session.getRoom(roomId)
-                        room?.sendService()?.sendTextMessage(sharedData.text)
+                        room?.sendTextMessage(sharedData.text)
                     }
                     // This is it, pass the first roomId to let the screen open it
                     _viewEvents.post(IncomingShareViewEvents.MultipleRoomsShareDone(state.selectedRoomIds.first()))
@@ -153,7 +152,6 @@ class IncomingShareViewModel @AssistedInject constructor(
                 // Pick the first room to send the media
                 selectedRoomIds.firstOrNull()
                         ?.let { roomId -> session.getRoom(roomId) }
-                        ?.sendService()
                         ?.sendMedias(grouped.notPreviewables, compressMediaBeforeSending, selectedRoomIds)
 
                 // Ensure they will not be sent twice
@@ -174,7 +172,6 @@ class IncomingShareViewModel @AssistedInject constructor(
             // Pick the first room to send the media
             selectedRoomIds.firstOrNull()
                     ?.let { roomId -> session.getRoom(roomId) }
-                    ?.sendService()
                     ?.sendMedias(attachmentData, compressMediaBeforeSending, selectedRoomIds)
             // This is it, pass the first roomId to let the screen open it
             _viewEvents.post(IncomingShareViewEvents.MultipleRoomsShareDone(selectedRoomIds.first()))

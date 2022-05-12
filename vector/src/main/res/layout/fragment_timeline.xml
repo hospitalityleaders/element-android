@@ -179,7 +179,7 @@
         android:layout_margin="16dp"
         android:contentDescription="@string/a11y_jump_to_bottom"
         android:src="@drawable/ic_expand_more"
-        app:backgroundTint="#FFFFFF"
+        app:backgroundTint="@color/palette_chatsfab2"
         app:badgeBackgroundColor="?colorPrimary"
         app:badgeTextColor="?colorOnPrimary"
         app:badgeTextPadding="2dp"
@@ -188,7 +188,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@android:color/black" />
 
-    <im.vector.app.core.ui.views.CompatKonfetti
+    <nl.dionsegijn.konfetti.xml.KonfettiView
         android:id="@+id/viewKonfetti"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -16,21 +16,12 @@
 
 package org.matrix.android.sdk.internal.crypto
 
-import org.matrix.android.sdk.api.crypto.MXCRYPTO_ALGORITHM_MEGOLM
-import org.matrix.android.sdk.api.crypto.MXCRYPTO_ALGORITHM_OLM
 import org.matrix.android.sdk.internal.crypto.algorithms.IMXEncrypting
-import org.matrix.android.sdk.internal.crypto.algorithms.megolm.MXMegolmEncryptionFactory
-import org.matrix.android.sdk.internal.crypto.algorithms.olm.MXOlmEncryptionFactory
-import org.matrix.android.sdk.internal.crypto.store.IMXCryptoStore
 import org.matrix.android.sdk.internal.session.SessionScope
 import javax.inject.Inject
 
 @SessionScope
-internal class RoomEncryptorsStore @Inject constructor(
-        private val cryptoStore: IMXCryptoStore,
-        private val megolmEncryptionFactory: MXMegolmEncryptionFactory,
-        private val olmEncryptionFactory: MXOlmEncryptionFactory,
-) {
+internal class RoomEncryptorsStore @Inject constructor() {
 
     // MXEncrypting instance for each room.
     private val roomEncryptors = mutableMapOf<String, IMXEncrypting>()
@@ -43,18 +34,7 @@ internal class RoomEncryptorsStore @Inject constructor(
 
     fun get(roomId: String): IMXEncrypting? {
         return synchronized(roomEncryptors) {
-            val cache = roomEncryptors[roomId]
-            if (cache != null) {
-                return@synchronized cache
-            } else {
-                val alg: IMXEncrypting? = when (cryptoStore.getRoomAlgorithm(roomId)) {
-                    MXCRYPTO_ALGORITHM_MEGOLM -> megolmEncryptionFactory.create(roomId)
-                    MXCRYPTO_ALGORITHM_OLM    -> olmEncryptionFactory.create(roomId)
-                    else                      -> null
-                }
-                alg?.let { roomEncryptors.put(roomId, it) }
-                return@synchronized alg
-            }
+            roomEncryptors[roomId]
         }
     }
 }

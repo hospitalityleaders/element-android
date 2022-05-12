@@ -19,7 +19,6 @@ package im.vector.app.features.call.conference
 import im.vector.app.R
 import im.vector.app.core.network.await
 import im.vector.app.core.resources.StringProvider
-import im.vector.app.core.time.Clock
 import im.vector.app.core.utils.ensureProtocol
 import im.vector.app.core.utils.toBase32String
 import im.vector.app.features.call.conference.jwt.JitsiJWTFactory
@@ -32,7 +31,6 @@ import org.jitsi.meet.sdk.JitsiMeetUserInfo
 import org.matrix.android.sdk.api.extensions.tryOrNull
 import org.matrix.android.sdk.api.raw.RawService
 import org.matrix.android.sdk.api.session.Session
-import org.matrix.android.sdk.api.session.getRoomSummary
 import org.matrix.android.sdk.api.session.widgets.model.Widget
 import org.matrix.android.sdk.api.session.widgets.model.WidgetType
 import org.matrix.android.sdk.api.util.MatrixJsonParser
@@ -47,9 +45,7 @@ class JitsiService @Inject constructor(
         private val rawService: RawService,
         private val stringProvider: StringProvider,
         private val themeProvider: ThemeProvider,
-        private val jitsiJWTFactory: JitsiJWTFactory,
-        private val clock: Clock,
-) {
+        private val jitsiJWTFactory: JitsiJWTFactory) {
 
     companion object {
         const val JITSI_OPEN_ID_TOKEN_JWT_AUTH = "openidtoken-jwt"
@@ -63,7 +59,7 @@ class JitsiService @Inject constructor(
 
     suspend fun createJitsiWidget(roomId: String, withVideo: Boolean): Widget {
         // Build data for a jitsi widget
-        val widgetId: String = WidgetType.Jitsi.preferred + "_" + session.myUserId + "_" + clock.epochMillis()
+        val widgetId: String = WidgetType.Jitsi.preferred + "_" + session.myUserId + "_" + System.currentTimeMillis()
         val preferredJitsiDomain = tryOrNull {
             rawService.getElementWellknown(session.sessionParams)
                     ?.jitsiServer
@@ -103,7 +99,7 @@ class JitsiService @Inject constructor(
     }
 
     suspend fun joinConference(roomId: String, jitsiWidget: Widget, enableVideo: Boolean): JitsiCallViewEvents.JoinConference {
-        val me = session.roomService().getRoomMember(session.myUserId, roomId)?.toMatrixItem()
+        val me = session.getRoomMember(session.myUserId, roomId)?.toMatrixItem()
         val userDisplayName = me?.getBestName()
         val userAvatar = me?.avatarUrl?.let { session.contentUrlResolver().resolveFullSize(it) }
         val userInfo = JitsiMeetUserInfo().apply {

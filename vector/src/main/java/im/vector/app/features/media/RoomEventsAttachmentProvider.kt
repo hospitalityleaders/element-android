@@ -169,8 +169,7 @@ class RoomEventsAttachmentProvider(
                                 fileName = messageContent.body,
                                 mimeType = messageContent.mimeType,
                                 url = messageContent.getFileUrl(),
-                                elementToDecrypt = messageContent.encryptedFileInfo?.toElementToDecrypt()
-                        )
+                                elementToDecrypt = messageContent.encryptedFileInfo?.toElementToDecrypt())
                     }
                 }
     }

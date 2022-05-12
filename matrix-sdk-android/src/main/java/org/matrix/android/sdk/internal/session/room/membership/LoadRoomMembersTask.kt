@@ -42,7 +42,6 @@ import org.matrix.android.sdk.internal.session.room.summary.RoomSummaryUpdater
 import org.matrix.android.sdk.internal.session.sync.SyncTokenStore
 import org.matrix.android.sdk.internal.task.Task
 import org.matrix.android.sdk.internal.util.awaitTransaction
-import org.matrix.android.sdk.internal.util.time.Clock
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -62,8 +61,7 @@ internal class DefaultLoadRoomMembersTask @Inject constructor(
         private val roomMemberEventHandler: RoomMemberEventHandler,
         private val cryptoSessionInfoProvider: CryptoSessionInfoProvider,
         private val deviceListManager: DeviceListManager,
-        private val globalErrorReceiver: GlobalErrorReceiver,
-        private val clock: Clock,
+        private val globalErrorReceiver: GlobalErrorReceiver
 ) : LoadRoomMembersTask {
 
     override suspend fun execute(params: LoadRoomMembersTask.Params) {
@@ -109,7 +107,7 @@ internal class DefaultLoadRoomMembersTask @Inject constructor(
             // We ignore all the already known members
             val roomEntity = RoomEntity.where(realm, roomId).findFirst()
                     ?: realm.createObject(roomId)
-            val now = clock.epochMillis()
+            val now = System.currentTimeMillis()
             for (roomMemberEvent in response.roomMemberEvents) {
                 if (roomMemberEvent.eventId == null || roomMemberEvent.stateKey == null || roomMemberEvent.type == null) {
                     continue

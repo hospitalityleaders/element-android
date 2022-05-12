@@ -24,7 +24,6 @@ enum class ManageType {
     Settings,
     ManageRooms
 }
-
 data class SpaceManageViewState(
         val spaceId: String = "",
         val manageType: ManageType

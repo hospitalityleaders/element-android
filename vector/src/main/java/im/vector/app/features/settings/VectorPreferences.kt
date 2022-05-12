@@ -26,7 +26,6 @@ import com.squareup.seismic.ShakeDetector
 import im.vector.app.BuildConfig
 import im.vector.app.R
 import im.vector.app.core.di.DefaultSharedPreferences
-import im.vector.app.core.time.Clock
 import im.vector.app.features.disclaimer.SHARED_PREF_KEY
 import im.vector.app.features.homeserver.ServerUrlsRepository
 import im.vector.app.features.themes.ThemeUtils
@@ -34,10 +33,7 @@ import org.matrix.android.sdk.api.extensions.tryOrNull
 import timber.log.Timber
 import javax.inject.Inject
 
-class VectorPreferences @Inject constructor(
-        private val context: Context,
-        private val clock: Clock,
-) {
+class VectorPreferences @Inject constructor(private val context: Context) {
 
     companion object {
         const val SETTINGS_HELP_PREFERENCE_KEY = "SETTINGS_HELP_PREFERENCE_KEY"
@@ -210,9 +206,6 @@ class VectorPreferences @Inject constructor(
         // This key will be used to identify clients with the new thread support enabled m.thread
         const val SETTINGS_LABS_ENABLE_THREAD_MESSAGES = "SETTINGS_LABS_ENABLE_THREAD_MESSAGES_FINAL"
         const val SETTINGS_THREAD_MESSAGES_SYNCED = "SETTINGS_THREAD_MESSAGES_SYNCED"
-
-        // This key will be used to enable user for displaying live user info or not.
-        const val SETTINGS_TIMELINE_SHOW_LIVE_SENDER_INFO = "SETTINGS_TIMELINE_SHOW_LIVE_SENDER_INFO"
 
         // Possible values for TAKE_PHOTO_VIDEO_MODE
         const val TAKE_PHOTO_VIDEO_MODE_ALWAYS_ASK = 0
@@ -671,9 +664,9 @@ class VectorPreferences @Inject constructor(
      */
     fun getMinMediasLastAccessTime(): Long {
         return when (getSelectedMediasSavingPeriod()) {
-            MEDIA_SAVING_3_DAYS  -> clock.epochMillis() / 1000 - 3 * 24 * 60 * 60
-            MEDIA_SAVING_1_WEEK  -> clock.epochMillis() / 1000 - 7 * 24 * 60 * 60
-            MEDIA_SAVING_1_MONTH -> clock.epochMillis() / 1000 - 30 * 24 * 60 * 60
+            MEDIA_SAVING_3_DAYS  -> System.currentTimeMillis() / 1000 - 3 * 24 * 60 * 60
+            MEDIA_SAVING_1_WEEK  -> System.currentTimeMillis() / 1000 - 7 * 24 * 60 * 60
+            MEDIA_SAVING_1_MONTH -> System.currentTimeMillis() / 1000 - 30 * 24 * 60 * 60
             MEDIA_SAVING_FOREVER -> 0
             else                 -> 0
         }
@@ -879,10 +872,8 @@ class VectorPreferences @Inject constructor(
      * @return true if user should always appear offline
      */
     fun userAlwaysAppearsOffline(): Boolean {
-        return defaultPrefs.getBoolean(
-                SETTINGS_PRESENCE_USER_ALWAYS_APPEARS_OFFLINE,
-                getDefault(R.bool.settings_presence_user_always_appears_offline_default)
-        )
+        return defaultPrefs.getBoolean(SETTINGS_PRESENCE_USER_ALWAYS_APPEARS_OFFLINE,
+                getDefault(R.bool.settings_presence_user_always_appears_offline_default))
     }
 
     /**
@@ -1014,11 +1005,9 @@ class VectorPreferences @Inject constructor(
     }
 
     fun prefSpacesShowAllRoomInHome(): Boolean {
-        return defaultPrefs.getBoolean(
-                SETTINGS_PREF_SPACE_SHOW_ALL_ROOM_IN_HOME,
+        return defaultPrefs.getBoolean(SETTINGS_PREF_SPACE_SHOW_ALL_ROOM_IN_HOME,
                 // migration of old property
-                !labsSpacesOnlyOrphansInHome()
-        )
+                !labsSpacesOnlyOrphansInHome())
     }
 
     /*
@@ -1042,6 +1031,9 @@ class VectorPreferences @Inject constructor(
         return defaultPrefs.getBoolean(SETTINGS_LABS_RENDER_LOCATIONS_IN_TIMELINE, true)
     }
 
+    /**
+     * Indicates whether or not thread messages are enabled
+     */
     fun areThreadMessagesEnabled(): Boolean {
         return defaultPrefs.getBoolean(SETTINGS_LABS_ENABLE_THREAD_MESSAGES, getDefault(R.bool.settings_labs_thread_messages_default))
     }
@@ -1090,9 +1082,5 @@ class VectorPreferences @Inject constructor(
                 .edit()
                 .putBoolean(SETTINGS_THREAD_MESSAGES_SYNCED, shouldMigrate)
                 .apply()
-    }
-
-    fun showLiveSenderInfo(): Boolean {
-        return defaultPrefs.getBoolean(SETTINGS_TIMELINE_SHOW_LIVE_SENDER_INFO, getDefault(R.bool.settings_timeline_show_live_sender_info_default))
     }
 }

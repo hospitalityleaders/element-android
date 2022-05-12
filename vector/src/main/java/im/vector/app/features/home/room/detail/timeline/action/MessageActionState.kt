@@ -57,8 +57,7 @@ data class MessageActionState(
             roomId = args.roomId,
             eventId = args.eventId,
             informationData = args.informationData,
-            isFromThreadTimeline = args.isFromThreadTimeline
-    )
+            isFromThreadTimeline = args.isFromThreadTimeline)
 
     fun senderName(): String = informationData.memberName?.toString() ?: ""
 

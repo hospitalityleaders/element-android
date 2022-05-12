@@ -21,8 +21,6 @@ import kotlinx.coroutines.flow.Flow
 import org.matrix.android.sdk.api.query.QueryStringValue
 import org.matrix.android.sdk.api.session.events.model.Event
 import org.matrix.android.sdk.api.session.room.Room
-import org.matrix.android.sdk.api.session.room.getStateEvent
-import org.matrix.android.sdk.api.session.room.getTimelineEvent
 import org.matrix.android.sdk.api.session.room.members.RoomMemberQueryParams
 import org.matrix.android.sdk.api.session.room.model.EventAnnotationsSummary
 import org.matrix.android.sdk.api.session.room.model.ReadReceipt
@@ -47,81 +45,79 @@ class FlowRoom(private val room: Room) {
     }
 
     fun liveRoomMembers(queryParams: RoomMemberQueryParams): Flow<List<RoomMemberSummary>> {
-        return room.membershipService().getRoomMembersLive(queryParams).asFlow()
+        return room.getRoomMembersLive(queryParams).asFlow()
                 .startWith(room.coroutineDispatchers.io) {
-                    room.membershipService().getRoomMembers(queryParams)
+                    room.getRoomMembers(queryParams)
                 }
     }
 
     fun liveAnnotationSummary(eventId: String): Flow<Optional<EventAnnotationsSummary>> {
-        return room.relationService().getEventAnnotationsSummaryLive(eventId).asFlow()
+        return room.getEventAnnotationsSummaryLive(eventId).asFlow()
                 .startWith(room.coroutineDispatchers.io) {
-                    room.relationService().getEventAnnotationsSummary(eventId).toOptional()
+                    room.getEventAnnotationsSummary(eventId).toOptional()
                 }
     }
 
     fun liveTimelineEvent(eventId: String): Flow<Optional<TimelineEvent>> {
-        return room.timelineService().getTimelineEventLive(eventId).asFlow()
+        return room.getTimelineEventLive(eventId).asFlow()
                 .startWith(room.coroutineDispatchers.io) {
                     room.getTimelineEvent(eventId).toOptional()
                 }
     }
 
     fun liveStateEvent(eventType: String, stateKey: QueryStringValue): Flow<Optional<Event>> {
-        return room.stateService().getStateEventLive(eventType, stateKey).asFlow()
+        return room.getStateEventLive(eventType, stateKey).asFlow()
                 .startWith(room.coroutineDispatchers.io) {
                     room.getStateEvent(eventType, stateKey).toOptional()
                 }
     }
 
     fun liveStateEvents(eventTypes: Set<String>): Flow<List<Event>> {
-        return room.stateService().getStateEventsLive(eventTypes).asFlow()
+        return room.getStateEventsLive(eventTypes).asFlow()
                 .startWith(room.coroutineDispatchers.io) {
-                    room.stateService().getStateEvents(eventTypes)
+                    room.getStateEvents(eventTypes)
                 }
     }
 
     fun liveReadMarker(): Flow<Optional<String>> {
-        return room.readService().getReadMarkerLive().asFlow()
+        return room.getReadMarkerLive().asFlow()
     }
 
     fun liveReadReceipt(): Flow<Optional<String>> {
-        return room.readService().getMyReadReceiptLive().asFlow()
+        return room.getMyReadReceiptLive().asFlow()
     }
 
     fun liveEventReadReceipts(eventId: String): Flow<List<ReadReceipt>> {
-        return room.readService().getEventReadReceiptsLive(eventId).asFlow()
+        return room.getEventReadReceiptsLive(eventId).asFlow()
     }
 
     fun liveDraft(): Flow<Optional<UserDraft>> {
-        return room.draftService().getDraftLive().asFlow()
+        return room.getDraftLive().asFlow()
                 .startWith(room.coroutineDispatchers.io) {
-                    room.draftService().getDraft().toOptional()
+                    room.getDraft().toOptional()
                 }
     }
 
     fun liveNotificationState(): Flow<RoomNotificationState> {
-        return room.roomPushRuleService().getLiveRoomNotificationState().asFlow()
+        return room.getLiveRoomNotificationState().asFlow()
     }
 
     fun liveThreadSummaries(): Flow<List<ThreadSummary>> {
-        return room.threadsService().getAllThreadSummariesLive().asFlow()
+        return room.getAllThreadSummariesLive().asFlow()
                 .startWith(room.coroutineDispatchers.io) {
-                    room.threadsService().getAllThreadSummaries()
+                    room.getAllThreadSummaries()
                 }
     }
-
     fun liveThreadList(): Flow<List<ThreadRootEvent>> {
-        return room.threadsLocalService().getAllThreadsLive().asFlow()
+        return room.getAllThreadsLive().asFlow()
                 .startWith(room.coroutineDispatchers.io) {
-                    room.threadsLocalService().getAllThreads()
+                    room.getAllThreads()
                 }
     }
-
     fun liveLocalUnreadThreadList(): Flow<List<ThreadRootEvent>> {
-        return room.threadsLocalService().getMarkedThreadNotificationsLive().asFlow()
+        return room.getMarkedThreadNotificationsLive().asFlow()
                 .startWith(room.coroutineDispatchers.io) {
-                    room.threadsLocalService().getMarkedThreadNotifications()
+                    room.getMarkedThreadNotifications()
                 }
     }
 }

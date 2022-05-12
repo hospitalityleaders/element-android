@@ -88,14 +88,10 @@ class NotificationRendererTest {
 
     @Test
     fun `given a room message group notification is added when rendering then show the message notification and update summary`() {
-        givenNotifications(
-                roomNotifications = listOf(
-                        RoomNotification.Message(
-                                A_NOTIFICATION,
-                                MESSAGE_META
-                        )
-                )
-        )
+        givenNotifications(roomNotifications = listOf(RoomNotification.Message(
+                A_NOTIFICATION,
+                MESSAGE_META
+        )))
 
         renderEventsAsNotifications()
 
@@ -131,14 +127,10 @@ class NotificationRendererTest {
 
     @Test
     fun `given a simple notification is added when rendering then show the simple notification and update summary`() {
-        givenNotifications(
-                simpleNotifications = listOf(
-                        OneShotNotification.Append(
-                                A_NOTIFICATION,
-                                ONE_SHOT_META.copy(key = AN_EVENT_ID)
-                        )
-                )
-        )
+        givenNotifications(simpleNotifications = listOf(OneShotNotification.Append(
+                A_NOTIFICATION,
+                ONE_SHOT_META.copy(key = AN_EVENT_ID)
+        )))
 
         renderEventsAsNotifications()
 
@@ -174,14 +166,10 @@ class NotificationRendererTest {
 
     @Test
     fun `given an invitation notification is added when rendering then show the invitation notification and update summary`() {
-        givenNotifications(
-                simpleNotifications = listOf(
-                        OneShotNotification.Append(
-                                A_NOTIFICATION,
-                                ONE_SHOT_META.copy(key = A_ROOM_ID)
-                        )
-                )
-        )
+        givenNotifications(simpleNotifications = listOf(OneShotNotification.Append(
+                A_NOTIFICATION,
+                ONE_SHOT_META.copy(key = A_ROOM_ID)
+        )))
 
         renderEventsAsNotifications()
 

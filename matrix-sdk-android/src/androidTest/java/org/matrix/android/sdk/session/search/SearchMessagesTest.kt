@@ -24,7 +24,6 @@ import org.junit.runners.JUnit4
 import org.junit.runners.MethodSorters
 import org.matrix.android.sdk.InstrumentedTest
 import org.matrix.android.sdk.api.extensions.orFalse
-import org.matrix.android.sdk.api.session.getRoom
 import org.matrix.android.sdk.api.session.search.SearchResult
 import org.matrix.android.sdk.common.CommonTestHelper
 import org.matrix.android.sdk.common.CryptoTestData
@@ -60,10 +59,9 @@ class SearchMessagesTest : InstrumentedTest {
     fun sendTextMessageAndSearchPartOfItUsingRoom() {
         doTest { cryptoTestData ->
             cryptoTestData.firstSession
-                    .searchService()
+                    .getRoom(cryptoTestData.roomId)!!
                     .search(
                             searchTerm = "lore",
-                            roomId = cryptoTestData.roomId,
                             limit = 10,
                             includeProfile = true,
                             afterLimit = 0,
@@ -85,8 +83,7 @@ class SearchMessagesTest : InstrumentedTest {
         commonTestHelper.sendTextMessage(
                 roomFromAlicePOV,
                 MESSAGE,
-                2
-        )
+                2)
 
         val data = commonTestHelper.runBlockingTest {
             block.invoke(cryptoTestData)

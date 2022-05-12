@@ -52,13 +52,7 @@ data class RoomKeyWithHeldContent(
         /**
          *  A human-readable reason for why the key was not sent. The receiving client should only use this string if it does not understand the code.
          */
-        @Json(name = "reason") val reason: String? = null,
-
-        /**
-         * the device ID of the device sending the m.room_key.withheld message
-         * MSC3735
-         */
-        @Json(name = "from_device") val fromDevice: String? = null
+        @Json(name = "reason") val reason: String? = null
 
 ) {
     val code: WithHeldCode?

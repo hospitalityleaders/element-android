@@ -33,8 +33,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.matrix.android.sdk.api.extensions.tryOrNull
 import org.matrix.android.sdk.api.session.Session
-import org.matrix.android.sdk.api.session.getRoomSummary
-import org.matrix.android.sdk.api.session.getUser
 import org.matrix.android.sdk.api.session.room.model.Membership
 import org.matrix.android.sdk.api.session.room.model.RoomSummary
 import org.matrix.android.sdk.api.session.room.peeking.PeekResult
@@ -48,7 +46,7 @@ class SpaceInviteBottomSheetViewModel @AssistedInject constructor(
     init {
         session.getRoomSummary(initialState.spaceId)?.let { roomSummary ->
             val knownMembers = roomSummary.otherMemberIds.filter {
-                session.roomService().getExistingDirectRoomWithUser(it) != null
+                session.getExistingDirectRoomWithUser(it) != null
             }.mapNotNull { session.getUser(it) }
             // put one with avatar first, and take 5
             val peopleYouKnow = (knownMembers.filter { it.avatarUrl != null } + knownMembers.filter { it.avatarUrl == null })
@@ -72,7 +70,7 @@ class SpaceInviteBottomSheetViewModel @AssistedInject constructor(
      */
     private fun getLatestRoomSummary(roomSummary: RoomSummary) {
         viewModelScope.launch(Dispatchers.IO) {
-            val peekResult = tryOrNull { session.roomService().peekRoom(roomSummary.roomId) } as? PeekResult.Success ?: return@launch
+            val peekResult = tryOrNull { session.peekRoom(roomSummary.roomId) } as? PeekResult.Success ?: return@launch
             setState {
                 copy(
                         summary = Success(

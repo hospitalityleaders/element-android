@@ -21,7 +21,9 @@ import dagger.Module
 import dagger.Provides
 import org.matrix.android.sdk.api.session.user.UserService
 import org.matrix.android.sdk.internal.session.SessionScope
+import org.matrix.android.sdk.internal.session.user.accountdata.DefaultSaveIgnoredUsersTask
 import org.matrix.android.sdk.internal.session.user.accountdata.DefaultUpdateIgnoredUserIdsTask
+import org.matrix.android.sdk.internal.session.user.accountdata.SaveIgnoredUsersTask
 import org.matrix.android.sdk.internal.session.user.accountdata.UpdateIgnoredUserIdsTask
 import org.matrix.android.sdk.internal.session.user.model.DefaultSearchUserTask
 import org.matrix.android.sdk.internal.session.user.model.SearchUserTask
@@ -45,6 +47,9 @@ internal abstract class UserModule {
 
     @Binds
     abstract fun bindSearchUserTask(task: DefaultSearchUserTask): SearchUserTask
+
+    @Binds
+    abstract fun bindSaveIgnoredUsersTask(task: DefaultSaveIgnoredUsersTask): SaveIgnoredUsersTask
 
     @Binds
     abstract fun bindUpdateIgnoredUserIdsTask(task: DefaultUpdateIgnoredUserIdsTask): UpdateIgnoredUserIdsTask

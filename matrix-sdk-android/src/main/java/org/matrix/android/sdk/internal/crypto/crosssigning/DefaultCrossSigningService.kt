@@ -38,7 +38,6 @@ import org.matrix.android.sdk.api.session.crypto.model.CryptoDeviceInfo
 import org.matrix.android.sdk.api.util.Optional
 import org.matrix.android.sdk.api.util.fromBase64
 import org.matrix.android.sdk.internal.crypto.DeviceListManager
-import org.matrix.android.sdk.internal.crypto.OutgoingKeyRequestManager
 import org.matrix.android.sdk.internal.crypto.model.rest.UploadSignatureQueryBuilder
 import org.matrix.android.sdk.internal.crypto.store.IMXCryptoStore
 import org.matrix.android.sdk.internal.crypto.tasks.InitializeCrossSigningTask
@@ -71,7 +70,6 @@ internal class DefaultCrossSigningService @Inject constructor(
         private val coroutineDispatchers: MatrixCoroutineDispatchers,
         private val cryptoCoroutineScope: CoroutineScope,
         private val workManagerProvider: WorkManagerProvider,
-        private val outgoingKeyRequestManager: OutgoingKeyRequestManager,
         private val updateTrustWorkerDataRepository: UpdateTrustWorkerDataRepository
 ) : CrossSigningService,
         DeviceListManager.UserDevicesUpdateListener {
@@ -568,10 +566,8 @@ internal class DefaultCrossSigningService @Inject constructor(
             }
 
             // Sign the other MasterKey with our UserSigning key
-            val newSignature = JsonCanonicalizer.getCanonicalJson(
-                    Map::class.java,
-                    otherMasterKeys.signalableJSONDictionary()
-            ).let { userPkSigning?.sign(it) }
+            val newSignature = JsonCanonicalizer.getCanonicalJson(Map::class.java,
+                    otherMasterKeys.signalableJSONDictionary()).let { userPkSigning?.sign(it) }
 
             if (newSignature == null) {
                 // race??
@@ -688,8 +684,7 @@ internal class DefaultCrossSigningService @Inject constructor(
         val otherSSKSignature = otherDevice.signatures?.get(otherUserId)?.get("ed25519:${otherKeys.selfSigningKey()?.unpaddedBase64PublicKey}")
                 ?: return legacyFallbackTrust(
                         locallyTrusted,
-                        DeviceTrustResult.MissingDeviceSignature(
-                                otherDeviceId, otherKeys.selfSigningKey()
+                        DeviceTrustResult.MissingDeviceSignature(otherDeviceId, otherKeys.selfSigningKey()
                                 ?.unpaddedBase64PublicKey
                                 ?: ""
                         )
@@ -738,8 +733,7 @@ internal class DefaultCrossSigningService @Inject constructor(
         val otherSSKSignature = otherDevice.signatures?.get(otherKeys.userId)?.get("ed25519:${otherKeys.selfSigningKey()?.unpaddedBase64PublicKey}")
                 ?: return legacyFallbackTrust(
                         locallyTrusted,
-                        DeviceTrustResult.MissingDeviceSignature(
-                                otherDevice.deviceId, otherKeys.selfSigningKey()
+                        DeviceTrustResult.MissingDeviceSignature(otherDevice.deviceId, otherKeys.selfSigningKey()
                                 ?.unpaddedBase64PublicKey
                                 ?: ""
                         )
@@ -787,8 +781,7 @@ internal class DefaultCrossSigningService @Inject constructor(
         // If it's me, recheck trust of all users and devices?
         val users = ArrayList<String>()
         if (otherUserId == userId && currentTrust != trusted) {
-            // notify key requester
-            outgoingKeyRequestManager.onSelfCrossSigningTrustChanged(trusted)
+//                reRequestAllPendingRoomKeyRequest()
             cryptoStore.updateUsersTrust {
                 users.add(it)
                 checkUserTrust(it).isVerified()
@@ -803,4 +796,19 @@ internal class DefaultCrossSigningService @Inject constructor(
             }
         }
     }
+
+//    private fun reRequestAllPendingRoomKeyRequest() {
+//        cryptoCoroutineScope.launch(coroutineDispatchers.crypto) {
+//            Timber.d("## CrossSigning - reRequest pending outgoing room key requests")
+//            cryptoStore.getOutgoingRoomKeyRequests().forEach {
+//                it.requestBody?.let { requestBody ->
+//                    if (cryptoStore.getInboundGroupSession(requestBody.sessionId ?: "", requestBody.senderKey ?: "") == null) {
+//                        outgoingRoomKeyRequestManager.resendRoomKeyRequest(requestBody)
+//                    } else {
+//                        outgoingRoomKeyRequestManager.cancelRoomKeyRequest(requestBody)
+//                    }
+//                }
+//            }
+//        }
+//    }
 }

@@ -96,8 +96,7 @@ class NotificationFactory @Inject constructor(
                             invitationNotifications = invitationMeta,
                             simpleNotifications = simpleMeta,
                             useCompleteNotificationFormat = useCompleteNotificationFormat
-                    )
-            )
+                    ))
         }
     }
 }

@@ -28,14 +28,12 @@ import im.vector.app.core.extensions.hideKeyboard
 import im.vector.app.core.platform.OnBackPressed
 import im.vector.app.core.platform.VectorBaseFragment
 import im.vector.app.core.resources.ColorProvider
-import im.vector.app.core.time.Clock
 import im.vector.app.databinding.FragmentSpaceCreateGenericEpoxyFormBinding
 import javax.inject.Inject
 
 class CreateSpaceDetailsFragment @Inject constructor(
         private val epoxyController: SpaceDetailEpoxyController,
-        colorProvider: ColorProvider,
-        clock: Clock,
+        colorProvider: ColorProvider
 ) : VectorBaseFragment<FragmentSpaceCreateGenericEpoxyFormBinding>(), SpaceDetailEpoxyController.Listener,
         GalleryOrCameraDialogHelper.Listener, OnBackPressed {
 
@@ -44,7 +42,7 @@ class CreateSpaceDetailsFragment @Inject constructor(
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?) =
             FragmentSpaceCreateGenericEpoxyFormBinding.inflate(layoutInflater, container, false)
 
-    private val galleryOrCameraDialogHelper = GalleryOrCameraDialogHelper(this, colorProvider, clock)
+    private val galleryOrCameraDialogHelper = GalleryOrCameraDialogHelper(this, colorProvider)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

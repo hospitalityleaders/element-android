@@ -23,6 +23,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
@@ -47,15 +48,19 @@ import im.vector.app.databinding.DialogBaseEditTextBinding
 import im.vector.app.databinding.DialogShareQrCodeBinding
 import im.vector.app.databinding.FragmentMatrixProfileBinding
 import im.vector.app.databinding.ViewStubRoomMemberProfileHeaderBinding
+import im.vector.app.features.MainActivity
+import im.vector.app.features.MainActivityArgs
 import im.vector.app.features.analytics.plan.MobileScreen
 import im.vector.app.features.crypto.verification.VerificationBottomSheet
 import im.vector.app.features.displayname.getBestName
 import im.vector.app.features.home.AvatarRenderer
+import im.vector.app.features.home.HomeSharedActionViewModel
 import im.vector.app.features.home.room.detail.RoomDetailPendingAction
 import im.vector.app.features.home.room.detail.RoomDetailPendingActionStore
 import im.vector.app.features.home.room.detail.timeline.helper.MatrixItemColorProvider
 import im.vector.app.features.roommemberprofile.devices.DeviceListBottomSheet
 import im.vector.app.features.roommemberprofile.powerlevel.EditPowerLevelDialogs
+import im.vector.app.features.webview.VectorWebViewActivity
 import kotlinx.parcelize.Parcelize
 import org.matrix.android.sdk.api.session.crypto.model.RoomEncryptionTrustLevel
 import org.matrix.android.sdk.api.session.room.powerlevels.Role
@@ -75,6 +80,8 @@ class RoomMemberProfileFragment @Inject constructor(
         private val matrixItemColorProvider: MatrixItemColorProvider
 ) : VectorBaseFragment<FragmentMatrixProfileBinding>(),
         RoomMemberProfileController.Callback {
+
+    private lateinit var sharedActionViewModel: HomeSharedActionViewModel
 
     private lateinit var headerViews: ViewStubRoomMemberProfileHeaderBinding
 
@@ -102,6 +109,9 @@ class RoomMemberProfileFragment @Inject constructor(
             it.layoutResource = R.layout.view_stub_room_member_profile_header
             it.inflate()
         }
+
+        sharedActionViewModel = activityViewModelProvider.get(HomeSharedActionViewModel::class.java)
+
         headerViews = ViewStubRoomMemberProfileHeaderBinding.bind(headerView)
         headerViews.memberProfileStateView.eventCallback = object : StateView.EventCallback {
             override fun onRetryClicked() {
@@ -111,8 +121,7 @@ class RoomMemberProfileFragment @Inject constructor(
         headerViews.memberProfileStateView.contentView = headerViews.memberProfileInfoContainer
         views.matrixProfileRecyclerView.configureWith(roomMemberProfileController, hasFixedSize = true, disableItemAnimation = true)
         roomMemberProfileController.callback = this
-        appBarStateChangeListener = MatrixItemAppBarStateChangeListener(
-                headerView,
+        appBarStateChangeListener = MatrixItemAppBarStateChangeListener(headerView,
                 listOf(
                         views.matrixProfileToolbarAvatarImageView,
                         views.matrixProfileToolbarTitleView,
@@ -132,11 +141,18 @@ class RoomMemberProfileFragment @Inject constructor(
                 is RoomMemberProfileViewEvents.OnKickActionSuccess         -> Unit
                 is RoomMemberProfileViewEvents.OnSetPowerLevelSuccess      -> Unit
                 is RoomMemberProfileViewEvents.OnBanActionSuccess          -> Unit
-                is RoomMemberProfileViewEvents.OnIgnoreActionSuccess       -> Unit
+                is RoomMemberProfileViewEvents.OnIgnoreActionSuccess       -> handleOnIgnoreActionSuccess(it)
                 is RoomMemberProfileViewEvents.OnInviteActionSuccess       -> Unit
             }
         }
         setupLongClicks()
+    }
+
+    private fun handleOnIgnoreActionSuccess(action: RoomMemberProfileViewEvents.OnIgnoreActionSuccess) {
+        if (action.shouldPerformInitialSync) {
+            // A user has been un-ignored, perform a initial sync
+            MainActivity.restartApp(requireActivity(), MainActivityArgs(clearCache = true))
+        }
     }
 
     private fun setupLongClicks() {
@@ -222,6 +238,7 @@ class RoomMemberProfileFragment @Inject constructor(
                 avatarRenderer.render(userMatrixItem, headerViews.memberProfileAvatarView)
                 avatarRenderer.render(userMatrixItem, views.matrixProfileToolbarAvatarImageView)
 
+
                 if (state.isRoomEncrypted) {
                     headerViews.memberProfileDecorationImageView.isVisible = true
                     val trustLevel = if (state.userMXCrossSigningInfo != null) {
@@ -250,11 +267,11 @@ class RoomMemberProfileFragment @Inject constructor(
                     headerViews.memberProfileDecorationImageView.isVisible = false
                 }
 
-                headerViews.memberProfileAvatarView.setOnClickListener { view ->
-                    onAvatarClicked(view, userMatrixItem)
+                headerViews.memberProfileAvatarView.setOnClickListener {
+                    onAvatarClicked()
                 }
-                views.matrixProfileToolbarAvatarImageView.setOnClickListener { view ->
-                    onAvatarClicked(view, userMatrixItem)
+                views.matrixProfileToolbarAvatarImageView.setOnClickListener {
+                    onAvatarClicked()
                 }
             }
         }
@@ -334,8 +351,9 @@ class RoomMemberProfileFragment @Inject constructor(
                 }.show()
     }
 
-    private fun onAvatarClicked(view: View, userMatrixItem: MatrixItem) {
-        navigator.openBigImageViewer(requireActivity(), view, userMatrixItem)
+    private fun onAvatarClicked() {
+//        navigator.openBigImageViewer(requireActivity(), view, userMatrixItem)
+         callingprofilefunction()
     }
 
     override fun onOverrideColorClicked(): Unit = withState(viewModel) { state ->
@@ -420,6 +438,31 @@ class RoomMemberProfileFragment @Inject constructor(
                     viewModel.handle(RoomMemberProfileAction.KickUser(null))
                 }
     }
+
+    fun callingprofilefunction(){
+        val usernameorigaa =  headerViews.memberProfileIdView.text.toString()
+        // usernameorigaa = @appsdev_tanmay:holedo.com
+        val usernamefinaa = usernameorigaa.replace(":holedo.com", "")
+        // usernamefinaa = @appsdev_tanmay
+        val usernamefinba = usernamefinaa.replace("@", "")
+        // usernamefinba = appsdev_tanmay
+
+//            val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://profile.holedo.im/$usernamefinba"))
+//            startActivity(i)
+
+        val  urll25 = "https://profile.holedo.im/?u=$usernamefinba"
+
+//        Toast.makeText(requireContext(), urll25, Toast.LENGTH_LONG).show()
+
+        //urll25 = "https://profile.holedo.im/appsdev_tanmay"
+//            val intent13  = Intent(requireContext(), VectorWebViewActivity::class.java)
+//            intent13.putExtra("URL24",urll25)
+//            startActivity(intent13)
+
+        val intentag  = VectorWebViewActivity.getIntent(requireContext(), urll25)
+        startActivity(intentag)
+    }
+
 
     override fun onInviteClicked() {
         viewModel.handle(RoomMemberProfileAction.InviteUser)

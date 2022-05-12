@@ -25,7 +25,6 @@ import im.vector.app.features.home.room.detail.timeline.item.DaySeparatorItem
 import im.vector.app.features.home.room.detail.timeline.item.ItemWithEvents
 import im.vector.app.features.home.room.detail.timeline.item.TimelineReadMarkerItem_
 import org.matrix.android.sdk.api.session.room.timeline.Timeline
-import kotlin.random.Random
 import kotlin.reflect.KMutableProperty0
 
 private const val DEFAULT_PREFETCH_THRESHOLD = 30
@@ -105,7 +104,7 @@ class TimelineControllerInterceptorHelper(private val positionOfReadMarker: KMut
                     .coerceAtLeast(0)
 
             val loadingItem = LoadingItem_()
-                    .id("prefetch_backward_loading${Random.nextLong()}")
+                    .id("prefetch_backward_loading${System.currentTimeMillis()}")
                     .showLoader(false)
                     .setVisibilityStateChangedListener(Timeline.Direction.BACKWARDS, callback)
 
@@ -121,7 +120,7 @@ class TimelineControllerInterceptorHelper(private val positionOfReadMarker: KMut
                     .coerceAtLeast(0)
 
             val loadingItem = LoadingItem_()
-                    .id("prefetch_forward_loading${Random.nextLong()}")
+                    .id("prefetch_forward_loading${System.currentTimeMillis()}")
                     .showLoader(false)
                     .setVisibilityStateChangedListener(Timeline.Direction.FORWARDS, callback)
             add(indexOfPrefetchForward, loadingItem)

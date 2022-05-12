@@ -21,11 +21,9 @@ import io.realm.annotations.RealmModule
 /**
  * Realm module for identity server classes
  */
-@RealmModule(
-        library = true,
+@RealmModule(library = true,
         classes = [
             IdentityDataEntity::class,
             IdentityPendingBindingEntity::class
-        ]
-)
+        ])
 internal class IdentityRealmModule

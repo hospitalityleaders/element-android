@@ -29,7 +29,6 @@ import im.vector.app.core.di.hiltMavericksViewModelFactory
 import im.vector.app.core.platform.VectorViewModel
 import im.vector.app.features.analytics.AnalyticsTracker
 import im.vector.app.features.analytics.extensions.toAnalyticsJoinedRoom
-import im.vector.app.features.analytics.plan.JoinedRoom
 import im.vector.app.features.settings.VectorPreferences
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
@@ -166,8 +165,7 @@ class RoomDirectoryViewModel @AssistedInject constructor(
 
         currentJob = viewModelScope.launch {
             val data = try {
-                session.roomDirectoryService().getPublicRooms(
-                        roomDirectoryData.homeServer,
+                session.getPublicRooms(roomDirectoryData.homeServer,
                         PublicRoomsParams(
                                 limit = PUBLIC_ROOMS_LIMIT,
                                 filter = PublicRoomsFilter(searchTerm = filter),
@@ -227,8 +225,8 @@ class RoomDirectoryViewModel @AssistedInject constructor(
         val viaServers = listOfNotNull(state.roomDirectoryData.homeServer)
         viewModelScope.launch {
             try {
-                session.roomService().joinRoom(action.publicRoom.roomId, viaServers = viaServers)
-                analyticsTracker.capture(action.publicRoom.toAnalyticsJoinedRoom(JoinedRoom.Trigger.RoomDirectory))
+                session.joinRoom(action.publicRoom.roomId, viaServers = viaServers)
+                analyticsTracker.capture(action.publicRoom.toAnalyticsJoinedRoom())
                 // We do not update the joiningRoomsIds here, because, the room is not joined yet regarding the sync data.
                 // Instead, we wait for the room to be joined
             } catch (failure: Throwable) {

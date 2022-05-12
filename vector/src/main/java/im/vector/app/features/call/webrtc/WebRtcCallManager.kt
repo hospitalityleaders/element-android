@@ -215,10 +215,9 @@ class WebRtcCallManager @Inject constructor(
         }
 
         Timber.tag(loggerTag.value).v("PeerConnectionFactory.initialize")
-        PeerConnectionFactory.initialize(
-                PeerConnectionFactory
-                        .InitializationOptions.builder(context.applicationContext)
-                        .createInitializationOptions()
+        PeerConnectionFactory.initialize(PeerConnectionFactory
+                .InitializationOptions.builder(context.applicationContext)
+                .createInitializationOptions()
         )
 
         val options = PeerConnectionFactory.Options()
@@ -227,8 +226,7 @@ class WebRtcCallManager @Inject constructor(
                 /* enableIntelVp8Encoder */
                 true,
                 /* enableH264HighProfile */
-                true
-        )
+                true)
         val defaultVideoDecoderFactory = DefaultVideoDecoderFactory(eglBaseContext)
         Timber.tag(loggerTag.value).v("PeerConnectionFactory.createPeerConnectionFactory ...")
         peerConnectionFactory = PeerConnectionFactory.builder()
@@ -306,8 +304,7 @@ class WebRtcCallManager @Inject constructor(
         }
         CallService.onOutgoingCallRinging(
                 context = context.applicationContext,
-                callId = mxCall.callId
-        )
+                callId = mxCall.callId)
 
         // start the activity now
         context.startActivity(VectorCallActivity.newIntent(context, webRtcCall, VectorCallActivity.OUTGOING_CREATED))

@@ -30,11 +30,11 @@ import timber.log.Timber
 fun Session.configureAndStart(context: Context, startSyncing: Boolean = true) {
     Timber.i("Configure and start session for $myUserId")
     open()
-    filterService().setFilter(FilterService.FilterPreset.ElementFilter)
+    setFilter(FilterService.FilterPreset.ElementFilter)
     if (startSyncing) {
         startSyncing(context)
     }
-    pushersService().refreshPushers()
+    refreshPushers()
     context.singletonEntryPoint().webRtcCallManager().checkForProtocolsSupportIfNeeded()
 }
 
@@ -74,8 +74,8 @@ fun Session.cannotLogoutSafely(): Boolean {
     return hasUnsavedKeys() ||
             // has local cross signing keys
             (cryptoService().crossSigningService().allPrivateKeysKnown() &&
-                    // That are not backed up
-                    !sharedSecretStorageService().isRecoverySetup())
+            // That are not backed up
+            !sharedSecretStorageService.isRecoverySetup())
 }
 
 fun Session.vectorStore(context: Context) = VectorSessionStore(context, myUserId)

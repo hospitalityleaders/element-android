@@ -91,8 +91,7 @@ class MessageBubbleView @JvmOverloads constructor(
             background = RippleDrawable(
                     ContextCompat.getColorStateList(context, R.color.mtrl_btn_ripple_color) ?: ColorStateList.valueOf(Color.TRANSPARENT),
                     bubbleDrawable,
-                    rippleMaskDrawable
-            )
+                    rippleMaskDrawable)
         }
     }
 

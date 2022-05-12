@@ -39,8 +39,6 @@ import org.matrix.android.sdk.api.query.QueryStringValue
 import org.matrix.android.sdk.api.session.Session
 import org.matrix.android.sdk.api.session.events.model.EventType
 import org.matrix.android.sdk.api.session.events.model.toModel
-import org.matrix.android.sdk.api.session.getRoom
-import org.matrix.android.sdk.api.session.room.getStateEvent
 import org.matrix.android.sdk.api.session.room.members.roomMemberQueryParams
 import org.matrix.android.sdk.api.session.room.model.Membership
 import org.matrix.android.sdk.api.session.room.model.create.RoomCreateContent
@@ -98,9 +96,9 @@ class RoomProfileViewModel @AssistedInject constructor(
                     copy(
                             roomCreateContent = async,
                             // This is a shortcut, we should do the next lines elsewhere, but keep it like that for the moment.
-                            recommendedRoomVersion = room.roomVersionService().getRecommendedVersion(),
-                            isUsingUnstableRoomVersion = room.roomVersionService().isUsingUnstableRoomVersion(),
-                            canUpgradeRoom = room.roomVersionService().userMayUpgradeRoom(session.myUserId),
+                            recommendedRoomVersion = room.getRecommendedVersion(),
+                            isUsingUnstableRoomVersion = room.isUsingUnstableRoomVersion(),
+                            canUpgradeRoom = room.userMayUpgradeRoom(session.myUserId),
                             isTombstoned = room.getStateEvent(EventType.STATE_ROOM_TOMBSTONE) != null
                     )
                 }
@@ -145,14 +143,14 @@ class RoomProfileViewModel @AssistedInject constructor(
     }
 
     fun isPublicRoom(): Boolean {
-        return room.stateService().isPublic()
+        return room.isPublic()
     }
 
     private fun handleEnableEncryption() {
         postLoading(true)
 
         viewModelScope.launch {
-            val result = runCatching { room.roomCryptoService().enableEncryption() }
+            val result = runCatching { room.enableEncryption() }
             postLoading(false)
             result.onFailure { failure ->
                 _viewEvents.post(RoomProfileViewEvents.Failure(failure))
@@ -179,7 +177,7 @@ class RoomProfileViewModel @AssistedInject constructor(
     private fun handleChangeNotificationMode(action: RoomProfileAction.ChangeRoomNotificationState) {
         viewModelScope.launch {
             try {
-                room.roomPushRuleService().setRoomNotificationState(action.notificationState)
+                room.setRoomNotificationState(action.notificationState)
             } catch (failure: Throwable) {
                 _viewEvents.post(RoomProfileViewEvents.Failure(failure))
             }
@@ -190,14 +188,12 @@ class RoomProfileViewModel @AssistedInject constructor(
         _viewEvents.post(RoomProfileViewEvents.Loading(stringProvider.getString(R.string.room_profile_leaving_room)))
         viewModelScope.launch {
             try {
-                session.roomService().leaveRoom(room.roomId)
-                analyticsTracker.capture(
-                        Interaction(
-                                index = null,
-                                interactionType = null,
-                                name = Interaction.Name.MobileRoomLeave
-                        )
-                )
+                session.leaveRoom(room.roomId)
+                analyticsTracker.capture(Interaction(
+                        index = null,
+                        interactionType = null,
+                        name = Interaction.Name.MobileRoomLeave
+                ))
                 // Do nothing, we will be closing the room automatically when it will get back from sync
             } catch (failure: Throwable) {
                 _viewEvents.post(RoomProfileViewEvents.Failure(failure))
@@ -216,7 +212,7 @@ class RoomProfileViewModel @AssistedInject constructor(
         _viewEvents.post(RoomProfileViewEvents.Loading())
         session.coroutineScope.launch {
             try {
-                room.roomCryptoService().enableEncryption(force = true)
+                room.enableEncryption(force = true)
             } catch (failure: Throwable) {
                 Timber.e(failure, "Failed to restore encryption state in room ${room.roomId}")
                 _viewEvents.post(RoomProfileViewEvents.Failure(failure))

@@ -141,7 +141,6 @@ class LoginWebFragment @Inject constructor(
                         .show()
             }
 
-            @Deprecated("Deprecated in Java")
             override fun onReceivedError(view: WebView, errorCode: Int, description: String, failingUrl: String) {
                 super.onReceivedError(view, errorCode, description, failingUrl)
 
@@ -194,7 +193,6 @@ class LoginWebFragment @Inject constructor(
              * @param url
              * @return
              */
-            @Deprecated("Deprecated in Java")
             override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
                 if (url == null) return super.shouldOverrideUrlLoading(view, url as String?)
 

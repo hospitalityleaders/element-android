@@ -43,7 +43,6 @@ import dagger.hilt.android.HiltAndroidApp
 import im.vector.app.core.di.ActiveSessionHolder
 import im.vector.app.core.extensions.configureAndStart
 import im.vector.app.core.extensions.startSyncing
-import im.vector.app.core.time.Clock
 import im.vector.app.features.analytics.VectorAnalytics
 import im.vector.app.features.call.webrtc.WebRtcCallManager
 import im.vector.app.features.configuration.VectorConfiguration
@@ -86,7 +85,6 @@ class VectorApplication :
     @Inject lateinit var emojiCompatWrapper: EmojiCompatWrapper
     @Inject lateinit var vectorUncaughtExceptionHandler: VectorUncaughtExceptionHandler
     @Inject lateinit var activeSessionHolder: ActiveSessionHolder
-    @Inject lateinit var clock: Clock
     @Inject lateinit var notificationDrawerManager: NotificationDrawerManager
     @Inject lateinit var vectorPreferences: VectorPreferences
     @Inject lateinit var versionProvider: VersionProvider
@@ -154,6 +152,8 @@ class VectorApplication :
 
         emojiCompatWrapper.init(fontRequest)
 
+        //testing12
+
         notificationUtils.createNotificationChannels()
 
         // It can takes time, but do we care?
@@ -182,7 +182,7 @@ class VectorApplication :
 
             override fun onPause(owner: LifecycleOwner) {
                 Timber.i("App entered background")
-                FcmHelper.onEnterBackground(appContext, vectorPreferences, activeSessionHolder, clock)
+                FcmHelper.onEnterBackground(appContext, vectorPreferences, activeSessionHolder)
             }
         })
         ProcessLifecycleOwner.get().lifecycle.addObserver(appStateHandler)
@@ -213,12 +213,10 @@ class VectorApplication :
 
     private fun enableStrictModeIfNeeded() {
         if (BuildConfig.ENABLE_STRICT_MODE_LOGS) {
-            StrictMode.setThreadPolicy(
-                    StrictMode.ThreadPolicy.Builder()
-                            .detectAll()
-                            .penaltyLog()
-                            .build()
-            )
+            StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build())
         }
     }
 

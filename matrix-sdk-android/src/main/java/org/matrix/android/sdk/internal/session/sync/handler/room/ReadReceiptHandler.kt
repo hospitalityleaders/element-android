@@ -44,14 +44,12 @@ internal class ReadReceiptHandler @Inject constructor(
 
     companion object {
 
-        fun createContent(userId: String,
-                          eventId: String,
-                          currentTimeMillis: Long): ReadReceiptContent {
+        fun createContent(userId: String, eventId: String): ReadReceiptContent {
             return mapOf(
                     eventId to mapOf(
                             READ_KEY to mapOf(
                                     userId to mapOf(
-                                            TIMESTAMP_KEY to currentTimeMillis.toDouble()
+                                            TIMESTAMP_KEY to System.currentTimeMillis().toDouble()
                                     )
                             )
                     )

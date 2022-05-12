@@ -98,12 +98,8 @@ class RoomAliasController @Inject constructor(
             is Fail       -> {
                 errorWithRetryItem {
                     id("rd_error")
-                    text(
-                            host.stringProvider.getString(
-                                    R.string.room_alias_publish_to_directory_error,
-                                    host.errorFormatter.toHumanReadable(data.roomDirectoryVisibility.error)
-                            )
-                    )
+                    text(host.stringProvider.getString(R.string.room_alias_publish_to_directory_error,
+                            host.errorFormatter.toHumanReadable(data.roomDirectoryVisibility.error)))
                     listener { host.callback?.retry() }
                 }
             }

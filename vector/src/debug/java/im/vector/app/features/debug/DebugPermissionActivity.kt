@@ -45,8 +45,7 @@ class DebugPermissionActivity : VectorBaseActivity<ActivityDebugPermissionBindin
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.READ_CONTACTS
-    )
+            Manifest.permission.READ_CONTACTS)
 
     private var lastPermissions = emptyList<String>()
 

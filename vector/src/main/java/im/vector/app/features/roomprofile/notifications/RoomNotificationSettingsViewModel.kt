@@ -26,7 +26,6 @@ import im.vector.app.core.di.hiltMavericksViewModelFactory
 import im.vector.app.core.platform.VectorViewModel
 import kotlinx.coroutines.launch
 import org.matrix.android.sdk.api.session.Session
-import org.matrix.android.sdk.api.session.getRoom
 import org.matrix.android.sdk.flow.flow
 import org.matrix.android.sdk.flow.unwrap
 
@@ -37,7 +36,7 @@ class RoomNotificationSettingsViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory : MavericksAssistedViewModelFactory<RoomNotificationSettingsViewModel, RoomNotificationSettingsViewState> {
-        override fun create(initialState: RoomNotificationSettingsViewState): RoomNotificationSettingsViewModel
+       override fun create(initialState: RoomNotificationSettingsViewState): RoomNotificationSettingsViewModel
     }
 
     companion object : MavericksViewModelFactory<RoomNotificationSettingsViewModel, RoomNotificationSettingsViewState> by hiltMavericksViewModelFactory()
@@ -74,7 +73,7 @@ class RoomNotificationSettingsViewModel @AssistedInject constructor(
     private fun handleSelectNotificationState(action: RoomNotificationSettingsAction.SelectNotificationState) {
         setState { copy(isLoading = true) }
         viewModelScope.launch {
-            runCatching { room.roomPushRuleService().setRoomNotificationState(action.notificationState) }
+            runCatching {  room.setRoomNotificationState(action.notificationState) }
                     .fold(
                             {
                                 setState {

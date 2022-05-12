@@ -88,12 +88,10 @@ internal class KeysBackupTestHelper(
 
         stateObserver.stopAndCheckStates(null)
 
-        return KeysBackupScenarioData(
-                cryptoTestData,
+        return KeysBackupScenarioData(cryptoTestData,
                 aliceKeys,
                 prepareKeysBackupDataResult,
-                aliceSession2
-        )
+                aliceSession2)
     }
 
     fun prepareAndCreateKeysBackupData(keysBackup: KeysBackupService,

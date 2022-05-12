@@ -246,8 +246,7 @@ class BootstrapSharedViewModel @AssistedInject constructor(
                 uiaContinuation?.resume(DefaultBaseAuth(session = pendingAuth?.session ?: ""))
             }
             is BootstrapActions.PasswordAuthDone                 -> {
-                val decryptedPass = session.secureStorageService()
-                        .loadSecureSecret<String>(action.password.fromBase64().inputStream(), ReAuthActivity.DEFAULT_RESULT_KEYSTORE_ALIAS)
+                val decryptedPass = session.loadSecureSecret<String>(action.password.fromBase64().inputStream(), ReAuthActivity.DEFAULT_RESULT_KEYSTORE_ALIAS)
                 uiaContinuation?.resume(
                         UserPasswordAuth(
                                 session = pendingAuth?.session,
@@ -404,8 +403,7 @@ class BootstrapSharedViewModel @AssistedInject constructor(
         }
 
         viewModelScope.launch(Dispatchers.IO) {
-            bootstrapTask.invoke(
-                    this,
+            bootstrapTask.invoke(this,
                     Params(
                             userInteractiveAuthInterceptor = interceptor,
                             progressListener = progressListener,

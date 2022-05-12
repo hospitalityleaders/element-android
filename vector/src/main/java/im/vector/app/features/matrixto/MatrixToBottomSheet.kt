@@ -32,7 +32,6 @@ import im.vector.app.R
 import im.vector.app.core.extensions.commitTransaction
 import im.vector.app.core.platform.VectorBaseBottomSheetDialogFragment
 import im.vector.app.databinding.BottomSheetMatrixToCardBinding
-import im.vector.app.features.analytics.plan.ViewRoom
 import im.vector.app.features.home.AvatarRenderer
 import kotlinx.parcelize.Parcelize
 import org.matrix.android.sdk.api.session.permalinks.PermalinkData
@@ -45,8 +44,7 @@ class MatrixToBottomSheet :
 
     @Parcelize
     data class MatrixToArgs(
-            val matrixToLink: String,
-            val origin: OriginOfMatrixTo
+            val matrixToLink: String
     ) : Parcelable
 
     @Inject lateinit var avatarRenderer: AvatarRenderer
@@ -60,7 +58,7 @@ class MatrixToBottomSheet :
     private val viewModel by fragmentViewModel(MatrixToBottomSheetViewModel::class)
 
     interface InteractionListener {
-        fun mxToBottomSheetNavigateToRoom(roomId: String, trigger: ViewRoom.Trigger?)
+        fun mxToBottomSheetNavigateToRoom(roomId: String)
         fun mxToBottomSheetSwitchToSpace(spaceId: String)
     }
 
@@ -84,8 +82,7 @@ class MatrixToBottomSheet :
     private fun showFragment(fragmentClass: KClass<out Fragment>, bundle: Bundle) {
         if (childFragmentManager.findFragmentByTag(fragmentClass.simpleName) == null) {
             childFragmentManager.commitTransaction {
-                replace(
-                        views.matrixToCardFragmentContainer.id,
+                replace(views.matrixToCardFragmentContainer.id,
                         fragmentClass.java,
                         bundle,
                         fragmentClass.simpleName
@@ -100,9 +97,7 @@ class MatrixToBottomSheet :
         viewModel.observeViewEvents {
             when (it) {
                 is MatrixToViewEvents.NavigateToRoom  -> {
-                    withState(viewModel) { state ->
-                        interactionListener?.mxToBottomSheetNavigateToRoom(it.roomId, state.origin.toViewRoomTrigger())
-                    }
+                    interactionListener?.mxToBottomSheetNavigateToRoom(it.roomId)
                     dismiss()
                 }
                 MatrixToViewEvents.Dismiss            -> dismiss()
@@ -121,9 +116,9 @@ class MatrixToBottomSheet :
     }
 
     companion object {
-        fun withLink(matrixToLink: String, origin: OriginOfMatrixTo): MatrixToBottomSheet {
+        fun withLink(matrixToLink: String): MatrixToBottomSheet {
             return MatrixToBottomSheet().apply {
-                setArguments(MatrixToArgs(matrixToLink = matrixToLink, origin = origin))
+                setArguments(MatrixToArgs(matrixToLink = matrixToLink))
             }
         }
     }

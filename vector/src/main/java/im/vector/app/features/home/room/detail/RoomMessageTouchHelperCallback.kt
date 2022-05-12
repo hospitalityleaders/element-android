@@ -33,18 +33,14 @@ import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.EpoxyTouchHelperCallback
 import com.airbnb.epoxy.EpoxyViewHolder
 import im.vector.app.R
-import im.vector.app.core.time.Clock
 import im.vector.app.features.themes.ThemeUtils
 import timber.log.Timber
 import kotlin.math.abs
 import kotlin.math.min
 
-class RoomMessageTouchHelperCallback(
-        private val context: Context,
-        @DrawableRes actionIcon: Int,
-        private val handler: QuickReplayHandler,
-        private val clock: Clock,
-) : EpoxyTouchHelperCallback() {
+class RoomMessageTouchHelperCallback(private val context: Context,
+                                     @DrawableRes actionIcon: Int,
+                                     private val handler: QuickReplayHandler) : EpoxyTouchHelperCallback() {
 
     interface QuickReplayHandler {
         fun performQuickReplyOnHolder(model: EpoxyModel<*>)
@@ -145,7 +141,7 @@ class RoomMessageTouchHelperCallback(
     private fun drawReplyButton(canvas: Canvas, itemView: View) {
         // Timber.v("drawReplyButton")
         val translationX = abs(itemView.translationX)
-        val newTime = clock.epochMillis()
+        val newTime = System.currentTimeMillis()
         val dt = min(17, newTime - lastReplyButtonAnimationTime)
         lastReplyButtonAnimationTime = newTime
         val showing = translationX >= minShowDistance

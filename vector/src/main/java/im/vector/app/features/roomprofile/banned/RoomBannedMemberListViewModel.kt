@@ -32,8 +32,6 @@ import org.matrix.android.sdk.api.query.QueryStringValue
 import org.matrix.android.sdk.api.session.Session
 import org.matrix.android.sdk.api.session.events.model.EventType
 import org.matrix.android.sdk.api.session.events.model.toModel
-import org.matrix.android.sdk.api.session.getRoom
-import org.matrix.android.sdk.api.session.room.getStateEvent
 import org.matrix.android.sdk.api.session.room.members.roomMemberQueryParams
 import org.matrix.android.sdk.api.session.room.model.Membership
 import org.matrix.android.sdk.api.session.room.model.RoomMemberContent
@@ -116,7 +114,7 @@ class RoomBannedMemberListViewModel @AssistedInject constructor(@Assisted initia
         }
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                room.membershipService().unban(roomMemberSummary.userId, null)
+                room.unban(roomMemberSummary.userId, null)
             } catch (failure: Throwable) {
                 _viewEvents.post(RoomBannedMemberListViewEvents.ToastError(stringProvider.getString(R.string.failed_to_unban)))
             } finally {

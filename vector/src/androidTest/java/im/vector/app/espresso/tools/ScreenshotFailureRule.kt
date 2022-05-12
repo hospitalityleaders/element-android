@@ -24,7 +24,6 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
-import im.vector.app.core.time.DefaultClock
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 import timber.log.Timber
@@ -55,7 +54,7 @@ private fun storeFailureScreenshot(bitmap: Bitmap, screenshotName: String) {
 
     val contentValues = ContentValues().apply {
         put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-        put(MediaStore.Images.Media.DATE_TAKEN, DefaultClock().epochMillis())
+        put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
     }
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         useMediaStoreScreenshotStorage(

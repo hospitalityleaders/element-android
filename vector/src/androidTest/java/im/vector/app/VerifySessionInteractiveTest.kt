@@ -53,7 +53,6 @@ import org.matrix.android.sdk.api.session.crypto.verification.VerificationTransa
 import org.matrix.android.sdk.api.session.crypto.verification.VerificationTxState
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
-import kotlin.random.Random
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
@@ -67,7 +66,7 @@ class VerifySessionInteractiveTest : VerificationTestBase() {
     @Before
     fun createSessionWithCrossSigning() {
         val matrix = getMatrixInstance()
-        val userName = "foobar_${Random.nextLong()}"
+        val userName = "foobar_${System.currentTimeMillis()}"
         existingSession = createAccountAndSync(matrix, userName, password, true)
         doSync<Unit> {
             existingSession!!.cryptoService().crossSigningService()
@@ -82,8 +81,7 @@ class VerifySessionInteractiveTest : VerificationTestBase() {
                                             )
                                     )
                                 }
-                            }, it
-                    )
+                            }, it)
         }
     }
 

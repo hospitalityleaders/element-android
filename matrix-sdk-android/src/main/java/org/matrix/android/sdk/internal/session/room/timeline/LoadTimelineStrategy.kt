@@ -23,7 +23,6 @@ import io.realm.RealmConfiguration
 import io.realm.RealmResults
 import io.realm.kotlin.createObject
 import kotlinx.coroutines.CompletableDeferred
-import org.matrix.android.sdk.api.MatrixCoroutineDispatchers
 import org.matrix.android.sdk.api.extensions.orFalse
 import org.matrix.android.sdk.api.failure.Failure
 import org.matrix.android.sdk.api.failure.MatrixError
@@ -42,9 +41,7 @@ import org.matrix.android.sdk.internal.database.query.findAllIncludingEvents
 import org.matrix.android.sdk.internal.database.query.findLastForwardChunkOfThread
 import org.matrix.android.sdk.internal.database.query.where
 import org.matrix.android.sdk.internal.session.room.relation.threads.FetchThreadTimelineTask
-import org.matrix.android.sdk.internal.session.room.state.StateEventDataSource
 import org.matrix.android.sdk.internal.session.sync.handler.room.ThreadsAwarenessHandler
-import org.matrix.android.sdk.internal.util.time.Clock
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicReference
 
@@ -56,13 +53,11 @@ import java.util.concurrent.atomic.AtomicReference
  * Once we got a ChunkEntity we wrap it with TimelineChunk class so we dispatch any methods for loading data.
  */
 
-internal class LoadTimelineStrategy constructor(
+internal class LoadTimelineStrategy(
         private val roomId: String,
         private val timelineId: String,
         private val mode: Mode,
-        private val dependencies: Dependencies,
-        clock: Clock,
-) {
+        private val dependencies: Dependencies) {
 
     sealed interface Mode {
         object Live : Mode
@@ -100,11 +95,8 @@ internal class LoadTimelineStrategy constructor(
             val threadsAwarenessHandler: ThreadsAwarenessHandler,
             val lightweightSettingsStorage: LightweightSettingsStorage,
             val onEventsUpdated: (Boolean) -> Unit,
-            val onEventsDeleted: () -> Unit,
             val onLimitedTimeline: () -> Unit,
-            val onNewTimelineEvents: (List<String>) -> Unit,
-            val stateEventDataSource: StateEventDataSource,
-            val matrixCoroutineDispatchers: MatrixCoroutineDispatchers,
+            val onNewTimelineEvents: (List<String>) -> Unit
     )
 
     private var getContextLatch: CompletableDeferred<Unit>? = null
@@ -160,7 +152,7 @@ internal class LoadTimelineStrategy constructor(
         }
     }
 
-    private val uiEchoManager = UIEchoManager(uiEchoManagerListener, clock)
+    private val uiEchoManager = UIEchoManager(uiEchoManagerListener)
     private val sendingEventsDataSource: SendingEventsDataSource = RealmSendingEventsDataSource(
             roomId = roomId,
             realm = dependencies.realm,
@@ -169,13 +161,7 @@ internal class LoadTimelineStrategy constructor(
             onEventsUpdated = dependencies.onEventsUpdated
     )
 
-    private val liveRoomStateListener = LiveRoomStateListener(
-            roomId,
-            dependencies.stateEventDataSource,
-            dependencies.matrixCoroutineDispatchers.main
-    )
-
-    suspend fun onStart() {
+    fun onStart() {
         dependencies.eventDecryptor.start()
         dependencies.timelineInput.listeners.add(timelineInputListener)
         val realm = dependencies.realm.get()
@@ -184,13 +170,9 @@ internal class LoadTimelineStrategy constructor(
             it.addChangeListener(chunkEntityListener)
             timelineChunk = it.createTimelineChunk()
         }
-
-        if (dependencies.timelineSettings.useLiveSenderInfo) {
-            liveRoomStateListener.start()
-        }
     }
 
-    suspend fun onStop() {
+    fun onStop() {
         dependencies.eventDecryptor.destroy()
         dependencies.timelineInput.listeners.remove(timelineInputListener)
         chunkEntity?.removeChangeListener(chunkEntityListener)
@@ -201,9 +183,6 @@ internal class LoadTimelineStrategy constructor(
         timelineChunk = null
         if (mode is Mode.Thread) {
             clearThreadChunkEntity(dependencies.realm.get(), mode.rootThreadEventId)
-        }
-        if (dependencies.timelineSettings.useLiveSenderInfo) {
-            liveRoomStateListener.stop()
         }
     }
 
@@ -239,22 +218,7 @@ internal class LoadTimelineStrategy constructor(
     }
 
     fun buildSnapshot(): List<TimelineEvent> {
-        val events = buildSendingEvents() + timelineChunk?.builtItems(includesNext = true, includesPrev = true).orEmpty()
-        return if (dependencies.timelineSettings.useLiveSenderInfo) {
-            events.map(this::applyLiveRoomState)
-        } else {
-            events
-        }
-    }
-
-    private fun applyLiveRoomState(event: TimelineEvent): TimelineEvent {
-        val updatedState = liveRoomStateListener.getLiveState(event.senderInfo.userId)
-        return if (updatedState != null) {
-            val updatedSenderInfo = event.senderInfo.copy(avatarUrl = updatedState.avatarUrl, displayName = updatedState.displayName)
-            event.copy(senderInfo = updatedSenderInfo)
-        } else {
-            event
-        }
+        return buildSendingEvents() + timelineChunk?.builtItems(includesNext = true, includesPrev = true).orEmpty()
     }
 
     private fun buildSendingEvents(): List<TimelineEvent> {
@@ -338,8 +302,7 @@ internal class LoadTimelineStrategy constructor(
                     threadsAwarenessHandler = dependencies.threadsAwarenessHandler,
                     lightweightSettingsStorage = dependencies.lightweightSettingsStorage,
                     initialEventId = mode.originEventId(),
-                    onBuiltEvents = dependencies.onEventsUpdated,
-                    onEventsDeleted = dependencies.onEventsDeleted,
+                    onBuiltEvents = dependencies.onEventsUpdated
             )
         }
     }

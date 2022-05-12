@@ -26,18 +26,9 @@ class StringOrderTest {
 
     @Test
     fun testbasing() {
-        assertEquals(
-                "a",
-                StringOrderUtils.baseToString(StringOrderUtils.stringToBase("a", StringOrderUtils.DEFAULT_ALPHABET), StringOrderUtils.DEFAULT_ALPHABET)
-        )
-        assertEquals(
-                "element",
-                StringOrderUtils.baseToString(StringOrderUtils.stringToBase("element", StringOrderUtils.DEFAULT_ALPHABET), StringOrderUtils.DEFAULT_ALPHABET)
-        )
-        assertEquals(
-                "matrix",
-                StringOrderUtils.baseToString(StringOrderUtils.stringToBase("matrix", StringOrderUtils.DEFAULT_ALPHABET), StringOrderUtils.DEFAULT_ALPHABET)
-        )
+        assertEquals("a", StringOrderUtils.baseToString(StringOrderUtils.stringToBase("a", StringOrderUtils.DEFAULT_ALPHABET), StringOrderUtils.DEFAULT_ALPHABET))
+        assertEquals("element", StringOrderUtils.baseToString(StringOrderUtils.stringToBase("element", StringOrderUtils.DEFAULT_ALPHABET), StringOrderUtils.DEFAULT_ALPHABET))
+        assertEquals("matrix", StringOrderUtils.baseToString(StringOrderUtils.stringToBase("matrix", StringOrderUtils.DEFAULT_ALPHABET), StringOrderUtils.DEFAULT_ALPHABET))
     }
 
     @Test

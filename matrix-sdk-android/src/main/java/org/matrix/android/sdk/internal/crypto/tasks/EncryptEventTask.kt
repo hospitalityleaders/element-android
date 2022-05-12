@@ -15,7 +15,6 @@
  */
 package org.matrix.android.sdk.internal.crypto.tasks
 
-import dagger.Lazy
 import org.matrix.android.sdk.api.crypto.MXCRYPTO_ALGORITHM_MEGOLM
 import org.matrix.android.sdk.api.session.crypto.CryptoService
 import org.matrix.android.sdk.api.session.crypto.model.MXEncryptEventContentResult
@@ -40,7 +39,7 @@ internal interface EncryptEventTask : Task<EncryptEventTask.Params, Event> {
 
 internal class DefaultEncryptEventTask @Inject constructor(
         private val localEchoRepository: LocalEchoRepository,
-        private val cryptoService: Lazy<CryptoService>
+        private val cryptoService: CryptoService
 ) : EncryptEventTask {
     override suspend fun execute(params: EncryptEventTask.Params): Event {
         // don't want to wait for any query
@@ -60,7 +59,7 @@ internal class DefaultEncryptEventTask @Inject constructor(
 //        try {
         // let it throws
         awaitCallback<MXEncryptEventContentResult> {
-            cryptoService.get().encryptEventContent(localMutableContent, localEvent.type, params.roomId, it)
+            cryptoService.encryptEventContent(localMutableContent, localEvent.type, params.roomId, it)
         }.let { result ->
             val modifiedContent = HashMap(result.eventContent)
             params.keepKeys?.forEach { toKeep ->
@@ -81,7 +80,7 @@ internal class DefaultEncryptEventTask @Inject constructor(
                         ).toContent(),
                         forwardingCurve25519KeyChain = emptyList(),
                         senderCurve25519Key = result.eventContent["sender_key"] as? String,
-                        claimedEd25519Key = cryptoService.get().getMyDevice().fingerprint()
+                        claimedEd25519Key = cryptoService.getMyDevice().fingerprint()
                 )
             } else {
                 null

@@ -72,6 +72,7 @@ class UiAllScreensSanityTest {
             notifications { crawl() }
             preferences { crawl() }
             voiceAndVideo()
+            ignoredUsers()
             securityAndPrivacy { crawl() }
             labs()
             advancedSettings { crawl() }

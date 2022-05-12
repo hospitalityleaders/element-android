@@ -41,7 +41,6 @@ import org.matrix.android.sdk.internal.session.user.accountdata.DirectChatsHelpe
 import org.matrix.android.sdk.internal.session.user.accountdata.UpdateUserAccountDataTask
 import org.matrix.android.sdk.internal.task.Task
 import org.matrix.android.sdk.internal.util.awaitTransaction
-import org.matrix.android.sdk.internal.util.time.Clock
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -57,8 +56,7 @@ internal class DefaultCreateRoomTask @Inject constructor(
         @SessionDatabase
         private val realmConfiguration: RealmConfiguration,
         private val createRoomBodyBuilder: CreateRoomBodyBuilder,
-        private val globalErrorReceiver: GlobalErrorReceiver,
-        private val clock: Clock,
+        private val globalErrorReceiver: GlobalErrorReceiver
 ) : CreateRoomTask {
 
     override suspend fun execute(params: CreateRoomParams): String {
@@ -108,7 +106,7 @@ internal class DefaultCreateRoomTask @Inject constructor(
         }
 
         awaitTransaction(realmConfiguration) {
-            RoomSummaryEntity.where(it, roomId).findFirst()?.lastActivityTime = clock.epochMillis()
+            RoomSummaryEntity.where(it, roomId).findFirst()?.lastActivityTime = System.currentTimeMillis()
         }
 
         if (otherUserId != null) {

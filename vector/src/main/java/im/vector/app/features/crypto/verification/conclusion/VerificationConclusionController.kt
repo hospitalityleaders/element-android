@@ -52,13 +52,10 @@ class VerificationConclusionController @Inject constructor(
             ConclusionState.SUCCESS   -> {
                 bottomSheetVerificationNoticeItem {
                     id("notice")
-                    notice(
-                            host.stringProvider.getString(
-                                    if (state.isSelfVerification) R.string.verification_conclusion_ok_self_notice
-                                    else R.string.verification_conclusion_ok_notice
-                            )
-                                    .toEpoxyCharSequence()
-                    )
+                    notice(host.stringProvider.getString(
+                            if (state.isSelfVerification) R.string.verification_conclusion_ok_self_notice
+                            else R.string.verification_conclusion_ok_notice)
+                            .toEpoxyCharSequence())
                 }
 
                 bottomSheetVerificationBigImageItem {

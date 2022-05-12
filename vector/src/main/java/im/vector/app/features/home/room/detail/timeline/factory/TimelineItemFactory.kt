@@ -50,15 +50,13 @@ class TimelineItemFactory @Inject constructor(
                             timelineEvent = event,
                             highlightedEventId = params.highlightedEventId,
                             isFromThreadTimeline = params.isFromThreadTimeline(),
-                            rootThreadEventId = params.rootThreadEventId
-                    )) {
+                            rootThreadEventId = params.rootThreadEventId)) {
                 return buildEmptyItem(
                         event,
                         params.prevEvent,
                         params.highlightedEventId,
                         params.rootThreadEventId,
-                        params.isFromThreadTimeline()
-                )
+                        params.isFromThreadTimeline())
             }
 
             // Manage state event differently, to check validity
@@ -153,8 +151,7 @@ class TimelineItemFactory @Inject constructor(
                 params.prevEvent,
                 params.highlightedEventId,
                 params.rootThreadEventId,
-                params.isFromThreadTimeline()
-        )
+                params.isFromThreadTimeline())
     }
 
     private fun buildEmptyItem(timelineEvent: TimelineEvent,
@@ -166,8 +163,7 @@ class TimelineItemFactory @Inject constructor(
                 timelineEvent = prevEvent,
                 highlightedEventId = highlightedEventId,
                 isFromThreadTimeline = isFromThreadTimeline,
-                rootThreadEventId = rootThreadEventId
-        )
+                rootThreadEventId = rootThreadEventId)
         return TimelineEmptyItem_()
                 .id(timelineEvent.localId)
                 .eventId(timelineEvent.eventId)

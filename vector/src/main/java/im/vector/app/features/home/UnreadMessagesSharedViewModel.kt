@@ -71,11 +71,9 @@ class UnreadMessagesSharedViewModel @AssistedInject constructor(@Assisted initia
 
     override fun handle(action: EmptyAction) {}
 
-    private val roomService = session.roomService()
-
     init {
 
-        roomService.getPagedRoomSummariesLive(
+        session.getPagedRoomSummariesLive(
                 roomSummaryQueryParams {
                     this.memberships = listOf(Membership.JOIN)
                     this.activeSpaceFilter = ActiveSpaceFilter.ActiveSpace(null)
@@ -83,7 +81,7 @@ class UnreadMessagesSharedViewModel @AssistedInject constructor(@Assisted initia
         ).asFlow()
                 .throttleFirst(300)
                 .execute {
-                    val counts = roomService.getNotificationCountForRooms(
+                    val counts = session.getNotificationCountForRooms(
                             roomSummaryQueryParams {
                                 this.memberships = listOf(Membership.JOIN)
                                 this.activeSpaceFilter = ActiveSpaceFilter.ActiveSpace(null)
@@ -92,7 +90,7 @@ class UnreadMessagesSharedViewModel @AssistedInject constructor(@Assisted initia
                     val invites = if (autoAcceptInvites.hideInvites) {
                         0
                     } else {
-                        roomService.getRoomSummaries(
+                        session.getRoomSummaries(
                                 roomSummaryQueryParams {
                                     this.memberships = listOf(Membership.INVITE)
                                     this.activeSpaceFilter = ActiveSpaceFilter.ActiveSpace(null)
@@ -111,7 +109,7 @@ class UnreadMessagesSharedViewModel @AssistedInject constructor(@Assisted initia
         combine(
                 appStateHandler.selectedRoomGroupingFlow.distinctUntilChanged(),
                 appStateHandler.selectedRoomGroupingFlow.flatMapLatest {
-                    roomService.getPagedRoomSummariesLive(
+                    session.getPagedRoomSummariesLive(
                             roomSummaryQueryParams {
                                 this.memberships = Membership.activeMemberships()
                             }, sortOrder = RoomSortOrder.NONE
@@ -133,7 +131,7 @@ class UnreadMessagesSharedViewModel @AssistedInject constructor(@Assisted initia
                     val inviteCount = if (autoAcceptInvites.hideInvites) {
                         0
                     } else {
-                        roomService.getRoomSummaries(
+                        session.getRoomSummaries(
                                 roomSummaryQueryParams { this.memberships = listOf(Membership.INVITE) }
                         ).size
                     }
@@ -141,14 +139,14 @@ class UnreadMessagesSharedViewModel @AssistedInject constructor(@Assisted initia
                     val spaceInviteCount = if (autoAcceptInvites.hideInvites) {
                         0
                     } else {
-                        roomService.getRoomSummaries(
+                        session.getRoomSummaries(
                                 spaceSummaryQueryParams {
                                     this.memberships = listOf(Membership.INVITE)
                                 }
                         ).size
                     }
 
-                    val totalCount = roomService.getNotificationCountForRooms(
+                    val totalCount = session.getNotificationCountForRooms(
                             roomSummaryQueryParams {
                                 this.memberships = listOf(Membership.JOIN)
                                 this.activeSpaceFilter = ActiveSpaceFilter.ActiveSpace(null).takeIf {

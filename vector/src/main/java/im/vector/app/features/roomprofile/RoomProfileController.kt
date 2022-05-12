@@ -120,6 +120,9 @@ class RoomProfileController @Inject constructor(
             }
         }
 
+
+
+
         var encryptionMisconfigured = false
         val e2eInfoText = if (roomSummary.isEncrypted) {
             if (roomSummary.roomEncryptionAlgorithm is RoomEncryptionAlgorithm.SupportedAlgorithm) {
@@ -179,13 +182,11 @@ class RoomProfileController @Inject constructor(
         buildProfileSection(stringProvider.getString(R.string.room_profile_section_more))
         buildProfileAction(
                 id = "settings",
-                title = stringProvider.getString(
-                        if (roomSummary.isDirect) {
-                            R.string.direct_room_profile_section_more_settings
-                        } else {
-                            R.string.room_profile_section_more_settings
-                        }
-                ),
+                title = stringProvider.getString(if (roomSummary.isDirect) {
+                    R.string.direct_room_profile_section_more_settings
+                } else {
+                    R.string.room_profile_section_more_settings
+                }),
                 icon = R.drawable.ic_room_profile_settings,
                 action = { callback?.onSettingsClicked() }
         )
@@ -230,13 +231,11 @@ class RoomProfileController @Inject constructor(
         }
         buildProfileAction(
                 id = "leave",
-                title = stringProvider.getString(
-                        if (roomSummary.isDirect) {
-                            R.string.direct_room_profile_section_more_leave
-                        } else {
-                            R.string.room_profile_section_more_leave
-                        }
-                ),
+                title = stringProvider.getString(if (roomSummary.isDirect) {
+                    R.string.direct_room_profile_section_more_leave
+                } else {
+                    R.string.room_profile_section_more_leave
+                }),
                 divider = false,
                 destructive = true,
                 icon = R.drawable.ic_room_actions_leave,

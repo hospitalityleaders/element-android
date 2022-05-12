@@ -16,7 +16,6 @@
 package im.vector.app.features.notifications
 
 import im.vector.app.ActiveSessionDataSource
-import org.matrix.android.sdk.api.session.getRoom
 import javax.inject.Inject
 
 class OutdatedEventDetector @Inject constructor(
@@ -35,7 +34,7 @@ class OutdatedEventDetector @Inject constructor(
             val eventID = notifiableEvent.eventId
             val roomID = notifiableEvent.roomId
             val room = session.getRoom(roomID) ?: return false
-            return room.readService().isEventRead(eventID)
+            return room.isEventRead(eventID)
         }
         return false
     }

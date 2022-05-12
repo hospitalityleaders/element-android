@@ -23,7 +23,6 @@ import org.matrix.android.sdk.internal.crypto.model.rest.KeysUploadResponse
 import org.matrix.android.sdk.internal.crypto.tasks.UploadKeysTask
 import org.matrix.android.sdk.internal.session.SessionScope
 import org.matrix.android.sdk.internal.util.JsonCanonicalizer
-import org.matrix.android.sdk.internal.util.time.Clock
 import org.matrix.olm.OlmAccount
 import timber.log.Timber
 import javax.inject.Inject
@@ -39,7 +38,6 @@ internal class OneTimeKeysUploader @Inject constructor(
         private val olmDevice: MXOlmDevice,
         private val objectSigner: ObjectSigner,
         private val uploadKeysTask: UploadKeysTask,
-        private val clock: Clock,
         context: Context
 ) {
     // tell if there is a OTK check in progress
@@ -79,7 +77,7 @@ internal class OneTimeKeysUploader @Inject constructor(
             Timber.v("maybeUploadOneTimeKeys: already in progress")
             return
         }
-        if (clock.epochMillis() - lastOneTimeKeyCheck < ONE_TIME_KEY_UPLOAD_PERIOD) {
+        if (System.currentTimeMillis() - lastOneTimeKeyCheck < ONE_TIME_KEY_UPLOAD_PERIOD) {
             // we've done a key upload recently.
             Timber.v("maybeUploadOneTimeKeys: executed too recently")
             return
@@ -96,7 +94,7 @@ internal class OneTimeKeysUploader @Inject constructor(
 
         Timber.d("maybeUploadOneTimeKeys: otk count $oneTimeKeyCountFromSync , unpublished fallback key ${olmDevice.hasUnpublishedFallbackKey()}")
 
-        lastOneTimeKeyCheck = clock.epochMillis()
+        lastOneTimeKeyCheck = System.currentTimeMillis()
 
         // We then check how many keys we can store in the Account object.
         val maxOneTimeKeys = olmDevice.getMaxNumberOfOneTimeKeys()
@@ -128,7 +126,7 @@ internal class OneTimeKeysUploader @Inject constructor(
 
         // Check if we need to forget a fallback key
         val latestPublishedTime = getLastFallbackKeyPublishTime()
-        if (latestPublishedTime != 0L && clock.epochMillis() - latestPublishedTime > FALLBACK_KEY_FORGET_DELAY) {
+        if (latestPublishedTime != 0L && System.currentTimeMillis() - latestPublishedTime > FALLBACK_KEY_FORGET_DELAY) {
             // This should be called once you are reasonably certain that you will not receive any more messages
             // that use the old fallback key
             Timber.d("## forgetFallbackKey()")
@@ -170,7 +168,7 @@ internal class OneTimeKeysUploader @Inject constructor(
         olmDevice.markKeysAsPublished()
         if (hadUnpublishedFallbackKey) {
             // It had an unpublished fallback key that was published just now
-            saveLastFallbackKeyPublishTime(clock.epochMillis())
+            saveLastFallbackKeyPublishTime(System.currentTimeMillis())
         }
 
         if (response.hasOneTimeKeyCountsForAlgorithm(MXKey.KEY_SIGNED_CURVE_25519_TYPE)) {

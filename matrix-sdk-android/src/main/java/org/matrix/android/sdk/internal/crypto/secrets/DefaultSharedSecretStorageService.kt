@@ -40,7 +40,7 @@ import org.matrix.android.sdk.api.session.securestorage.SsssKeySpec
 import org.matrix.android.sdk.api.session.securestorage.SsssPassphrase
 import org.matrix.android.sdk.api.util.fromBase64
 import org.matrix.android.sdk.api.util.toBase64NoPadding
-import org.matrix.android.sdk.internal.crypto.SecretShareManager
+import org.matrix.android.sdk.internal.crypto.OutgoingGossipingRequestManager
 import org.matrix.android.sdk.internal.crypto.keysbackup.generatePrivateKeyWithPassword
 import org.matrix.android.sdk.internal.crypto.tools.HkdfSha256
 import org.matrix.android.sdk.internal.crypto.tools.withOlmDecryption
@@ -57,7 +57,7 @@ import kotlin.experimental.and
 internal class DefaultSharedSecretStorageService @Inject constructor(
         @UserId private val userId: String,
         private val accountDataService: SessionAccountDataService,
-        private val secretShareManager: SecretShareManager,
+        private val outgoingGossipingRequestManager: OutgoingGossipingRequestManager,
         private val coroutineDispatchers: MatrixCoroutineDispatchers,
         private val cryptoCoroutineScope: CoroutineScope
 ) : SharedSecretStorageService {
@@ -66,7 +66,7 @@ internal class DefaultSharedSecretStorageService @Inject constructor(
                                      key: SsssKeySpec?,
                                      keyName: String,
                                      keySigner: KeySigner?): SsssKeyCreationInfo {
-        return withContext(cryptoCoroutineScope.coroutineContext + coroutineDispatchers.computation) {
+        return withContext(cryptoCoroutineScope.coroutineContext + coroutineDispatchers.main) {
             val bytes = (key as? RawBytesKeySpec)?.privateKey
                     ?: ByteArray(32).also {
                         SecureRandom().nextBytes(it)
@@ -99,7 +99,7 @@ internal class DefaultSharedSecretStorageService @Inject constructor(
                                                    passphrase: String,
                                                    keySigner: KeySigner,
                                                    progressListener: ProgressListener?): SsssKeyCreationInfo {
-        return withContext(cryptoCoroutineScope.coroutineContext + coroutineDispatchers.computation) {
+        return withContext(cryptoCoroutineScope.coroutineContext + coroutineDispatchers.main) {
             val privatePart = generatePrivateKeyWithPassword(passphrase, progressListener)
 
             val storageKeyContent = SecretStorageKeyContent(
@@ -158,7 +158,7 @@ internal class DefaultSharedSecretStorageService @Inject constructor(
     }
 
     override suspend fun storeSecret(name: String, secretBase64: String, keys: List<SharedSecretStorageService.KeyRef>) {
-        withContext(cryptoCoroutineScope.coroutineContext + coroutineDispatchers.computation) {
+        withContext(cryptoCoroutineScope.coroutineContext + coroutineDispatchers.main) {
             val encryptedContents = HashMap<String, EncryptedSecretContent>()
             keys.forEach {
                 val keyId = it.keyId
@@ -174,7 +174,7 @@ internal class DefaultSharedSecretStorageService @Inject constructor(
                             throw SharedSecretStorageError.UnknownAlgorithm(key.keyInfo.content.algorithm ?: "")
                         }
                     }
-                    is KeyInfoResult.Error   -> throw key.error
+                    is KeyInfoResult.Error -> throw key.error
                 }
             }
 
@@ -213,8 +213,7 @@ internal class DefaultSharedSecretStorageService @Inject constructor(
                 secretKey.privateKey,
                 ByteArray(32) { 0.toByte() },
                 secretName.toByteArray(),
-                64
-        )
+                64)
 
         // The first 32 bytes are used as the AES key, and the next 32 bytes are used as the MAC key
         val aesKey = pseudoRandomKey.copyOfRange(0, 32)
@@ -256,8 +255,7 @@ internal class DefaultSharedSecretStorageService @Inject constructor(
                 secretKey.privateKey,
                 ByteArray(32) { 0.toByte() },
                 secretName.toByteArray(),
-                64
-        )
+                64)
 
         // The first 32 bytes are used as the AES key, and the next 32 bytes are used as the MAC key
         val aesKey = pseudoRandomKey.copyOfRange(0, 32)
@@ -318,7 +316,7 @@ internal class DefaultSharedSecretStorageService @Inject constructor(
         val algorithm = key.keyInfo.content
         if (SSSS_ALGORITHM_CURVE25519_AES_SHA2 == algorithm.algorithm) {
             val keySpec = secretKey as? RawBytesKeySpec ?: throw SharedSecretStorageError.BadKeyFormat
-            return withContext(cryptoCoroutineScope.coroutineContext + coroutineDispatchers.computation) {
+            return withContext(cryptoCoroutineScope.coroutineContext + coroutineDispatchers.main) {
                 // decrypt from recovery key
                 withOlmDecryption { olmPkDecryption ->
                     olmPkDecryption.setPrivateKey(keySpec.privateKey)
@@ -333,7 +331,7 @@ internal class DefaultSharedSecretStorageService @Inject constructor(
             }
         } else if (SSSS_ALGORITHM_AES_HMAC_SHA2 == algorithm.algorithm) {
             val keySpec = secretKey as? RawBytesKeySpec ?: throw SharedSecretStorageError.BadKeyFormat
-            return withContext(cryptoCoroutineScope.coroutineContext + coroutineDispatchers.computation) {
+            return withContext(cryptoCoroutineScope.coroutineContext + coroutineDispatchers.main) {
                 decryptAesHmacSha2(keySpec, name, secretContent)
             }
         } else {
@@ -380,7 +378,10 @@ internal class DefaultSharedSecretStorageService @Inject constructor(
         return IntegrityResult.Success(keyInfo.content.passphrase != null)
     }
 
-    override suspend fun requestSecret(name: String, myOtherDeviceId: String) {
-        secretShareManager.requestSecretTo(myOtherDeviceId, name)
+    override fun requestSecret(name: String, myOtherDeviceId: String) {
+        outgoingGossipingRequestManager.sendSecretShareRequest(
+                name,
+                mapOf(userId to listOf(myOtherDeviceId))
+        )
     }
 }

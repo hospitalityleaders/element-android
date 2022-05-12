@@ -52,12 +52,10 @@ class SharedSecureStorageViewModelTest {
         val viewModel = createViewModel()
         viewModel
                 .test()
-                .assertState(
-                        aViewState(
-                                hasPassphrase = true,
-                                step = SharedSecureStorageViewState.Step.EnterPassphrase
-                        )
-                )
+                .assertState(aViewState(
+                        hasPassphrase = true,
+                        step = SharedSecureStorageViewState.Step.EnterPassphrase
+                ))
                 .finish()
     }
 
@@ -69,12 +67,10 @@ class SharedSecureStorageViewModelTest {
 
         viewModel
                 .test()
-                .assertState(
-                        aViewState(
-                                hasPassphrase = false,
-                                step = SharedSecureStorageViewState.Step.EnterKey
-                        )
-                )
+                .assertState(aViewState(
+                        hasPassphrase = false,
+                        step = SharedSecureStorageViewState.Step.EnterKey
+                ))
                 .finish()
     }
 

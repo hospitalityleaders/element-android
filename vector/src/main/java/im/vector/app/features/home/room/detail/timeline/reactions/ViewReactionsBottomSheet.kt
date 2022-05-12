@@ -82,13 +82,11 @@ class ViewReactionsBottomSheet :
     companion object {
         fun newInstance(roomId: String, informationData: MessageInformationData): ViewReactionsBottomSheet {
             return ViewReactionsBottomSheet().apply {
-                setArguments(
-                        TimelineEventFragmentArgs(
-                                eventId = informationData.eventId,
-                                roomId = roomId,
-                                informationData = informationData
-                        )
-                )
+                setArguments(TimelineEventFragmentArgs(
+                        eventId = informationData.eventId,
+                        roomId = roomId,
+                        informationData = informationData
+                ))
             }
         }
     }

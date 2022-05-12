@@ -67,13 +67,9 @@ object ServerUrlsRepository {
     fun getLastHomeServerUrl(context: Context): String {
         val prefs = DefaultSharedPreferences.getInstance(context)
 
-        return prefs.getString(
-                HOME_SERVER_URL_PREF,
-                prefs.getString(
-                        DEFAULT_REFERRER_HOME_SERVER_URL_PREF,
-                        getDefaultHomeServerUrl(context)
-                )!!
-        )!!
+        return prefs.getString(HOME_SERVER_URL_PREF,
+                prefs.getString(DEFAULT_REFERRER_HOME_SERVER_URL_PREF,
+                        getDefaultHomeServerUrl(context))!!)!!
     }
 
     /**

@@ -44,8 +44,7 @@ internal class DefaultStoreRoomSessionDataTask @Inject constructor(
                     params.roomId,
                     params.sessionId,
                     params.version,
-                    params.keyBackupData
-            )
+                    params.keyBackupData)
         }
     }
 }

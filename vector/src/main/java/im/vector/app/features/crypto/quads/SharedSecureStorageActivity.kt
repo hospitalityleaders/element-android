@@ -154,13 +154,11 @@ class SharedSecureStorageActivity :
                       resultKeyStoreAlias: String = DEFAULT_RESULT_KEYSTORE_ALIAS): Intent {
             require(requestedSecrets.isNotEmpty())
             return Intent(context, SharedSecureStorageActivity::class.java).also {
-                it.putExtra(
-                        Mavericks.KEY_ARG, Args(
+                it.putExtra(Mavericks.KEY_ARG, Args(
                         keyId,
                         requestedSecrets,
                         resultKeyStoreAlias
-                )
-                )
+                ))
             }
         }
     }

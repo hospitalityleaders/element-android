@@ -11,7 +11,7 @@
     </style>
 
     <style name="Widget.Vector.Button.CallToAction" parent="Widget.Vector.Button">
-        <item name="android:backgroundTint">@color/button_background_tint_selector</item>
+        <item name="android:backgroundTint">#32a3fd</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 
@@ -33,6 +33,32 @@
         <!-- Keep default colors from the theme -->
     </style>
 
+
+    <style name="VectorMaterialNew">
+        <item name="colorPrimary">@color/palette_lighterrr</item>
+        <item name="colorSecondary">@color/palette_lighterrr</item>
+    </style>
+
+
+    <style name="Widget.Vector.Button.Unelevated" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:minWidth">94dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.Vector.Button</item>
+        <item name="cornerRadius">8dp</item>
+        <item name="lineHeight">24sp</item>
+    </style>
+
+    <style name="Widget.Vector.Button.Unelevated.Bot">
+        <item name="materialThemeOverlay">@style/VectorMaterialThemeOverlayBot</item>
+    </style>
+
+    <style name="VectorMaterialThemeOverlayBot">
+        <item name="colorPrimary">@color/palette_element_darkbluee</item>
+        <item name="colorOnPrimary">@color/palette_element_darkbluee</item>
+    </style>
+
+
     <style name="Widget.Vector.Button.Text" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="colorControlHighlight">?colorSecondary</item>
         <item name="materialThemeOverlay">@style/VectorMaterialThemeOverlayPositive</item>
@@ -40,6 +66,7 @@
         <item name="cornerRadius">8dp</item>
         <item name="lineHeight">24sp</item>
     </style>
+
 
     <style name="Widget.Vector.Button.Text.OnPrimary">
         <item name="colorControlHighlight">?colorOnPrimary</item>
@@ -64,5 +91,33 @@
     <style name="VectorMaterialThemeOverlayOnPrimary">
         <item name="colorPrimary">?colorOnPrimary</item>
     </style>
+
+
+    <style name="Widget.Vector.Button.Outlined.Poll">
+        <item name="android:minHeight">44dp</item>
+        <item name="cornerRadius">10dp</item>
+    </style>
+
+<!--    <style name="Widget.Vector.Button.Text2" parent="Theme.Vector.BottomSheetDialog.Light2">-->
+<!--        <item name="colorControlHighlight">?colorOnSurface</item>-->
+<!--        <item name="materialThemeOverlay">@style/VectorMaterialThemeOverlayPositive</item>-->
+<!--        <item name="android:textAppearance">@style/TextAppearance.Vector.Button</item>-->
+<!--        <item name="cornerRadius">8dp</item>-->
+<!--        <item name="lineHeight">24sp</item>-->
+<!--    </style>-->
+
+    <style name="Widget.Vector.Button.Text.impo" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="colorControlHighlight">@color/palette_lighterrr</item>
+        <item name="colorPrimary">@color/palette_lighterrr</item>
+        <item name="colorSecondary">@color/palette_lighterrr</item>
+        <item name="materialThemeOverlay">@style/VectorMaterialNew</item>
+        <item name="android:textAppearance">@style/TextAppearance.Vector.Button</item>
+        <item name="cornerRadius">8dp</item>
+        <item name="lineHeight">24sp</item>
+    </style>
+
+
+
+
 
 </resources>

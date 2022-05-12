@@ -22,10 +22,10 @@ import im.vector.app.core.ui.list.GenericItem_
 import im.vector.app.core.utils.createUIHandler
 import im.vector.lib.core.utils.epoxy.charsequence.toEpoxyCharSequence
 import me.gujun.android.span.span
-import org.matrix.android.sdk.api.session.crypto.OutgoingKeyRequest
+import org.matrix.android.sdk.api.session.crypto.model.OutgoingRoomKeyRequest
 import javax.inject.Inject
 
-class OutgoingKeyRequestPagedController @Inject constructor() : PagedListEpoxyController<OutgoingKeyRequest>(
+class OutgoingKeyRequestPagedController @Inject constructor() : PagedListEpoxyController<OutgoingRoomKeyRequest>(
         // Important it must match the PageList builder notify Looper
         modelBuildingHandler = createUIHandler()
 ) {
@@ -36,7 +36,7 @@ class OutgoingKeyRequestPagedController @Inject constructor() : PagedListEpoxyCo
 
     var interactionListener: InteractionListener? = null
 
-    override fun buildItemModel(currentPosition: Int, item: OutgoingKeyRequest?): EpoxyModel<*> {
+    override fun buildItemModel(currentPosition: Int, item: OutgoingRoomKeyRequest?): EpoxyModel<*> {
         val roomKeyRequest = item ?: return GenericItem_().apply { id(currentPosition) }
 
         return GenericItem_().apply {

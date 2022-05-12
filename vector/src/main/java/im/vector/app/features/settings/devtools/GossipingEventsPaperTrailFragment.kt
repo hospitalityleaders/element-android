@@ -27,8 +27,10 @@ import im.vector.app.core.extensions.cleanup
 import im.vector.app.core.extensions.configureWith
 import im.vector.app.core.platform.VectorBaseFragment
 import im.vector.app.core.resources.ColorProvider
+import im.vector.app.core.utils.createJSonViewerStyleProvider
 import im.vector.app.databinding.FragmentGenericRecyclerBinding
-import org.matrix.android.sdk.api.session.crypto.model.AuditTrail
+import org.billcarsonfr.jsonviewer.JSonViewerDialog
+import org.matrix.android.sdk.api.session.events.model.Event
 import javax.inject.Inject
 
 class GossipingEventsPaperTrailFragment @Inject constructor(
@@ -62,17 +64,17 @@ class GossipingEventsPaperTrailFragment @Inject constructor(
         super.onDestroyView()
     }
 
-    override fun didTap(event: AuditTrail) {
-//        if (event.isEncrypted()) {
-//            event.toClearContentStringWithIndent()
-//        } else {
-//            event.toContentStringWithIndent()
-//        }?.let {
-//            JSonViewerDialog.newInstance(
-//                    it,
-//                    -1,
-//                    createJSonViewerStyleProvider(colorProvider)
-//            ).show(childFragmentManager, "JSON_VIEWER")
-//        }
+    override fun didTap(event: Event) {
+        if (event.isEncrypted()) {
+            event.toClearContentStringWithIndent()
+        } else {
+            event.toContentStringWithIndent()
+        }?.let {
+            JSonViewerDialog.newInstance(
+                    it,
+                    -1,
+                    createJSonViewerStyleProvider(colorProvider)
+            ).show(childFragmentManager, "JSON_VIEWER")
+        }
     }
 }

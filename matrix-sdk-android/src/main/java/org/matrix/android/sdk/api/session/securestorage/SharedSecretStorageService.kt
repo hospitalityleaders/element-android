@@ -131,7 +131,7 @@ interface SharedSecretStorageService {
 
     fun checkShouldBeAbleToAccessSecrets(secretNames: List<String>, keyId: String?): IntegrityResult
 
-    suspend fun requestSecret(name: String, myOtherDeviceId: String)
+    fun requestSecret(name: String, myOtherDeviceId: String)
 
     data class KeyRef(
             val keyId: String?,

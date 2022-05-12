@@ -43,7 +43,6 @@ import im.vector.app.core.utils.checkPermissions
 import im.vector.app.core.utils.onPermissionDeniedSnackbar
 import im.vector.app.core.utils.registerForPermissionsResult
 import im.vector.app.features.analytics.plan.MobileScreen
-import im.vector.app.features.analytics.plan.ViewRoom
 import im.vector.app.features.contactsbook.ContactsBookFragment
 import im.vector.app.features.qrcode.QrCodeScannerEvents
 import im.vector.app.features.qrcode.QrCodeScannerFragment
@@ -207,11 +206,7 @@ class CreateDirectRoomActivity : SimpleFragmentActivity() {
     }
 
     private fun renderCreationSuccess(roomId: String) {
-        navigator.openRoom(
-                context = this,
-                roomId = roomId,
-                trigger = ViewRoom.Trigger.MessageUser
-        )
+        navigator.openRoom(this, roomId)
         finish()
     }
 
