@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
+
+    <!--
+     Define all the colors used across the Element Android project
+     Source: https://www.figma.com/file/X4XTH9iS2KGJ2wFKDqkyed/Compound?node-id=1338%3A17947
+     Some colors are not used, but we want the palette to be complete so we ignore the lint error
+     UnusedResources for all the resources in this file
+    -->
+
+    <!-- For all themes -->
+    <color name="palette_azure">#7A49A5</color>
+    <color name="palette_kiwi">#A13755</color>
+    <color name="palette_grape">#5D5BC5</color>
+    <color name="palette_verde">#4974A5</color>
+    <color name="palette_polly">#359394</color>
+    <color name="palette_melon">#2DC2C5</color>
+
+    <color name="palette_element_green">#32a3fd</color>
+    <color name="palette_element_greenetc">#f6f7fd</color>
+    <color name="palette_element_darkbluee">#2b375e</color>
+    <color name="palette_white">#F7F8FB</color>
+    <color name="palette_vermilion">#FD3732</color>
+    <color name="palette_splashhh">#272e41</color>
+
+    <color name="palette_ems">#7E69FF</color>
+    <color name="palette_aqua">#C2C52D</color>
+    <color name="palette_prune">#E57428</color>
+    <color name="palette_links">#32A3FD</color>
+    <color name="background_black">#272E41</color>
+    <color name="palette_element_green1">#7dc81b </color>
+
+    <!-- For light themes -->
+    <color name="palette_gray_25">#F4F6FA</color>
+    <color name="palette_gray_50">#E3E8F0</color>
+    <color name="palette_gray_100">#B5BDC2</color>
+    <color name="palette_gray_150">#8D97A5</color>
+
+    <color name="palette_gray_200">#7C8990</color>
+    <color name="palette_black_900">#272E41</color>
+
+    <color name="palette_ice">#F4F9FD</color>
+
+    <!-- For dark themes -->
+    <color name="palette_gray_250">#B5BDC2</color>
+    <color name="palette_gray_300">#8E99A4</color>
+    <color name="palette_gray_400">#7C8990</color>
+    <color name="palette_gray_450">#394049</color>
+    <color name="palette_black_800">#15191E</color>
+    <color name="palette_black_950">#21262C</color>
+
+
+    <!--extras -->
+
+    <color name="palette_lighterrr">#99a7c0</color>
+    <color name="palette_lighterrr1">#CDD5DB</color>
+    <color name="palette_chatscfab">#99a7c0</color>
+    <color name="palette_chatsfab2">#99a7c0</color>
+    <color name="palette_chatsfabeww">#ffffff</color>
+
+
+</resources>
