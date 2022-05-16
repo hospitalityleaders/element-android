@@ -11,6 +11,7 @@
         <!-- Default color for text View -->
         <item name="android:textColorTertiary">@color/element_content_primary_light</item>
         <item name="android:textColorLink">@color/element_link_light</item>
+
     </style>
 
     <style name="Theme.Vector.BottomSheetDialog.Dark" parent="Theme.MaterialComponents.BottomSheetDialog">
@@ -58,5 +59,17 @@
         <item name="android:textColor">?vctr_content_secondary</item>
         <item name="android:textSize">12sp</item>
     </style>
+
+
+<!--    <style name="Theme.Vector.BottomSheetDialog.Light2" parent="Theme.MaterialComponents.Light.BottomSheetDialog">-->
+<!--        <item name="colorPrimary">@color/palette_element_darkbluee</item>-->
+<!--        <item name="colorSecondary">@color/palette_element_darkbluee</item>-->
+<!--        <item name="colorSurface">@color/element_background_light</item>-->
+<!--        <item name="colorOnSurface">@color/element_content_primary_light</item>-->
+<!--        <item name="colorError">@color/element_alert_light</item>-->
+<!--        &lt;!&ndash; Default color for text View &ndash;&gt;-->
+<!--        <item name="android:textColorTertiary">@color/element_content_primary_light</item>-->
+<!--        <item name="android:textColorLink">@color/palette_element_darkbluee</item>-->
+<!--    </style>-->
 
 </resources>

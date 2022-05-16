@@ -55,16 +55,17 @@
         <!-- Material color -->
         <item name="colorPrimary">@color/element_accent_light</item>
         <item name="colorPrimaryVariant">@color/element_accent_light</item>
-        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorOnPrimary">#f6f8fa</item>
         <item name="colorSecondary">@color/element_accent_light</item>
         <item name="colorSecondaryVariant">@color/element_accent_light</item>
-        <item name="colorOnSecondary">@android:color/white</item>
+        <item name="colorOnSecondary">#f6f8fa</item>
         <item name="colorError">@color/element_alert_light</item>
         <item name="colorOnError">@color/palette_white</item>
         <item name="colorSurface">@color/element_system_light</item>
         <item name="colorOnSurface">?vctr_content_primary</item>
         <item name="android:colorBackground">@color/element_background_light</item>
         <item name="colorOnBackground">?vctr_content_primary</item>
+
 
         <!--Material type attributes-->
         <item name="textAppearanceButton">@style/TextAppearance.Vector.Button</item>
@@ -150,5 +151,20 @@
     </style>
 
     <style name="Theme.Vector.Light" parent="Base.Theme.Vector.Light" />
+
+<!--    <style name="Widget.Vector.Button.Text.impo.light" parent="Widget.MaterialComponents.Button.TextButton">-->
+<!--        <item name="colorControlHighlight">@color/palette_element_darkbluee</item>-->
+<!--        <item name="materialThemeOverlay">@style/VectorMaterialNew</item>-->
+<!--        <item name="colorPrimary">@color/palette_element_darkbluee</item>-->
+<!--        <item name="colorSecondary">@color/palette_element_darkbluee</item>-->
+<!--        <item name="android:textAppearance">@style/TextAppearance.Vector.Button</item>-->
+<!--        <item name="cornerRadius">8dp</item>-->
+<!--        <item name="lineHeight">24sp</item>-->
+<!--    </style>-->
+
+
+
+
+
 
 </resources>
