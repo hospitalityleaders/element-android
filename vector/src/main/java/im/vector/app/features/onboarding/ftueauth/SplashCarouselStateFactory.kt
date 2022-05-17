@@ -46,25 +46,26 @@ class SplashCarouselStateFactory @Inject constructor(
                         SplashCarouselState.Item(
                                 R.string.ftue_auth_carousel_secure_title.colorTerminatingFullStop(R.attr.colorAccent),
                                 R.string.ftue_auth_carousel_secure_body,
-                                hero(R.drawable.ic_splash_conversations, R.drawable.ic_splash_conversations_dark),
+                                hero(R.drawable.ic_light_sc1, R.drawable.ic_darker1),
+
                                 background(R.drawable.bg_carousel_page_1)
                         ),
                         SplashCarouselState.Item(
                                 R.string.ftue_auth_carousel_control_title.colorTerminatingFullStop(R.attr.colorAccent),
                                 R.string.ftue_auth_carousel_control_body,
-                                hero(R.drawable.ic_splash_control, R.drawable.ic_splash_control_dark),
+                                hero(R.drawable.ic_light_sc2, R.drawable.ic_darker2),
                                 background(R.drawable.bg_carousel_page_2)
                         ),
                         SplashCarouselState.Item(
                                 R.string.ftue_auth_carousel_encrypted_title.colorTerminatingFullStop(R.attr.colorAccent),
                                 R.string.ftue_auth_carousel_encrypted_body,
-                                hero(R.drawable.ic_splash_secure, R.drawable.ic_splash_secure_dark),
+                                hero(R.drawable.ic_light_sc3, R.drawable.ic_darker3),
                                 background(R.drawable.bg_carousel_page_3)
                         ),
                         SplashCarouselState.Item(
                                 collaborationTitle().colorTerminatingFullStop(R.attr.colorAccent),
                                 R.string.ftue_auth_carousel_workplace_body,
-                                hero(R.drawable.ic_splash_collaboration, R.drawable.ic_splash_collaboration_dark),
+                                hero(R.drawable.ic_light_sc4, R.drawable.ic_darker4),
                                 background(R.drawable.bg_carousel_page_4)
                         )
                 )

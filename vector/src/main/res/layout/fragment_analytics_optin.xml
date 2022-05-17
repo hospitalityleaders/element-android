@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:importantForAccessibility="no"
-        android:src="@drawable/element_logo_stars" />
+        android:src="@drawable/holedologo" />
 
     <TextView
         android:id="@+id/title"
@@ -129,6 +129,7 @@
         android:id="@+id/submit"
         style="@style/Widget.Vector.Button.CallToAction"
         android:layout_width="0dp"
+        android:backgroundTint="#7DC81B"
         android:layout_height="wrap_content"
         android:minHeight="@dimen/layout_touch_size"
         android:text="@string/action_enable" />
