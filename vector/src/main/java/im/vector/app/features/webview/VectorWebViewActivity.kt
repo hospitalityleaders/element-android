@@ -18,9 +18,12 @@ package im.vector.app.features.webview
 
 import android.content.Context
 import android.content.Intent
+import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
+import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
+import im.vector.app.R
 import im.vector.app.core.di.ActiveSessionHolder
 import im.vector.app.core.platform.VectorBaseActivity
 import im.vector.app.databinding.ActivityVectorWebViewBinding
@@ -48,6 +51,10 @@ class VectorWebViewActivity : VectorBaseActivity<ActivityVectorWebViewBinding>()
                 .allowBack()
         waitingView = views.simpleWebviewLoader
 
+        window.statusBarColor = ContextCompat.getColor(this, R.color.palette_element_greenetc)
+
+        views.simpleWebviewLoader.visibility = View.VISIBLE
+
         views.simpleWebview.settings.apply {
             // Enable Javascript
             javaScriptEnabled = true
@@ -68,6 +75,9 @@ class VectorWebViewActivity : VectorBaseActivity<ActivityVectorWebViewBinding>()
             allowUniversalAccessFromFileURLs = true
 
             displayZoomControls = false
+
+            javaScriptCanOpenWindowsAutomatically = true
+
         }
 
         val cookieManager = android.webkit.CookieManager.getInstance()
@@ -90,6 +100,25 @@ class VectorWebViewActivity : VectorBaseActivity<ActivityVectorWebViewBinding>()
             }
         }
         views.simpleWebview.loadUrl(url)
+
+        views.simpleWebview.webViewClient = object : android.webkit.WebViewClient() {
+            override fun onPageFinished(view: WebView, url: String) {
+
+
+                views.simpleWebviewLoader.visibility = View.GONE
+
+                super.onPageFinished(view, url)
+
+//                val progresso = findViewById<ProgressBar>(R.id.simple_webview_loader)
+//
+//                progresso.visibility = View.GONE
+
+
+
+
+            }
+        }
+
     }
 
     /* ==========================================================================================

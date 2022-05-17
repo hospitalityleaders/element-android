@@ -3041,4 +3041,13 @@
     <!-- Screen sharing -->
     <string name="screen_sharing_notification_title">${app_name} Screen Sharing</string>
     <string name="screen_sharing_notification_description">Screen sharing is in progress</string>
+
+    <string name="holedo_newss">News</string>
+    <string name="holedo_jobss">Jobs</string>
+    <string name="holedo_profilee">Profile</string>
+    <string name="holedo_communityy">Community</string>
+    <string name="holedo_aboutt">About Holedo</string>
+    <string name="holedo_badgess">Badges</string>
+    <string name="holedo_helpp">Help</string>
+
 </resources>
