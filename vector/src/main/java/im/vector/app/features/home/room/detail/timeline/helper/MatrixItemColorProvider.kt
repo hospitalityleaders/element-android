@@ -112,6 +112,11 @@ class MatrixItemColorProvider @Inject constructor(
             return when ((roomId?.toList()?.sumOf { it.code } ?: 0) % 3) {
                 1    -> R.color.element_room_02
                 2    -> R.color.element_room_03
+                3    -> R.color.element_name_04
+                4    -> R.color.element_name_05
+                5    -> R.color.element_name_06
+                6    -> R.color.element_name_07
+                7    -> R.color.element_name_08
                 else -> R.color.element_room_01
             }
         }

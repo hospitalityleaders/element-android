@@ -13,6 +13,9 @@
     <color name="element_link_light">@color/palette_links</color>
     <color name="element_link_dark">@color/palette_links</color>
 
+    <color name="palette_element_orange">@color/palette_vermilion</color>
+
+
     <!-- attr for content colors -->
     <attr name="vctr_content_primary" format="color" />
     <attr name="vctr_content_secondary" format="color" />

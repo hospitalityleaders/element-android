@@ -17,10 +17,10 @@
 package im.vector.app.features.settings
 
 object VectorSettingsUrls {
-    const val HELP = "https://element.io/help"
-    const val COPYRIGHT = "https://element.io/copyright"
-    const val TAC = "https://element.io/terms-of-service"
-    const val PRIVACY_POLICY = "https://element.io/privacy"
-    const val DISCLAIMER_URL = "https://element.io/previously-riot"
+    const val HELP = "http://holedo.im/help"
+    const val COPYRIGHT = "https://holedo.im/copyright"
+    const val TAC = "http://holedo.im/tos"
+    const val PRIVACY_POLICY = "http://holedo.im/privacy"
+    const val DISCLAIMER_URL = "https://holedo.im/previously-riot"
     const val THIRD_PARTY_LICENSES = "file:///android_asset/open_source_licenses.html"
 }

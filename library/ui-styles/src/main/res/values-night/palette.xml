@@ -21,7 +21,7 @@
     <color name="palette_element_darkbluee">#2b375e</color>
     <color name="palette_white">#F7F8FB</color>
     <color name="palette_vermilion">#FD3732</color>
-    <color name="palette_splashhh">#f6f7fd</color>
+    <color name="palette_splashhh">#272e41</color>
 
     <color name="palette_ems">#7E69FF</color>
     <color name="palette_aqua">#C2C52D</color>
@@ -52,11 +52,11 @@
 
     <!--extras -->
 
-    <color name="palette_lighterrr">#2b375e</color>
-    <color name="palette_lighterrr1">#2b375e</color>
-    <color name="palette_chatscfab">#32a3fd</color>
-    <color name="palette_chatsfab2">#32a3fd</color>
-    <color name="palette_chatsfabeww">#32a3fd</color>
+    <color name="palette_lighterrr">#99a7c0</color>
+    <color name="palette_lighterrr1">#CDD5DB</color>
+    <color name="palette_chatscfab">#99a7c0</color>
+    <color name="palette_chatsfab2">#99a7c0</color>
+    <color name="palette_chatsfabeww">#ffffff</color>
 
 
 </resources>
