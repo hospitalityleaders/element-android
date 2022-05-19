@@ -56,6 +56,7 @@ import im.vector.app.features.home.room.detail.RoomDetailPendingActionStore
 import im.vector.app.features.home.room.detail.timeline.helper.MatrixItemColorProvider
 import im.vector.app.features.roommemberprofile.devices.DeviceListBottomSheet
 import im.vector.app.features.roommemberprofile.powerlevel.EditPowerLevelDialogs
+import im.vector.app.features.webview.VectorWebViewActivity
 import kotlinx.parcelize.Parcelize
 import org.matrix.android.sdk.api.session.crypto.model.RoomEncryptionTrustLevel
 import org.matrix.android.sdk.api.session.room.powerlevels.Role
@@ -335,7 +336,8 @@ class RoomMemberProfileFragment @Inject constructor(
     }
 
     private fun onAvatarClicked(view: View, userMatrixItem: MatrixItem) {
-        navigator.openBigImageViewer(requireActivity(), view, userMatrixItem)
+//        navigator.openBigImageViewer(requireActivity(), view, userMatrixItem)
+        callingprofilefunction()
     }
 
     override fun onOverrideColorClicked(): Unit = withState(viewModel) { state ->
@@ -419,6 +421,31 @@ class RoomMemberProfileFragment @Inject constructor(
                 ) {
                     viewModel.handle(RoomMemberProfileAction.KickUser(null))
                 }
+    }
+
+
+    fun callingprofilefunction(){
+        val usernameorigaa =  headerViews.memberProfileIdView.text.toString()
+        // usernameorigaa = @appsdev_tanmay:holedo.com
+        val usernamefinaa = usernameorigaa.replace(":holedo.com", "")
+        // usernamefinaa = @appsdev_tanmay
+        val usernamefinba = usernamefinaa.replace("@", "")
+        // usernamefinba = appsdev_tanmay
+
+//            val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://profile.holedo.im/$usernamefinba"))
+//            startActivity(i)
+
+        val  urll25 = "https://profile.holedo.im/?u=$usernamefinba"
+
+//        Toast.makeText(requireContext(), urll25, Toast.LENGTH_LONG).show()
+
+        //urll25 = "https://profile.holedo.im/appsdev_tanmay"
+//            val intent13  = Intent(requireContext(), VectorWebViewActivity::class.java)
+//            intent13.putExtra("URL24",urll25)
+//            startActivity(intent13)
+
+        val intentag  = VectorWebViewActivity.getIntent(requireContext(), urll25)
+        startActivity(intentag)
     }
 
     override fun onInviteClicked() {

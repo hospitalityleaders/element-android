@@ -19,6 +19,7 @@
                 android:id="@+id/loginServerIcon"
                 android:layout_width="74dp"
                 android:layout_height="30dp"
+                android:visibility="gone"
                 android:importantForAccessibility="no"
                 app:tint="?vctr_content_primary"
                 tools:ignore="MissingPrefix"
