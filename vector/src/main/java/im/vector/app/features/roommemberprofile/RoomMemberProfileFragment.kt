@@ -187,7 +187,9 @@ class RoomMemberProfileFragment @Inject constructor(
                     }
                     .setNegativeButton(R.string.action_cancel, null)
                     .show()
+
         }
+
     }
 
     override fun onDestroyView() {
