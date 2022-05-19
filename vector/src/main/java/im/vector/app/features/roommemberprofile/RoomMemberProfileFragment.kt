@@ -251,11 +251,11 @@ class RoomMemberProfileFragment @Inject constructor(
                     headerViews.memberProfileDecorationImageView.isVisible = false
                 }
 
-                headerViews.memberProfileAvatarView.setOnClickListener { view ->
-                    onAvatarClicked(view, userMatrixItem)
+                headerViews.memberProfileAvatarView.setOnClickListener {
+                    onAvatarClicked()
                 }
-                views.matrixProfileToolbarAvatarImageView.setOnClickListener { view ->
-                    onAvatarClicked(view, userMatrixItem)
+                views.matrixProfileToolbarAvatarImageView.setOnClickListener {
+                    onAvatarClicked()
                 }
             }
         }
@@ -335,7 +335,7 @@ class RoomMemberProfileFragment @Inject constructor(
                 }.show()
     }
 
-    private fun onAvatarClicked(view: View, userMatrixItem: MatrixItem) {
+    private fun onAvatarClicked() {
 //        navigator.openBigImageViewer(requireActivity(), view, userMatrixItem)
         callingprofilefunction()
     }
