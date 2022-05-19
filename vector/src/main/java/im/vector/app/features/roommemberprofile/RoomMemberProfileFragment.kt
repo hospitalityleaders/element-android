@@ -339,7 +339,9 @@ class RoomMemberProfileFragment @Inject constructor(
 
     private fun onAvatarClicked() {
 //        navigator.openBigImageViewer(requireActivity(), view, userMatrixItem)
+
         callingprofilefunction()
+
     }
 
     override fun onOverrideColorClicked(): Unit = withState(viewModel) { state ->
@@ -427,8 +429,11 @@ class RoomMemberProfileFragment @Inject constructor(
 
 
     fun callingprofilefunction(){
+
         val usernameorigaa =  headerViews.memberProfileIdView.text.toString()
+
         // usernameorigaa = @appsdev_tanmay:holedo.com
+
         val usernamefinaa = usernameorigaa.replace(":holedo.com", "")
         // usernamefinaa = @appsdev_tanmay
         val usernamefinba = usernamefinaa.replace("@", "")
