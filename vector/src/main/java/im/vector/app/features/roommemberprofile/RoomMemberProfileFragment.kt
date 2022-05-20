@@ -442,6 +442,8 @@ class RoomMemberProfileFragment @Inject constructor(
 //            val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://profile.holedo.im/$usernamefinba"))
 //            startActivity(i)
 
+
+
         val  urll25 = "https://profile.holedo.im/?u=$usernamefinba"
 
 //        Toast.makeText(requireContext(), urll25, Toast.LENGTH_LONG).show()
