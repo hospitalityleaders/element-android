@@ -123,6 +123,7 @@ class VectorApplication :
         vectorUncaughtExceptionHandler.activate()
 
         // Remove Log handler statically added by Jitsi
+        // okay done
         Timber.forest()
                 .filterIsInstance(JitsiMeetDefaultLogHandler::class.java)
                 .forEach { Timber.uproot(it) }
