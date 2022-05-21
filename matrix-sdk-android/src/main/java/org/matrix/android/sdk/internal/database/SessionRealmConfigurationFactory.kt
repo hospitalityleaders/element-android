@@ -47,7 +47,7 @@ internal class SessionRealmConfigurationFactory @Inject constructor(
         context: Context) {
 
     // Keep legacy preferences name for compatibility reason
-    private val sharedPreferences = context.getSharedPreferences("im.vector.matrix.android.realm", Context.MODE_PRIVATE)
+    private val sharedPreferences = context.getSharedPreferences("com.holedo.matrix.android.realm", Context.MODE_PRIVATE)
 
     fun create(): RealmConfiguration {
         val shouldClearRealm = sharedPreferences.getBoolean("$REALM_SHOULD_CLEAR_FLAG_$sessionId", false)

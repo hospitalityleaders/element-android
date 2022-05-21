@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package im.vector.app.features.debug.di
+package com.holedo.app.features.debug.di
 
 import android.content.Context
 import dagger.Binds
@@ -22,12 +22,12 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import im.vector.app.features.DefaultVectorFeatures
-import im.vector.app.features.DefaultVectorOverrides
-import im.vector.app.features.VectorFeatures
-import im.vector.app.features.VectorOverrides
-import im.vector.app.features.debug.features.DebugVectorFeatures
-import im.vector.app.features.debug.features.DebugVectorOverrides
+import com.holedo.app.features.DefaultVectorFeatures
+import com.holedo.app.features.DefaultVectorOverrides
+import com.holedo.app.features.VectorFeatures
+import com.holedo.app.features.VectorOverrides
+import com.holedo.app.features.debug.features.DebugVectorFeatures
+import com.holedo.app.features.debug.features.DebugVectorOverrides
 
 @InstallIn(SingletonComponent::class)
 @Module

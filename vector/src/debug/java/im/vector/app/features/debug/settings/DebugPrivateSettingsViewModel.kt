@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package im.vector.app.features.debug.settings
+package com.holedo.app.features.debug.settings
 
 import com.airbnb.mvrx.MavericksViewModelFactory
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import im.vector.app.core.di.MavericksAssistedViewModelFactory
-import im.vector.app.core.di.hiltMavericksViewModelFactory
-import im.vector.app.core.platform.EmptyViewEvents
-import im.vector.app.core.platform.VectorViewModel
-import im.vector.app.features.debug.features.DebugVectorOverrides
-import im.vector.app.features.debug.settings.DebugPrivateSettingsViewActions.SetAvatarCapabilityOverride
-import im.vector.app.features.debug.settings.DebugPrivateSettingsViewActions.SetDisplayNameCapabilityOverride
+import com.holedo.app.core.di.MavericksAssistedViewModelFactory
+import com.holedo.app.core.di.hiltMavericksViewModelFactory
+import com.holedo.app.core.platform.EmptyViewEvents
+import com.holedo.app.core.platform.VectorViewModel
+import com.holedo.app.features.debug.features.DebugVectorOverrides
+import com.holedo.app.features.debug.settings.DebugPrivateSettingsViewActions.SetAvatarCapabilityOverride
+import com.holedo.app.features.debug.settings.DebugPrivateSettingsViewActions.SetDisplayNameCapabilityOverride
 import kotlinx.coroutines.launch
 
 class DebugPrivateSettingsViewModel @AssistedInject constructor(

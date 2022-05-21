@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package im.vector.app.features.debug.analytics
+package com.holedo.app.features.debug.analytics
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,10 +22,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
-import im.vector.app.core.epoxy.onClick
-import im.vector.app.core.extensions.toOnOff
-import im.vector.app.core.platform.VectorBaseFragment
-import im.vector.app.databinding.FragmentDebugAnalyticsBinding
+import com.holedo.app.core.epoxy.onClick
+import com.holedo.app.core.extensions.toOnOff
+import com.holedo.app.core.platform.VectorBaseFragment
+import com.holedo.app.databinding.FragmentDebugAnalyticsBinding
 import me.gujun.android.span.span
 
 class DebugAnalyticsFragment : VectorBaseFragment<FragmentDebugAnalyticsBinding>() {

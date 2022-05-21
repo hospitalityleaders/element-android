@@ -20,7 +20,7 @@ import android.content.Context
 import android.view.View
 import com.airbnb.epoxy.TypedEpoxyController
 import com.airbnb.mvrx.Fail
-import im.vector.lib.core.utils.epoxy.charsequence.toEpoxyCharSequence
+import com.holedo.lib.core.utils.epoxy.charsequence.toEpoxyCharSequence
 import me.gujun.android.span.Span
 import me.gujun.android.span.span
 

@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-package im.vector.lib.ui.styles.debug
+package com.holedo.lib.ui.styles.debug
 
 class DebugVectorButtonStylesDarkActivity : DebugVectorButtonStylesActivity()

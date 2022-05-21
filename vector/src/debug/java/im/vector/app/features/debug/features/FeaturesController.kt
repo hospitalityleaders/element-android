@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package im.vector.app.features.debug.features
+package com.holedo.app.features.debug.features
 
 import androidx.datastore.preferences.core.Preferences
 import com.airbnb.epoxy.TypedEpoxyController

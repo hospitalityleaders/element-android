@@ -72,7 +72,7 @@ if [[ "$?" -ne 0 ]]; then
     retry=${retry:-no}
     if [ ${retry} == "yes" ]; then
         echo "Uninstalling..."
-        adb -s ${serialNumber} uninstall im.vector.app.debug
+        adb -s ${serialNumber} uninstall com.holedo.app.debug
         echo "Installing again..."
         adb -s ${serialNumber} install -r ${fullApkPath}
     fi

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package im.vector.app.features.debug.features
+package com.holedo.app.features.debug.features
 
 import androidx.datastore.preferences.core.Preferences
-import im.vector.app.features.DefaultVectorFeatures
-import im.vector.app.features.VectorFeatures
+import com.holedo.app.features.DefaultVectorFeatures
+import com.holedo.app.features.VectorFeatures
 import javax.inject.Inject
 import kotlin.reflect.KFunction1
 

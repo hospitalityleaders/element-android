@@ -38,7 +38,7 @@ object EventType {
 
     // State Events
 
-    const val STATE_ROOM_WIDGET_LEGACY = "im.vector.modular.widgets"
+    const val STATE_ROOM_WIDGET_LEGACY = "com.holedo.modular.widgets"
     const val STATE_ROOM_WIDGET = "m.widget"
     const val STATE_ROOM_NAME = "m.room.name"
     const val STATE_ROOM_TOPIC = "m.room.topic"

@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package im.vector.app.features.debug
+package com.holedo.app.features.debug
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import im.vector.app.R
-import im.vector.app.databinding.ActivityTestLinkifyBinding
-import im.vector.app.databinding.ItemTestLinkifyBinding
+import com.holedo.app.R
+import com.holedo.app.databinding.ActivityTestLinkifyBinding
+import com.holedo.app.databinding.ItemTestLinkifyBinding
 
 class TestLinkifyActivity : AppCompatActivity() {
 

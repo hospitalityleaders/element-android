@@ -73,7 +73,7 @@ internal class WidgetManager @Inject constructor(private val integrationManager:
             widgetTypes: Set<String>? = null,
             excludedTypes: Set<String>? = null
     ): LiveData<List<Widget>> {
-        // Get all im.vector.modular.widgets state events in the room
+        // Get all com.holedo.modular.widgets state events in the room
         val liveWidgetEvents = stateEventDataSource.getStateEventsLive(
                 roomId = roomId,
                 eventTypes = setOf(EventType.STATE_ROOM_WIDGET, EventType.STATE_ROOM_WIDGET_LEGACY),
@@ -90,7 +90,7 @@ internal class WidgetManager @Inject constructor(private val integrationManager:
             widgetTypes: Set<String>? = null,
             excludedTypes: Set<String>? = null
     ): List<Widget> {
-        // Get all im.vector.modular.widgets state events in the room
+        // Get all com.holedo.modular.widgets state events in the room
         val widgetEvents: List<Event> = stateEventDataSource.getStateEvents(
                 roomId = roomId,
                 eventTypes = setOf(EventType.STATE_ROOM_WIDGET, EventType.STATE_ROOM_WIDGET_LEGACY),
@@ -109,12 +109,12 @@ internal class WidgetManager @Inject constructor(private val integrationManager:
         // Widget id -> widget
         val widgets: MutableMap<String, Widget> = HashMap()
         // Order widgetEvents with the last event first
-        // There can be several im.vector.modular.widgets state events for a same widget but
+        // There can be several com.holedo.modular.widgets state events for a same widget but
         // only the last one must be considered.
         val sortedWidgetEvents = widgetEvents.sortedByDescending {
             it.originServerTs
         }
-        // Create each widget from its latest im.vector.modular.widgets state event
+        // Create each widget from its latest com.holedo.modular.widgets state event
         for (widgetEvent in sortedWidgetEvents) { // Filter widget types if required
             val widget = widgetFactory.create(widgetEvent) ?: continue
             val widgetType = widget.widgetContent.type ?: continue

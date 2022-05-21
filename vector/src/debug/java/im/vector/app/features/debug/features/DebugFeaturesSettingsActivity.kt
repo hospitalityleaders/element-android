@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package im.vector.app.features.debug.features
+package com.holedo.app.features.debug.features
 
 import android.os.Bundle
 import dagger.hilt.android.AndroidEntryPoint
-import im.vector.app.core.extensions.cleanup
-import im.vector.app.core.extensions.configureWith
-import im.vector.app.core.platform.VectorBaseActivity
-import im.vector.app.databinding.FragmentGenericRecyclerBinding
+import com.holedo.app.core.extensions.cleanup
+import com.holedo.app.core.extensions.configureWith
+import com.holedo.app.core.platform.VectorBaseActivity
+import com.holedo.app.databinding.FragmentGenericRecyclerBinding
 import javax.inject.Inject
 
 @AndroidEntryPoint

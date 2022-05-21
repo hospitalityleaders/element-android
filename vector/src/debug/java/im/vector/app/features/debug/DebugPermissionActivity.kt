@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package im.vector.app.features.debug
+package com.holedo.app.features.debug
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -23,13 +23,13 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
-import im.vector.app.R
-import im.vector.app.core.platform.VectorBaseActivity
-import im.vector.app.core.utils.checkPermissions
-import im.vector.app.core.utils.onPermissionDeniedDialog
-import im.vector.app.core.utils.onPermissionDeniedSnackbar
-import im.vector.app.core.utils.registerForPermissionsResult
-import im.vector.app.databinding.ActivityDebugPermissionBinding
+import com.holedo.app.R
+import com.holedo.app.core.platform.VectorBaseActivity
+import com.holedo.app.core.utils.checkPermissions
+import com.holedo.app.core.utils.onPermissionDeniedDialog
+import com.holedo.app.core.utils.onPermissionDeniedSnackbar
+import com.holedo.app.core.utils.registerForPermissionsResult
+import com.holedo.app.databinding.ActivityDebugPermissionBinding
 import timber.log.Timber
 
 @AndroidEntryPoint

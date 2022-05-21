@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package im.vector.app.features.debug
+package com.holedo.app.features.debug
 
 import android.app.Activity
 import android.app.NotificationChannel
@@ -25,31 +25,31 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.Person
 import androidx.core.content.getSystemService
 import dagger.hilt.android.AndroidEntryPoint
-import im.vector.app.R
-import im.vector.app.core.di.ActiveSessionHolder
-import im.vector.app.core.extensions.registerStartForActivityResult
-import im.vector.app.core.platform.VectorBaseActivity
-import im.vector.app.core.time.Clock
-import im.vector.app.core.utils.PERMISSIONS_FOR_TAKING_PHOTO
-import im.vector.app.core.utils.checkPermissions
-import im.vector.app.core.utils.registerForPermissionsResult
-import im.vector.app.core.utils.toast
-import im.vector.app.databinding.ActivityDebugMenuBinding
-import im.vector.app.features.debug.analytics.DebugAnalyticsActivity
-import im.vector.app.features.debug.features.DebugFeaturesSettingsActivity
-import im.vector.app.features.debug.sas.DebugSasEmojiActivity
-import im.vector.app.features.debug.settings.DebugPrivateSettingsActivity
-import im.vector.app.features.qrcode.QrCodeScannerActivity
-import im.vector.lib.ui.styles.debug.DebugMaterialThemeDarkDefaultActivity
-import im.vector.lib.ui.styles.debug.DebugMaterialThemeDarkTestActivity
-import im.vector.lib.ui.styles.debug.DebugMaterialThemeDarkVectorActivity
-import im.vector.lib.ui.styles.debug.DebugMaterialThemeLightDefaultActivity
-import im.vector.lib.ui.styles.debug.DebugMaterialThemeLightTestActivity
-import im.vector.lib.ui.styles.debug.DebugMaterialThemeLightVectorActivity
-import im.vector.lib.ui.styles.debug.DebugVectorButtonStylesDarkActivity
-import im.vector.lib.ui.styles.debug.DebugVectorButtonStylesLightActivity
-import im.vector.lib.ui.styles.debug.DebugVectorTextViewDarkActivity
-import im.vector.lib.ui.styles.debug.DebugVectorTextViewLightActivity
+import com.holedo.app.R
+import com.holedo.app.core.di.ActiveSessionHolder
+import com.holedo.app.core.extensions.registerStartForActivityResult
+import com.holedo.app.core.platform.VectorBaseActivity
+import com.holedo.app.core.time.Clock
+import com.holedo.app.core.utils.PERMISSIONS_FOR_TAKING_PHOTO
+import com.holedo.app.core.utils.checkPermissions
+import com.holedo.app.core.utils.registerForPermissionsResult
+import com.holedo.app.core.utils.toast
+import com.holedo.app.databinding.ActivityDebugMenuBinding
+import com.holedo.app.features.debug.analytics.DebugAnalyticsActivity
+import com.holedo.app.features.debug.features.DebugFeaturesSettingsActivity
+import com.holedo.app.features.debug.sas.DebugSasEmojiActivity
+import com.holedo.app.features.debug.settings.DebugPrivateSettingsActivity
+import com.holedo.app.features.qrcode.QrCodeScannerActivity
+import com.holedo.lib.ui.styles.debug.DebugMaterialThemeDarkDefaultActivity
+import com.holedo.lib.ui.styles.debug.DebugMaterialThemeDarkTestActivity
+import com.holedo.lib.ui.styles.debug.DebugMaterialThemeDarkVectorActivity
+import com.holedo.lib.ui.styles.debug.DebugMaterialThemeLightDefaultActivity
+import com.holedo.lib.ui.styles.debug.DebugMaterialThemeLightTestActivity
+import com.holedo.lib.ui.styles.debug.DebugMaterialThemeLightVectorActivity
+import com.holedo.lib.ui.styles.debug.DebugVectorButtonStylesDarkActivity
+import com.holedo.lib.ui.styles.debug.DebugVectorButtonStylesLightActivity
+import com.holedo.lib.ui.styles.debug.DebugVectorTextViewDarkActivity
+import com.holedo.lib.ui.styles.debug.DebugVectorTextViewLightActivity
 import timber.log.Timber
 import javax.inject.Inject
 

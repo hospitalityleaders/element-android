@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package im.vector.app.features.debug.analytics
+package com.holedo.app.features.debug.analytics
 
 import com.airbnb.mvrx.MavericksState
 

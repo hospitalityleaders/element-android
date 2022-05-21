@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package im.vector.app.features.debug.analytics
+package com.holedo.app.features.debug.analytics
 
 import dagger.hilt.android.AndroidEntryPoint
-import im.vector.app.core.extensions.addFragment
-import im.vector.app.core.platform.VectorBaseActivity
-import im.vector.app.databinding.ActivitySimpleBinding
+import com.holedo.app.core.extensions.addFragment
+import com.holedo.app.core.platform.VectorBaseActivity
+import com.holedo.app.databinding.ActivitySimpleBinding
 
 @AndroidEntryPoint
 class DebugAnalyticsActivity : VectorBaseActivity<ActivitySimpleBinding>() {

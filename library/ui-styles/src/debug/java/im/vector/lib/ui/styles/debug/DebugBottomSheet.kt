@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package im.vector.lib.ui.styles.debug
+package com.holedo.lib.ui.styles.debug
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import im.vector.lib.ui.styles.databinding.ActivityDebugMaterialThemeBinding
+import com.holedo.lib.ui.styles.databinding.ActivityDebugMaterialThemeBinding
 
 class DebugBottomSheet : BottomSheetDialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

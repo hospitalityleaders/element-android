@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package im.vector.app.features.debug.analytics
+package com.holedo.app.features.debug.analytics
 
 import com.airbnb.mvrx.MavericksViewModelFactory
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import im.vector.app.core.di.MavericksAssistedViewModelFactory
-import im.vector.app.core.di.hiltMavericksViewModelFactory
-import im.vector.app.core.platform.EmptyViewEvents
-import im.vector.app.core.platform.VectorViewModel
-import im.vector.app.features.analytics.store.AnalyticsStore
+import com.holedo.app.core.di.MavericksAssistedViewModelFactory
+import com.holedo.app.core.di.hiltMavericksViewModelFactory
+import com.holedo.app.core.platform.EmptyViewEvents
+import com.holedo.app.core.platform.VectorViewModel
+import com.holedo.app.features.analytics.store.AnalyticsStore
 import kotlinx.coroutines.launch
 
 class DebugAnalyticsViewModel @AssistedInject constructor(

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package im.vector.lib.ui.styles.debug
+package com.holedo.lib.ui.styles.debug
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import im.vector.lib.ui.styles.databinding.ActivityDebugButtonStylesBinding
+import com.holedo.lib.ui.styles.databinding.ActivityDebugButtonStylesBinding
 
 abstract class DebugVectorButtonStylesActivity : AppCompatActivity() {
 

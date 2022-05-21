@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package im.vector.app.features.debug.features
+package com.holedo.app.features.debug.features
 
 import android.view.View
 import android.widget.AdapterView
@@ -23,10 +23,10 @@ import android.widget.Spinner
 import android.widget.TextView
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
-import im.vector.app.core.epoxy.VectorEpoxyHolder
-import im.vector.app.core.epoxy.VectorEpoxyModel
+import com.holedo.app.core.epoxy.VectorEpoxyHolder
+import com.holedo.app.core.epoxy.VectorEpoxyModel
 
-@EpoxyModelClass(layout = im.vector.app.R.layout.item_feature)
+@EpoxyModelClass(layout = com.holedo.app.R.layout.item_feature)
 abstract class EnumFeatureItem : VectorEpoxyModel<EnumFeatureItem.Holder>() {
 
     @EpoxyAttribute
@@ -69,8 +69,8 @@ abstract class EnumFeatureItem : VectorEpoxyModel<EnumFeatureItem.Holder>() {
     }
 
     class Holder : VectorEpoxyHolder() {
-        val label by bind<TextView>(im.vector.app.R.id.feature_label)
-        val optionsSpinner by bind<Spinner>(im.vector.app.R.id.feature_options)
+        val label by bind<TextView>(com.holedo.app.R.id.feature_label)
+        val optionsSpinner by bind<Spinner>(com.holedo.app.R.id.feature_options)
     }
 
     interface Listener {

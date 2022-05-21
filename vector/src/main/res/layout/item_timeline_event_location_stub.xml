@@ -45,7 +45,7 @@
         app:layout_constraintTop_toBottomOf="@id/staticMapPinImageView"
         tools:visibility="visible" />
 
-    <im.vector.app.features.location.live.LocationLiveMessageBannerView
+    <com.holedo.app.features.location.live.LocationLiveMessageBannerView
         android:id="@+id/locationLiveMessageBanner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
