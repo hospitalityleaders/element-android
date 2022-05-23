@@ -61,6 +61,7 @@ class SplashCarouselStateFactory @Inject constructor(
                                 R.string.ftue_auth_carousel_encrypted_body,
                                 hero(R.drawable.ic_light_sc3, R.drawable.ic_darker3),
                                 background(R.drawable.bg_carousel_page_3)
+                        // done 1
                         ),
                         SplashCarouselState.Item(
                                 collaborationTitle().colorTerminatingFullStop(R.attr.colorAccent),
