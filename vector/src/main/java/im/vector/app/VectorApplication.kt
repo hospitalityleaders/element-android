@@ -201,7 +201,7 @@ class VectorApplication :
         EmojiManager.install(GoogleEmojiProvider())
 
         // Initialize Mapbox before inflating mapViews
-        //okay1
+        //okay2
         Mapbox.getInstance(this)
     }
 
