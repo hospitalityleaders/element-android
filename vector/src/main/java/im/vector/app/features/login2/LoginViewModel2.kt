@@ -92,11 +92,11 @@ class LoginViewModel2 @AssistedInject constructor(
     private val matrixOrgUrl = stringProvider.getString(R.string.matrix_org_server_url).ensureTrailingSlash()
 
     val currentThreePid: String?
-        get() = registrationWizard?.currentThreePid
+        get() = registrationWizard?.getCurrentThreePid()
 
     // True when login and password has been sent with success to the homeserver
     val isRegistrationStarted: Boolean
-        get() = authenticationService.isRegistrationStarted
+        get() = authenticationService.isRegistrationStarted()
 
     private val registrationWizard: RegistrationWizard?
         get() = authenticationService.getRegistrationWizard()
@@ -248,8 +248,10 @@ class LoginViewModel2 @AssistedInject constructor(
         }
     }
 
-    private fun executeRegistrationStep(withLoading: Boolean = true,
-                                        block: suspend (RegistrationWizard) -> RegistrationResult): Job {
+    private fun executeRegistrationStep(
+            withLoading: Boolean = true,
+            block: suspend (RegistrationWizard) -> RegistrationResult
+    ): Job {
         if (withLoading) {
             setState { copy(isLoading = true) }
         }
@@ -420,7 +422,7 @@ class LoginViewModel2 @AssistedInject constructor(
 
         // If there is a pending email validation continue on this step
         try {
-            if (registrationWizard?.isRegistrationStarted == true) {
+            if (registrationWizard?.isRegistrationStarted() == true) {
                 currentThreePid?.let {
                     handle(LoginAction2.PostViewEvent(LoginViewEvents2.OnSendEmailSuccess(it)))
                 }
@@ -596,9 +598,11 @@ class LoginViewModel2 @AssistedInject constructor(
         setState { copy(isLoading = false) }
     }
 
-    private suspend fun onWellknownSuccess(action: LoginAction2.SetUserName,
-                                           wellKnownPrompt: WellknownResult.Prompt,
-                                           homeServerConnectionConfig: HomeServerConnectionConfig?) {
+    private suspend fun onWellknownSuccess(
+            action: LoginAction2.SetUserName,
+            wellKnownPrompt: WellknownResult.Prompt,
+            homeServerConnectionConfig: HomeServerConnectionConfig?
+    ) {
         val alteredHomeServerConnectionConfig = homeServerConnectionConfig
                 ?.copy(
                         homeServerUriBase = Uri.parse(wellKnownPrompt.homeServerUrl),

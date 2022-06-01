@@ -29,8 +29,8 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.junit.runners.MethodSorters
 import org.matrix.android.sdk.InstrumentedTest
-import org.matrix.android.sdk.api.query.ActiveSpaceFilter
 import org.matrix.android.sdk.api.query.QueryStringValue
+import org.matrix.android.sdk.api.query.SpaceFilter
 import org.matrix.android.sdk.api.session.Session
 import org.matrix.android.sdk.api.session.events.model.EventType
 import org.matrix.android.sdk.api.session.events.model.toContent
@@ -248,7 +248,7 @@ class SpaceHierarchyTest : InstrumentedTest {
 
         Thread.sleep(6_000)
         val orphansUpdate = session.roomService().getRoomSummaries(roomSummaryQueryParams {
-            activeSpaceFilter = ActiveSpaceFilter.ActiveSpace(null)
+            spaceFilter = SpaceFilter.OrphanRooms
         })
         assertEquals("Unexpected number of orphan rooms ${orphansUpdate.map { it.name }}", 2, orphansUpdate.size)
     }
@@ -387,9 +387,10 @@ class SpaceHierarchyTest : InstrumentedTest {
             val roomIds: List<String>
     )
 
-    private fun createPublicSpace(session: Session,
-                                  spaceName: String,
-                                  childInfo: List<Triple<String, Boolean, Boolean?>>
+    private fun createPublicSpace(
+            session: Session,
+            spaceName: String,
+            childInfo: List<Triple<String, Boolean, Boolean?>>
             /** Name, auto-join, canonical*/
     ): TestSpaceCreationResult {
         var spaceId = ""
@@ -416,9 +417,10 @@ class SpaceHierarchyTest : InstrumentedTest {
         return TestSpaceCreationResult(spaceId, roomIds)
     }
 
-    private fun createPrivateSpace(session: Session,
-                                   spaceName: String,
-                                   childInfo: List<Triple<String, Boolean, Boolean?>>
+    private fun createPrivateSpace(
+            session: Session,
+            spaceName: String,
+            childInfo: List<Triple<String, Boolean, Boolean?>>
             /** Name, auto-join, canonical*/
     ): TestSpaceCreationResult {
         var spaceId = ""
