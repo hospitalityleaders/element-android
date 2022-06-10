@@ -177,7 +177,7 @@ class VectorApplication :
                 Timber.i("App entered foreground")
                 FcmHelper.onEnterForeground(appContext, activeSessionHolder)
                 activeSessionHolder.getSafeActiveSession()?.also {
-                    it.stopAnyBackgroundSync()
+                    it.syncService().stopAnyBackgroundSync()
                 }
             }
 
@@ -201,7 +201,8 @@ class VectorApplication :
         EmojiManager.install(GoogleEmojiProvider())
 
         // Initialize Mapbox before inflating mapViews
-        //okay2 okay 3
+
+        //okay5
         Mapbox.getInstance(this)
     }
 

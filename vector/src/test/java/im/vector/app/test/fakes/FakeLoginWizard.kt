@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 The Matrix.org Foundation C.I.C.
+ * Copyright (c) 2022 New Vector Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package org.matrix.android.sdk.api.session.initsync
+package im.vector.app.test.fakes
 
-enum class InitSyncStep {
-    ServerComputing,
-    Downloading,
-    ImportingAccount,
-    ImportingAccountCrypto,
-    ImportingAccountRoom,
-    ImportingAccountGroups,
-    ImportingAccountData,
-    ImportingAccountJoinedRooms,
-    ImportingAccountInvitedRooms,
-    ImportingAccountLeftRooms
+import io.mockk.coJustRun
+import io.mockk.mockk
+import org.matrix.android.sdk.api.auth.login.LoginWizard
+
+class FakeLoginWizard : LoginWizard by mockk() {
+
+    fun givenResetPasswordSuccess(email: String) {
+        coJustRun { resetPassword(email) }
+    }
+
+    fun givenConfirmResetPasswordSuccess(password: String) {
+        coJustRun { resetPasswordMailConfirmed(password) }
+    }
 }

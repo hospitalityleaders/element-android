@@ -58,7 +58,7 @@ class RoomSummaryItemFactory @Inject constructor(
                 val changeMembershipState = roomChangeMembershipStates[roomSummary.roomId] ?: ChangeMembershipState.Unknown
                 createInvitationItem(roomSummary, changeMembershipState, listener)
             }
-            else              -> createRoomItem(
+            else -> createRoomItem(
                     roomSummary, selectedRoomIds, displayMode, listener?.let { it::onRoomClicked }, listener?.let { it::onRoomLongClicked }
             )
         }
@@ -207,7 +207,7 @@ class RoomSummaryItemFactory @Inject constructor(
 
     private fun getSearchResultSubtitle(roomSummary: RoomSummary): String {
         val userId = roomSummary.directUserId
-        val spaceName = roomSummary.spaceParents?.firstOrNull()?.roomSummary?.name
+        val spaceName = roomSummary.flattenParents.lastOrNull()?.name
         val canonicalAlias = roomSummary.canonicalAlias
 
         return (userId ?: spaceName ?: canonicalAlias).orEmpty()
