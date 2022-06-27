@@ -20,7 +20,7 @@ object VectorSettingsUrls {
     const val HELP = "http://holedo.im/help"
     const val COPYRIGHT = "https://holedo.im/copyright"
     const val TAC = "http://holedo.im/tos"
-    const val PRIVACY_POLICY = "http://holedo.im/privacy"
+    const val PRIVACY_POLICY = "https://holedo.im/privacy"
     const val DISCLAIMER_URL = "https://holedo.im/previously-riot"
     const val THIRD_PARTY_LICENSES = "file:///android_asset/open_source_licenses.html"
 }
