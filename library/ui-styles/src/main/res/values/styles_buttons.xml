@@ -71,6 +71,7 @@
         <item name="colorPrimary">?colorOnPrimary</item>
     </style>
 
+
     <style name="Widget.Vector.Button.Outlined.Poll">
         <item name="android:minHeight">44dp</item>
         <item name="cornerRadius">10dp</item>
@@ -85,6 +86,7 @@
         <item name="cornerRadius">8dp</item>
         <item name="lineHeight">24sp</item>
     </style>
+
 
 
 </resources>
