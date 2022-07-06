@@ -205,7 +205,7 @@ class VectorApplication :
         // Initialize Mapbox before inflating mapViews
 
 
-        //okay CHECK3
+        //okay CHECK4
         Mapbox.getInstance(this)
     }
 
