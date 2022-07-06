@@ -35,7 +35,7 @@ ext.versionMinor = 4
 // Note: even values are reserved for regular release, odd values for hotfix release.
 // When creating a hotfix, you should decrease the value, since the current value
 // is the value for the next regular release.
-ext.versionPatch = 26
+ext.versionPatch = 28
 
 static def getGitTimestamp() {
     def cmd = 'git show -s --format=%ct'
@@ -373,7 +373,6 @@ dependencies {
     implementation "com.gabrielittner.threetenbp:lazythreetenbp:0.10.0"
 
     implementation libs.squareup.moshi
-    implementation libs.squareup.moshiKt
     kapt libs.squareup.moshiKotlin
 
     // Lifecycle
@@ -391,7 +390,7 @@ dependencies {
     implementation 'com.facebook.stetho:stetho:1.6.0'
 
     // Phone number https://github.com/google/libphonenumber
-    implementation 'com.googlecode.libphonenumber:libphonenumber:8.12.50'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.12.51'
 
     // FlowBinding
     implementation libs.github.flowBinding
@@ -471,7 +470,7 @@ dependencies {
     // UnifiedPush
     implementation 'com.github.UnifiedPush:android-connector:2.0.0'
     // UnifiedPush gplay flavor only
-    gplayImplementation('com.github.UnifiedPush:android-embedded_fcm_distributor:2.0.0') {
+    gplayImplementation('com.github.UnifiedPush:android-embedded_fcm_distributor:2.1.1') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
@@ -535,13 +534,13 @@ dependencies {
     }
 
     // Flipper, debug builds only
-    debugImplementation('com.facebook.flipper:flipper:0.150.0') {
+    debugImplementation(libs.flipper.flipper) {
         exclude group: 'com.facebook.fbjni', module: 'fbjni'
     }
-    debugImplementation('com.facebook.flipper:flipper-network-plugin:0.150.0') {
+    debugImplementation(libs.flipper.flipperNetworkPlugin) {
         exclude group: 'com.facebook.fbjni', module: 'fbjni'
     }
-    debugImplementation 'com.facebook.soloader:soloader:0.10.3'
+    debugImplementation 'com.facebook.soloader:soloader:0.10.4'
     debugImplementation "com.kgurgul.flipper:flipper-realm-android:2.2.0"
 
     // Activate when you want to check for leaks, from time to time.
