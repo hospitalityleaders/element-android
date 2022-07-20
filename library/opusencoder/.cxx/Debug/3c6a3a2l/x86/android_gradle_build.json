@@ -1,0 +1,41 @@
+{
+  "buildFiles": [
+    "D:\\3.4)hongkongclientmainworkgithub\\13)27june2022_11am_devholedo_github\\library\\opusencoder\\src\\main\\cpp\\CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "D:\\01)softwaresinstallationfiles15jan22\\01)androidstudiofilessystem\\02)androidstudiosdks\\cmake\\3.18.1\\bin\\ninja.exe",
+      "-C",
+      "D:\\3.4)hongkongclientmainworkgithub\\13)27june2022_11am_devholedo_github\\library\\opusencoder\\.cxx\\Debug\\3c6a3a2l\\x86",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "D:\\01)softwaresinstallationfiles15jan22\\01)androidstudiofilessystem\\02)androidstudiosdks\\cmake\\3.18.1\\bin\\ninja.exe",
+    "-C",
+    "D:\\3.4)hongkongclientmainworkgithub\\13)27june2022_11am_devholedo_github\\library\\opusencoder\\.cxx\\Debug\\3c6a3a2l\\x86",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "opuscodec::@6890427a1f51a3e7e1df": {
+      "toolchain": "toolchain",
+      "abi": "x86",
+      "artifactName": "opuscodec",
+      "output": "D:\\3.4)hongkongclientmainworkgithub\\13)27june2022_11am_devholedo_github\\library\\opusencoder\\build\\intermediates\\cxx\\Debug\\3c6a3a2l\\obj\\x86\\libopuscodec.so",
+      "runtimeFiles": [
+        "D:\\3.4)hongkongclientmainworkgithub\\13)27june2022_11am_devholedo_github\\library\\opusencoder\\src\\main\\cpp\\opus\\libs\\x86\\libopusenc.so",
+        "D:\\3.4)hongkongclientmainworkgithub\\13)27june2022_11am_devholedo_github\\library\\opusencoder\\src\\main\\cpp\\opus\\libs\\x86\\libopus.so"
+      ]
+    }
+  },
+  "toolchains": {
+    "toolchain": {
+      "cCompilerExecutable": "D:\\01)softwaresinstallationfiles15jan22\\01)androidstudiofilessystem\\02)androidstudiosdks\\ndk\\21.3.6528147\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe",
+      "cppCompilerExecutable": "D:\\01)softwaresinstallationfiles15jan22\\01)androidstudiofilessystem\\02)androidstudiosdks\\ndk\\21.3.6528147\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}

@@ -1,0 +1,7 @@
+Executable : D:\01)softwaresinstallationfiles15jan22\01)androidstudiofilessystem\02)androidstudiosdks\cmake\3.18.1\bin\ninja.exe
+arguments : 
+-C
+D:\3.4)hongkongclientmainworkgithub\13)27june2022_11am_devholedo_github\library\opusencoder\.cxx\Debug\3c6a3a2l\arm64-v8a
+opuscodec
+jvmArgs : 
+

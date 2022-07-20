@@ -1,0 +1,59 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.4.1"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "RelWithDebInfo",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Project",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "opuscodec::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-opuscodec-RelWithDebInfo-b1a5e04da252617a91b8.json",
+					"name" : "opuscodec",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/3.4)hongkongclientmainworkgithub/13)27june2022_11am_devholedo_github/library/opusencoder/.cxx/RelWithDebInfo/6j1ih4p8/x86",
+		"source" : "D:/3.4)hongkongclientmainworkgithub/13)27june2022_11am_devholedo_github/library/opusencoder/src/main/cpp"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 1
+	}
+}

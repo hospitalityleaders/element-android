@@ -1,0 +1,23 @@
+                    Executable : D:\01)softwaresinstallationfiles15jan22\01)androidstudiofilessystem\02)androidstudiosdks\cmake\3.18.1\bin\cmake.exe
+arguments : 
+-HD:\3.4)hongkongclientmainworkgithub\13)27june2022_11am_devholedo_github\library\opusencoder\src\main\cpp
+-DCMAKE_SYSTEM_NAME=Android
+-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+-DCMAKE_SYSTEM_VERSION=18
+-DANDROID_PLATFORM=android-18
+-DANDROID_ABI=x86
+-DCMAKE_ANDROID_ARCH_ABI=x86
+-DANDROID_NDK=D:\01)softwaresinstallationfiles15jan22\01)androidstudiofilessystem\02)androidstudiosdks\ndk\21.3.6528147
+-DCMAKE_ANDROID_NDK=D:\01)softwaresinstallationfiles15jan22\01)androidstudiofilessystem\02)androidstudiosdks\ndk\21.3.6528147
+-DCMAKE_TOOLCHAIN_FILE=D:\01)softwaresinstallationfiles15jan22\01)androidstudiofilessystem\02)androidstudiosdks\ndk\21.3.6528147\build\cmake\android.toolchain.cmake
+-DCMAKE_MAKE_PROGRAM=D:\01)softwaresinstallationfiles15jan22\01)androidstudiofilessystem\02)androidstudiosdks\cmake\3.18.1\bin\ninja.exe
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=D:\3.4)hongkongclientmainworkgithub\13)27june2022_11am_devholedo_github\library\opusencoder\build\intermediates\cxx\Debug\3c6a3a2l\obj\x86
+-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=D:\3.4)hongkongclientmainworkgithub\13)27june2022_11am_devholedo_github\library\opusencoder\build\intermediates\cxx\Debug\3c6a3a2l\obj\x86
+-DCMAKE_BUILD_TYPE=Debug
+-BD:\3.4)hongkongclientmainworkgithub\13)27june2022_11am_devholedo_github\library\opusencoder\.cxx\Debug\3c6a3a2l\x86
+-GNinja
+jvmArgs : 
+
+
+                    Build command args: []
+                    Version: 2
