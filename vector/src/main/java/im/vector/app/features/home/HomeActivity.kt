@@ -219,7 +219,7 @@ class HomeActivity :
                         is HomeActivitySharedAction.ShowSpaceSettings -> showSpaceSettings(sharedAction.spaceId)
                         is HomeActivitySharedAction.OpenSpaceInvite -> openSpaceInvite(sharedAction.spaceId)
                         HomeActivitySharedAction.SendSpaceFeedBack -> bugReporter.openBugReportScreen(this, ReportType.SPACE_BETA_FEEDBACK)
-                        HomeActivitySharedAction.OnCloseSpace      -> onCloseSpace()
+                        HomeActivitySharedAction.OnCloseSpace -> onCloseSpace()
                     }
                 }
                 .launchIn(lifecycleScope)
@@ -611,6 +611,7 @@ class HomeActivity :
     companion object {
         fun newIntent(
                 context: Context,
+                firstStartMainActivity: Boolean,
                 clearNotification: Boolean = false,
                 authenticationDescription: AuthenticationDescription? = null,
                 existingSession: Boolean = false,
@@ -623,10 +624,16 @@ class HomeActivity :
                     inviteNotificationRoomId = inviteNotificationRoomId
             )
 
-            return Intent(context, HomeActivity::class.java)
+            val intent = Intent(context, HomeActivity::class.java)
                     .apply {
                         putExtra(Mavericks.KEY_ARG, args)
                     }
+
+            return if (firstStartMainActivity) {
+                MainActivity.getIntentWithNextIntent(context, intent)
+            } else {
+                intent
+            }
         }
     }
 
