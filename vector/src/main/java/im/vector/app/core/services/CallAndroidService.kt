@@ -25,6 +25,7 @@ import android.view.KeyEvent
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.media.session.MediaButtonReceiver
+import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import com.airbnb.mvrx.Mavericks
 import dagger.hilt.android.AndroidEntryPoint
 import im.vector.app.core.extensions.singletonEntryPoint
@@ -372,7 +373,7 @@ class CallAndroidService : VectorAndroidService() {
                         putExtra(EXTRA_END_CALL_REASON, endCallReason)
                         putExtra(EXTRA_END_CALL_REJECTED, rejected)
                     }
-            context.startService(intent)
+            ContextCompat.startForegroundService(getApplicationContext(), intent)
         }
     }
 

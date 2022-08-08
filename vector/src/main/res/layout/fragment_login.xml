@@ -19,7 +19,7 @@
                 android:id="@+id/loginServerIcon"
                 android:layout_width="74dp"
                 android:layout_height="30dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:importantForAccessibility="no"
                 app:tint="?vctr_content_primary"
                 tools:ignore="MissingPrefix"
@@ -78,6 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:visibility="gone"
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:maxLines="1"
@@ -108,7 +109,7 @@
                     style="@style/Widget.Vector.Button.Text.Login"
                     android:layout_width="1dp"
                     android:layout_height="1dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:layout_gravity="start"
                     android:text="." />
 
@@ -132,7 +133,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:visibility="gone"
+                android:visibility="visible"
                 tools:visibility="visible">
 
                 <TextView
@@ -140,7 +141,7 @@
                     style="@style/Widget.Vector.TextView.Body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:layout_marginTop="16dp"
                     android:gravity="center"
                     android:text="@string/login_social_continue"

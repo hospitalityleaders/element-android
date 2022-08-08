@@ -22,6 +22,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.autofill.HintConstants
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import im.vector.app.R
@@ -138,7 +139,7 @@ class FtueAuthCombinedLoginFragment @Inject constructor(
 
     private fun renderSsoProviders(deviceId: String?, ssoProviders: List<SsoIdentityProvider>?) {
         views.ssoGroup.isVisible = ssoProviders?.isNotEmpty() == true
-        views.ssoButtonsHeader.isVisible = views.ssoGroup.isVisible && views.loginEntryGroup.isVisible
+        views.ssoButtonsHeader.isVisible = views.ssoGroup.isVisible && views.loginEntryGroup.isInvisible
         views.ssoButtons.render(ssoProviders, SocialLoginButtonsView.Mode.MODE_CONTINUE) { id ->
             viewModel.fetchSsoUrl(
                     redirectUrl = SSORedirectRouterActivity.VECTOR_REDIRECT_URL,

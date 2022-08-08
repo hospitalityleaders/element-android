@@ -1934,7 +1934,7 @@
     <string name="ftue_auth_create_account_sso_section_header">Or</string>
     <string name="ftue_auth_create_account_edit_server_selection">Edit</string>
 
-    <string name="ftue_auth_welcome_back_title">Welcome back!</string>
+    <string name="ftue_auth_welcome_back_title">Connect to holedo.com</string>
 
     <string name="ftue_auth_choose_server_title">Select your server</string>
     <string name="ftue_auth_choose_server_subtitle">What is the address of your server? This is like a home for all your data</string>
