@@ -72,6 +72,7 @@
     </style>
 
 
+
     <style name="Widget.Vector.Button.Outlined.Poll">
         <item name="android:minHeight">44dp</item>
         <item name="cornerRadius">10dp</item>
@@ -87,6 +88,12 @@
         <item name="lineHeight">24sp</item>
     </style>
 
+
+
+
+    <style name="Widget.Vector.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.FloatingActionButton</item>
+    </style>
 
 
 </resources>
