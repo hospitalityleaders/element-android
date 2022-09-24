@@ -328,6 +328,7 @@ private fun saveMediaLegacy(
         mediaMimeType?.isMimeTypeAudio() == true -> Environment.DIRECTORY_MUSIC
         else -> Environment.DIRECTORY_DOWNLOADS
     }
+    @Suppress("DEPRECATION")
     val downloadDir = Environment.getExternalStoragePublicDirectory(dest)
     try {
         val outputFilename = if (title.substringAfterLast('.', "").isEmpty()) {
