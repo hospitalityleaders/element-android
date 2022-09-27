@@ -135,8 +135,8 @@ class VectorApplication :
         vectorUncaughtExceptionHandler.activate()
 
         // Remove Log handler statically added by Jitsi
-        // okay done
-        //ok done
+
+        //tested
         Timber.forest()
                 .filterIsInstance(JitsiMeetDefaultLogHandler::class.java)
                 .forEach { Timber.uproot(it) }
