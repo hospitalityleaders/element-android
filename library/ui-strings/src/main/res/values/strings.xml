@@ -2220,6 +2220,7 @@
 
     <string name="command_description_shrug">Prepends ¯\\_(ツ)_/¯ to a plain-text message</string>
     <string name="command_description_lenny">Prepends ( ͡° ͜ʖ ͡°) to a plain-text message</string>
+    <string name="command_description_table_flip">Prepends (╯°□°）╯︵ ┻━┻ to a plain-text message</string>
 
     <string name="create_room_encryption_title">"Enable encryption"</string>
     <string name="create_room_encryption_description">"Once enabled, encryption cannot be disabled."</string>
@@ -3312,6 +3313,10 @@
     <string name="device_manager_session_details_session_id">Session ID</string>
     <string name="device_manager_session_details_session_last_activity">Last activity</string>
     <string name="device_manager_session_details_device_ip_address">IP address</string>
+    <string name="device_manager_session_rename">Rename session</string>
+    <string name="device_manager_session_rename_edit_hint">Session name</string>
+    <string name="device_manager_session_rename_description">Custom session names can help you recognize your devices more easily.</string>
+    <string name="device_manager_session_rename_warning">Please be aware that session names are also visible to people you communicate with.</string>
 
     <!-- Note to translators: %s will be replaces with selected space name -->
     <string name="home_empty_space_no_rooms_title">%s\nis looking a little empty.</string>
