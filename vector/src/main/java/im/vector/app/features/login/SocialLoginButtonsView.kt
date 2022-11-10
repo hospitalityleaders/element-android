@@ -64,21 +64,26 @@ class SocialLoginButtonsView @JvmOverloads constructor(context: Context, attrs: 
             cachedViews[it.getTag(R.id.loginSignupSigninSocialLoginButtons)?.toString() ?: ""] = it
         }
         removeAllViews()
-        if (ssoIdentityProviders.isNullOrEmpty()) {
-            // Put a default sign in with sso button
-            MaterialButton(context, null, R.attr.materialButtonOutlinedStyle).apply {
-                transformationMethod = null
-                textAlignment = View.TEXT_ALIGNMENT_CENTER
-            }.let {
-                it.text = getButtonTitle(context.getString(R.string.login_social_sso))
-                it.textAlignment = View.TEXT_ALIGNMENT_CENTER
-                it.setOnClickListener {
-                    listener?.onProviderSelected(null)
-                }
-                addView(it)
-            }
-            return
-        }
+
+        // this i have commented on 11 oct 2022 _3:15am_ to remove sso button --/starting
+
+//        if (ssoIdentityProviders.isNullOrEmpty()) {
+//            // Put a default sign in with sso button
+//            MaterialButton(context, null, R.attr.materialButtonOutlinedStyle).apply {
+//                transformationMethod = null
+//                textAlignment = View.TEXT_ALIGNMENT_CENTER
+//            }.let {
+//                it.text = getButtonTitle(context.getString(R.string.login_social_sso))
+//                it.textAlignment = View.TEXT_ALIGNMENT_CENTER
+//                it.setOnClickListener {
+//                    listener?.onProviderSelected(null)
+//                }
+//                addView(it)
+//            }
+//            return
+//        }
+
+        // this i have commented on 11 oct 2022 _3:15am_ to remove sso button --/end
 
         ssoIdentityProviders?.forEach { identityProvider ->
             // Use some heuristic to render buttons according to branding guidelines

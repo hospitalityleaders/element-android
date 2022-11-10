@@ -81,7 +81,7 @@
             app:layout_constraintTop_toBottomOf="@id/loginHeaderTitle" />
 
         <im.vector.app.features.login.SocialLoginButtonsView
-            android:id="@+id/ssoButtons1"
+            android:id="@+id/ssoButtons"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
@@ -276,7 +276,7 @@
             tools:visibility="visible" />
 
         <im.vector.app.features.login.SocialLoginButtonsView
-            android:id="@+id/ssoButtons"
+            android:id="@+id/ssoButtons1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
