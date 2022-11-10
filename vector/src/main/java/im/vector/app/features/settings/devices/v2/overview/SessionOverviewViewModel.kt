@@ -24,23 +24,39 @@ import dagger.assisted.AssistedInject
 import im.vector.app.core.di.ActiveSessionHolder
 import im.vector.app.core.di.MavericksAssistedViewModelFactory
 import im.vector.app.core.di.hiltMavericksViewModelFactory
-import im.vector.app.core.platform.VectorViewModel
-import im.vector.app.features.settings.devices.v2.IsCurrentSessionUseCase
+import im.vector.app.features.auth.PendingAuthHandler
+import im.vector.app.features.settings.devices.v2.RefreshDevicesUseCase
+import im.vector.app.features.settings.devices.v2.VectorSessionsListViewModel
+import im.vector.app.features.settings.devices.v2.notification.GetNotificationsStatusUseCase
+import im.vector.app.features.settings.devices.v2.notification.TogglePushNotificationUseCase
+import im.vector.app.features.settings.devices.v2.signout.InterceptSignoutFlowResponseUseCase
+import im.vector.app.features.settings.devices.v2.signout.SignoutSessionsReAuthNeeded
+import im.vector.app.features.settings.devices.v2.signout.SignoutSessionsUseCase
 import im.vector.app.features.settings.devices.v2.verification.CheckIfCurrentSessionCanBeVerifiedUseCase
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.matrix.android.sdk.api.extensions.orFalse
 import org.matrix.android.sdk.api.session.crypto.model.RoomEncryptionTrustLevel
+import org.matrix.android.sdk.api.session.uia.DefaultBaseAuth
+import timber.log.Timber
 
 class SessionOverviewViewModel @AssistedInject constructor(
         @Assisted val initialState: SessionOverviewViewState,
-        private val activeSessionHolder: ActiveSessionHolder,
-        private val isCurrentSessionUseCase: IsCurrentSessionUseCase,
         private val getDeviceFullInfoUseCase: GetDeviceFullInfoUseCase,
         private val checkIfCurrentSessionCanBeVerifiedUseCase: CheckIfCurrentSessionCanBeVerifiedUseCase,
-) : VectorViewModel<SessionOverviewViewState, SessionOverviewAction, SessionOverviewViewEvent>(initialState) {
+        private val signoutSessionsUseCase: SignoutSessionsUseCase,
+        private val interceptSignoutFlowResponseUseCase: InterceptSignoutFlowResponseUseCase,
+        private val pendingAuthHandler: PendingAuthHandler,
+        private val activeSessionHolder: ActiveSessionHolder,
+        private val togglePushNotificationUseCase: TogglePushNotificationUseCase,
+        private val getNotificationsStatusUseCase: GetNotificationsStatusUseCase,
+        refreshDevicesUseCase: RefreshDevicesUseCase,
+) : VectorSessionsListViewModel<SessionOverviewViewState, SessionOverviewAction, SessionOverviewViewEvent>(
+        initialState, activeSessionHolder, refreshDevicesUseCase
+) {
 
     companion object : MavericksViewModelFactory<SessionOverviewViewModel, SessionOverviewViewState> by hiltMavericksViewModelFactory()
 
@@ -50,15 +66,14 @@ class SessionOverviewViewModel @AssistedInject constructor(
     }
 
     init {
-        setState {
-            copy(isCurrentSession = isCurrentSession(deviceId))
-        }
+        refreshPushers()
         observeSessionInfo(initialState.deviceId)
         observeCurrentSessionInfo()
+        observeNotificationsStatus(initialState.deviceId)
     }
 
-    private fun isCurrentSession(deviceId: String): Boolean {
-        return isCurrentSessionUseCase.execute(deviceId)
+    private fun refreshPushers() {
+        activeSessionHolder.getSafeActiveSession()?.pushersService()?.refreshPushers()
     }
 
     private fun observeSessionInfo(deviceId: String) {
@@ -80,14 +95,27 @@ class SessionOverviewViewModel @AssistedInject constructor(
                 }
     }
 
+    private fun observeNotificationsStatus(deviceId: String) {
+        activeSessionHolder.getSafeActiveSession()?.let { session ->
+            getNotificationsStatusUseCase.execute(session, deviceId)
+                    .onEach { setState { copy(notificationsStatus = it) } }
+                    .launchIn(viewModelScope)
+        }
+    }
+
     override fun handle(action: SessionOverviewAction) {
         when (action) {
             is SessionOverviewAction.VerifySession -> handleVerifySessionAction()
+            SessionOverviewAction.SignoutOtherSession -> handleSignoutOtherSession()
+            SessionOverviewAction.SsoAuthDone -> handleSsoAuthDone()
+            is SessionOverviewAction.PasswordAuthDone -> handlePasswordAuthDone(action)
+            SessionOverviewAction.ReAuthCancelled -> handleReAuthCancelled()
+            is SessionOverviewAction.TogglePushNotifications -> handleTogglePusherAction(action)
         }
     }
 
     private fun handleVerifySessionAction() = withState { viewState ->
-        if (viewState.isCurrentSession) {
+        if (viewState.deviceInfo.invoke()?.isCurrentDevice.orFalse()) {
             handleVerifyCurrentSession()
         } else {
             handleVerifyOtherSession(viewState.deviceId)
@@ -107,5 +135,69 @@ class SessionOverviewViewModel @AssistedInject constructor(
 
     private fun handleVerifyOtherSession(deviceId: String) {
         _viewEvents.post(SessionOverviewViewEvent.ShowVerifyOtherSession(deviceId))
+    }
+
+    private fun handleSignoutOtherSession() = withState { state ->
+        // signout process for current session is not handled here
+        if (!state.deviceInfo.invoke()?.isCurrentDevice.orFalse()) {
+            handleSignoutOtherSession(state.deviceId)
+        }
+    }
+
+    private fun handleSignoutOtherSession(deviceId: String) {
+        viewModelScope.launch {
+            setLoading(true)
+            val result = signout(deviceId)
+            setLoading(false)
+
+            val error = result.exceptionOrNull()
+            if (error == null) {
+                onSignoutSuccess()
+            } else {
+                onSignoutFailure(error)
+            }
+        }
+    }
+
+    private suspend fun signout(deviceId: String) = signoutSessionsUseCase.execute(listOf(deviceId), this::onReAuthNeeded)
+
+    private fun onReAuthNeeded(reAuthNeeded: SignoutSessionsReAuthNeeded) {
+        Timber.d("onReAuthNeeded")
+        pendingAuthHandler.pendingAuth = DefaultBaseAuth(session = reAuthNeeded.flowResponse.session)
+        pendingAuthHandler.uiaContinuation = reAuthNeeded.uiaContinuation
+        _viewEvents.post(SessionOverviewViewEvent.RequestReAuth(reAuthNeeded.flowResponse, reAuthNeeded.errCode))
+    }
+
+    private fun setLoading(isLoading: Boolean) {
+        setState { copy(isLoading = isLoading) }
+    }
+
+    private fun onSignoutSuccess() {
+        Timber.d("signout success")
+        refreshDeviceList()
+        _viewEvents.post(SessionOverviewViewEvent.SignoutSuccess)
+    }
+
+    private fun onSignoutFailure(failure: Throwable) {
+        Timber.e("signout failure", failure)
+        _viewEvents.post(SessionOverviewViewEvent.SignoutError(failure))
+    }
+
+    private fun handleSsoAuthDone() {
+        pendingAuthHandler.ssoAuthDone()
+    }
+
+    private fun handlePasswordAuthDone(action: SessionOverviewAction.PasswordAuthDone) {
+        pendingAuthHandler.passwordAuthDone(action.password)
+    }
+
+    private fun handleReAuthCancelled() {
+        pendingAuthHandler.reAuthCancelled()
+    }
+
+    private fun handleTogglePusherAction(action: SessionOverviewAction.TogglePushNotifications) {
+        viewModelScope.launch {
+            togglePushNotificationUseCase.execute(action.deviceId, action.enabled)
+        }
     }
 }

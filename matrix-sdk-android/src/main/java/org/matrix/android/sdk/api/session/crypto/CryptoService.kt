@@ -17,6 +17,7 @@
 package org.matrix.android.sdk.api.session.crypto
 
 import android.content.Context
+import androidx.annotation.Size
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
 import org.matrix.android.sdk.api.MatrixCallback
@@ -55,11 +56,15 @@ interface CryptoService {
 
     fun deleteDevice(deviceId: String, userInteractiveAuthInterceptor: UserInteractiveAuthInterceptor, callback: MatrixCallback<Unit>)
 
+    fun deleteDevices(@Size(min = 1) deviceIds: List<String>, userInteractiveAuthInterceptor: UserInteractiveAuthInterceptor, callback: MatrixCallback<Unit>)
+
     fun getCryptoVersion(context: Context, longFormat: Boolean): String
 
     fun isCryptoEnabled(): Boolean
 
     fun isRoomBlacklistUnverifiedDevices(roomId: String?): Boolean
+
+    fun getLiveBlockUnverifiedDevices(roomId: String): LiveData<Boolean>
 
     fun setWarnOnUnknownDevices(warn: Boolean)
 
@@ -76,6 +81,8 @@ interface CryptoService {
     fun getGlobalBlacklistUnverifiedDevices(): Boolean
 
     fun setGlobalBlacklistUnverifiedDevices(block: Boolean)
+
+    fun getLiveGlobalCryptoConfig(): LiveData<GlobalCryptoConfig>
 
     /**
      * Enable or disable key gossiping.
@@ -100,7 +107,7 @@ interface CryptoService {
      */
     fun isShareKeysOnInviteEnabled(): Boolean
 
-    fun setRoomUnBlacklistUnverifiedDevices(roomId: String)
+    fun setRoomUnBlockUnverifiedDevices(roomId: String)
 
     fun getDeviceTrackingStatus(userId: String): Int
 
@@ -112,7 +119,7 @@ interface CryptoService {
 
     suspend fun exportRoomKeys(password: String): ByteArray
 
-    fun setRoomBlacklistUnverifiedDevices(roomId: String)
+    fun setRoomBlockUnverifiedDevices(roomId: String, block: Boolean)
 
     fun getCryptoDeviceInfo(userId: String, deviceId: String?): CryptoDeviceInfo?
 

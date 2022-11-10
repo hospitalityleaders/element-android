@@ -18,8 +18,13 @@ package im.vector.app.features.settings.devices.v2.overview
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
+import im.vector.app.core.session.clientinfo.GetMatrixClientInfoUseCase
+import im.vector.app.core.session.clientinfo.MatrixClientInfoContent
 import im.vector.app.features.settings.devices.v2.DeviceFullInfo
+import im.vector.app.features.settings.devices.v2.ParseDeviceUserAgentUseCase
+import im.vector.app.features.settings.devices.v2.details.extended.DeviceExtendedInfo
 import im.vector.app.features.settings.devices.v2.list.CheckIfSessionIsInactiveUseCase
+import im.vector.app.features.settings.devices.v2.list.DeviceType
 import im.vector.app.features.settings.devices.v2.verification.CurrentSessionCrossSigningInfo
 import im.vector.app.features.settings.devices.v2.verification.GetCurrentSessionCrossSigningInfoUseCase
 import im.vector.app.features.settings.devices.v2.verification.GetEncryptionTrustLevelForDeviceUseCase
@@ -53,12 +58,16 @@ class GetDeviceFullInfoUseCaseTest {
     private val getEncryptionTrustLevelForDeviceUseCase = mockk<GetEncryptionTrustLevelForDeviceUseCase>()
     private val checkIfSessionIsInactiveUseCase = mockk<CheckIfSessionIsInactiveUseCase>()
     private val fakeFlowLiveDataConversions = FakeFlowLiveDataConversions()
+    private val parseDeviceUserAgentUseCase = mockk<ParseDeviceUserAgentUseCase>()
+    private val getMatrixClientInfoUseCase = mockk<GetMatrixClientInfoUseCase>()
 
     private val getDeviceFullInfoUseCase = GetDeviceFullInfoUseCase(
             activeSessionHolder = fakeActiveSessionHolder.instance,
             getCurrentSessionCrossSigningInfoUseCase = getCurrentSessionCrossSigningInfoUseCase,
             getEncryptionTrustLevelForDeviceUseCase = getEncryptionTrustLevelForDeviceUseCase,
             checkIfSessionIsInactiveUseCase = checkIfSessionIsInactiveUseCase,
+            parseDeviceUserAgentUseCase = parseDeviceUserAgentUseCase,
+            getMatrixClientInfoUseCase = getMatrixClientInfoUseCase,
     )
 
     @Before
@@ -75,18 +84,14 @@ class GetDeviceFullInfoUseCaseTest {
     fun `given current session and info for device when getting device info then the result is correct`() = runTest {
         // Given
         val currentSessionCrossSigningInfo = givenCurrentSessionCrossSigningInfo()
-        val deviceInfo = DeviceInfo(
-                lastSeenTs = A_TIMESTAMP
-        )
-        fakeActiveSessionHolder.fakeSession.fakeCryptoService.myDevicesInfoWithIdLiveData = MutableLiveData(Optional(deviceInfo))
-        fakeActiveSessionHolder.fakeSession.fakeCryptoService.myDevicesInfoWithIdLiveData.givenAsFlow()
-        val cryptoDeviceInfo = CryptoDeviceInfo(deviceId = A_DEVICE_ID, userId = "")
-        fakeActiveSessionHolder.fakeSession.fakeCryptoService.cryptoDeviceInfoWithIdLiveData = MutableLiveData(Optional(cryptoDeviceInfo))
-        fakeActiveSessionHolder.fakeSession.fakeCryptoService.cryptoDeviceInfoWithIdLiveData.givenAsFlow()
+        val deviceInfo = givenADeviceInfo()
+        val cryptoDeviceInfo = givenACryptoDeviceInfo()
         val trustLevel = givenTrustLevel(currentSessionCrossSigningInfo, cryptoDeviceInfo)
         val isInactive = false
         val isCurrentDevice = true
         every { checkIfSessionIsInactiveUseCase.execute(any()) } returns isInactive
+        every { parseDeviceUserAgentUseCase.execute(any()) } returns DeviceExtendedInfo(DeviceType.MOBILE)
+        val matrixClientInfo = givenAMatrixClientInfo()
 
         // When
         val deviceFullInfo = getDeviceFullInfoUseCase.execute(A_DEVICE_ID).firstOrNull()
@@ -97,14 +102,19 @@ class GetDeviceFullInfoUseCaseTest {
                 cryptoDeviceInfo = cryptoDeviceInfo,
                 roomEncryptionTrustLevel = trustLevel,
                 isInactive = isInactive,
-                isCurrentDevice = isCurrentDevice
+                isCurrentDevice = isCurrentDevice,
+                deviceExtendedInfo = DeviceExtendedInfo(DeviceType.MOBILE),
+                matrixClientInfo = matrixClientInfo,
         )
-        verify { fakeActiveSessionHolder.instance.getSafeActiveSession() }
-        verify { getCurrentSessionCrossSigningInfoUseCase.execute() }
-        verify { getEncryptionTrustLevelForDeviceUseCase.execute(currentSessionCrossSigningInfo, cryptoDeviceInfo) }
-        verify { fakeActiveSessionHolder.fakeSession.fakeCryptoService.getMyDevicesInfoLive(A_DEVICE_ID).asFlow() }
-        verify { fakeActiveSessionHolder.fakeSession.fakeCryptoService.getLiveCryptoDeviceInfoWithId(A_DEVICE_ID).asFlow() }
-        verify { checkIfSessionIsInactiveUseCase.execute(A_TIMESTAMP) }
+        verify {
+            fakeActiveSessionHolder.instance.getSafeActiveSession()
+            getCurrentSessionCrossSigningInfoUseCase.execute()
+            getEncryptionTrustLevelForDeviceUseCase.execute(currentSessionCrossSigningInfo, cryptoDeviceInfo)
+            fakeActiveSessionHolder.fakeSession.fakeCryptoService.getMyDevicesInfoLive(A_DEVICE_ID).asFlow()
+            fakeActiveSessionHolder.fakeSession.fakeCryptoService.getLiveCryptoDeviceInfoWithId(A_DEVICE_ID).asFlow()
+            checkIfSessionIsInactiveUseCase.execute(A_TIMESTAMP)
+            getMatrixClientInfoUseCase.execute(fakeActiveSessionHolder.fakeSession, A_DEVICE_ID)
+        }
     }
 
     @Test
@@ -153,5 +163,28 @@ class GetDeviceFullInfoUseCaseTest {
         val trustLevel = RoomEncryptionTrustLevel.Trusted
         every { getEncryptionTrustLevelForDeviceUseCase.execute(currentSessionCrossSigningInfo, cryptoDeviceInfo) } returns trustLevel
         return trustLevel
+    }
+
+    private fun givenADeviceInfo(): DeviceInfo {
+        val deviceInfo = DeviceInfo(
+                deviceId = A_DEVICE_ID,
+                lastSeenTs = A_TIMESTAMP,
+        )
+        fakeActiveSessionHolder.fakeSession.fakeCryptoService.myDevicesInfoWithIdLiveData = MutableLiveData(Optional(deviceInfo))
+        fakeActiveSessionHolder.fakeSession.fakeCryptoService.myDevicesInfoWithIdLiveData.givenAsFlow()
+        return deviceInfo
+    }
+
+    private fun givenACryptoDeviceInfo(): CryptoDeviceInfo {
+        val cryptoDeviceInfo = CryptoDeviceInfo(deviceId = A_DEVICE_ID, userId = "")
+        fakeActiveSessionHolder.fakeSession.fakeCryptoService.cryptoDeviceInfoWithIdLiveData = MutableLiveData(Optional(cryptoDeviceInfo))
+        fakeActiveSessionHolder.fakeSession.fakeCryptoService.cryptoDeviceInfoWithIdLiveData.givenAsFlow()
+        return cryptoDeviceInfo
+    }
+
+    private fun givenAMatrixClientInfo(): MatrixClientInfoContent {
+        val matrixClientInfo = mockk<MatrixClientInfoContent>()
+        every { getMatrixClientInfoUseCase.execute(fakeActiveSessionHolder.fakeSession, A_DEVICE_ID) } returns matrixClientInfo
+        return matrixClientInfo
     }
 }

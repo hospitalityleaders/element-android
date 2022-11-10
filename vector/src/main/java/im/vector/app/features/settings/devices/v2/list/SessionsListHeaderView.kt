@@ -20,6 +20,10 @@ import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import androidx.appcompat.view.menu.MenuBuilder
+import androidx.appcompat.widget.ActionMenuView.OnMenuItemClickListener
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.use
 import androidx.core.view.isVisible
@@ -39,6 +43,7 @@ class SessionsListHeaderView @JvmOverloads constructor(
             this
     )
 
+    val menu: Menu = binding.sessionsListHeaderMenu.menu
     var onLearnMoreClickListener: (() -> Unit)? = null
 
     init {
@@ -50,6 +55,7 @@ class SessionsListHeaderView @JvmOverloads constructor(
         ).use {
             setTitle(it)
             setDescription(it)
+            setMenu(it)
         }
     }
 
@@ -65,14 +71,23 @@ class SessionsListHeaderView @JvmOverloads constructor(
             return
         }
 
+        val hasLearnMoreLink = typedArray.getBoolean(R.styleable.SessionsListHeaderView_sessionsListHeaderHasLearnMoreLink, true)
+        if (hasLearnMoreLink) {
+            setDescriptionWithLearnMore(description)
+        } else {
+            binding.sessionsListHeaderDescription.text = description
+        }
+
+        binding.sessionsListHeaderDescription.isVisible = true
+    }
+
+    private fun setDescriptionWithLearnMore(description: String) {
         val learnMore = context.getString(R.string.action_learn_more)
         val fullDescription = buildString {
             append(description)
             append(" ")
             append(learnMore)
         }
-
-        binding.sessionsListHeaderDescription.isVisible = true
         binding.sessionsListHeaderDescription.setTextWithColoredPart(
                 fullText = fullDescription,
                 coloredPart = learnMore,
@@ -80,5 +95,20 @@ class SessionsListHeaderView @JvmOverloads constructor(
         ) {
             onLearnMoreClickListener?.invoke()
         }
+    }
+
+    private fun setMenu(typedArray: TypedArray) {
+        val menuResId = typedArray.getResourceId(R.styleable.SessionsListHeaderView_sessionsListHeaderMenu, -1)
+        if (menuResId == -1) {
+            binding.sessionsListHeaderMenu.isVisible = false
+        } else {
+            binding.sessionsListHeaderMenu.showOverflowMenu()
+            val menuBuilder = binding.sessionsListHeaderMenu.menu as? MenuBuilder
+            menuBuilder?.let { MenuInflater(context).inflate(menuResId, it) }
+        }
+    }
+
+    fun setOnMenuItemClickListener(listener: OnMenuItemClickListener) {
+        binding.sessionsListHeaderMenu.setOnMenuItemClickListener(listener)
     }
 }

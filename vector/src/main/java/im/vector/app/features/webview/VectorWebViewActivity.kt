@@ -24,11 +24,13 @@ import android.webkit.WebView
 import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
 import im.vector.app.R
+
 import im.vector.app.core.di.ActiveSessionHolder
+
 import im.vector.app.core.platform.VectorBaseActivity
 import im.vector.app.databinding.ActivityVectorWebViewBinding
+import im.vector.lib.core.utils.compat.getSerializableCompat
 import org.matrix.android.sdk.api.session.Session
-import javax.inject.Inject
 
 /**
  * This class is responsible for managing a WebView
@@ -41,7 +43,6 @@ class VectorWebViewActivity : VectorBaseActivity<ActivityVectorWebViewBinding>()
 
     override fun getBinding() = ActivityVectorWebViewBinding.inflate(layoutInflater)
 
-    @Inject lateinit var activeSessionHolder: ActiveSessionHolder
     val session: Session by lazy {
         activeSessionHolder.getActiveSession()
     }
@@ -89,7 +90,7 @@ class VectorWebViewActivity : VectorBaseActivity<ActivityVectorWebViewBinding>()
             setTitle(title)
         }
 
-        val webViewMode = intent.extras?.getSerializable(EXTRA_MODE) as WebViewMode
+        val webViewMode = intent.extras?.getSerializableCompat<WebViewMode>(EXTRA_MODE)!!
         val eventListener = webViewMode.eventListener(this, session)
         views.simpleWebview.webViewClient = VectorWebViewClient(eventListener)
         views.simpleWebview.webChromeClient = object : WebChromeClient() {
@@ -129,6 +130,7 @@ class VectorWebViewActivity : VectorBaseActivity<ActivityVectorWebViewBinding>()
         if (views.simpleWebview.canGoBack()) {
             views.simpleWebview.goBack()
         } else {
+            @Suppress("DEPRECATION")
             super.onBackPressed()
         }
     }

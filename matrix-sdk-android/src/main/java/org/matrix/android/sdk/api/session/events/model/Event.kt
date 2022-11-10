@@ -31,6 +31,7 @@ import org.matrix.android.sdk.api.session.room.model.message.MessageContent
 import org.matrix.android.sdk.api.session.room.model.message.MessagePollContent
 import org.matrix.android.sdk.api.session.room.model.message.MessageStickerContent
 import org.matrix.android.sdk.api.session.room.model.message.MessageType
+import org.matrix.android.sdk.api.session.room.model.message.asMessageAudioEvent
 import org.matrix.android.sdk.api.session.room.model.relation.RelationDefaultContent
 import org.matrix.android.sdk.api.session.room.model.relation.shouldRenderInThread
 import org.matrix.android.sdk.api.session.room.send.SendState
@@ -174,15 +175,29 @@ data class Event(
      * @return the event type
      */
     fun getClearType(): String {
-        return mxDecryptionResult?.payload?.get("type")?.toString() ?: type ?: EventType.MISSING_TYPE
+        return getDecryptedType() ?: type ?: EventType.MISSING_TYPE
+    }
+
+    /**
+     * @return The decrypted type, or null. Won't fallback to the wired type
+     */
+    fun getDecryptedType(): String? {
+        return mxDecryptionResult?.payload?.get("type")?.toString()
     }
 
     /**
      * @return the event content
      */
     fun getClearContent(): Content? {
+        return getDecryptedContent() ?: content
+    }
+
+    /**
+     * @return the decrypted event content or null, Won't fallback to the wired content
+     */
+    fun getDecryptedContent(): Content? {
         @Suppress("UNCHECKED_CAST")
-        return mxDecryptionResult?.payload?.get("content") as? Content ?: content
+        return mxDecryptionResult?.payload?.get("content") as? Content
     }
 
     fun toContentStringWithIndent(): String {
@@ -343,6 +358,10 @@ fun Event.isAudioMessage(): Boolean {
     }
 }
 
+fun Event.isVoiceMessage(): Boolean {
+    return this.asMessageAudioEvent()?.content?.voiceMessageIndicator != null
+}
+
 fun Event.isFileMessage(): Boolean {
     return when (getMsgType()) {
         MessageType.MSGTYPE_FILE -> true
@@ -382,7 +401,7 @@ fun Event.getRelationContent(): RelationDefaultContent? {
             when (getClearType()) {
                 EventType.STICKER -> getClearContent().toModel<MessageStickerContent>()?.relatesTo
                 in EventType.BEACON_LOCATION_DATA -> getClearContent().toModel<MessageBeaconLocationDataContent>()?.relatesTo
-                else -> null
+                else -> getClearContent()?.get("m.relates_to")?.toContent().toModel()
             }
         }
     }

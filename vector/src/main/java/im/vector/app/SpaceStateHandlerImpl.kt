@@ -17,11 +17,11 @@
 package im.vector.app
 
 import androidx.lifecycle.LifecycleOwner
-import arrow.core.Option
 import im.vector.app.core.di.ActiveSessionHolder
 import im.vector.app.core.utils.BehaviorDataSource
 import im.vector.app.features.analytics.AnalyticsTracker
 import im.vector.app.features.analytics.plan.UserProperties
+import im.vector.app.features.analytics.plan.ViewRoom
 import im.vector.app.features.session.coroutineScope
 import im.vector.app.features.settings.VectorPreferences
 import im.vector.app.features.ui.UiStateRepository
@@ -41,6 +41,8 @@ import org.matrix.android.sdk.api.session.getRoom
 import org.matrix.android.sdk.api.session.getRoomSummary
 import org.matrix.android.sdk.api.session.room.model.RoomSummary
 import org.matrix.android.sdk.api.session.sync.SyncRequestState
+import org.matrix.android.sdk.api.util.Optional
+import org.matrix.android.sdk.api.util.toOption
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -58,7 +60,7 @@ class SpaceStateHandlerImpl @Inject constructor(
 ) : SpaceStateHandler {
 
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
-    private val selectedSpaceDataSource = BehaviorDataSource<Option<RoomSummary>>(Option.empty())
+    private val selectedSpaceDataSource = BehaviorDataSource<Optional<RoomSummary>>(Optional.empty())
     private val selectedSpaceFlow = selectedSpaceDataSource.stream()
 
     override fun getCurrentSpace(): RoomSummary? {
@@ -82,6 +84,13 @@ class SpaceStateHandlerImpl @Inject constructor(
             return
         }
 
+        analyticsTracker.capture(
+                ViewRoom(
+                        isDM = false,
+                        isSpace = true,
+                )
+        )
+
         if (isForwardNavigation) {
             addToBackstack(spaceToLeave, spaceToSet)
         }
@@ -90,11 +99,7 @@ class SpaceStateHandlerImpl @Inject constructor(
             uiStateRepository.storeSelectedSpace(spaceToSet?.roomId, activeSession.sessionId)
         }
 
-        if (spaceToSet == null) {
-            selectedSpaceDataSource.post(Option.empty())
-        } else {
-            selectedSpaceDataSource.post(Option.just(spaceToSet))
-        }
+        selectedSpaceDataSource.post(spaceToSet.toOption())
 
         if (spaceId != null) {
             activeSession.coroutineScope.launch(Dispatchers.IO) {
