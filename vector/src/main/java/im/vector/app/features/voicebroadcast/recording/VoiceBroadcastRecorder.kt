@@ -18,20 +18,28 @@ package im.vector.app.features.voicebroadcast.recording
 
 import androidx.annotation.IntRange
 import im.vector.app.features.voice.VoiceRecorder
+import im.vector.app.features.voicebroadcast.model.VoiceBroadcast
 import java.io.File
 
 interface VoiceBroadcastRecorder : VoiceRecorder {
 
+    /** The current chunk number. */
     val currentSequence: Int
-    val state: State
 
-    fun startRecord(roomId: String, chunkLength: Int)
+    /** Current state of the recorder. */
+    val recordingState: State
+
+    /** Current remaining time of recording, in seconds, if any. */
+    val currentRemainingTime: Long?
+
+    fun startRecordVoiceBroadcast(voiceBroadcast: VoiceBroadcast, chunkLength: Int, maxLength: Int)
     fun addListener(listener: Listener)
     fun removeListener(listener: Listener)
 
     interface Listener {
         fun onVoiceMessageCreated(file: File, @IntRange(from = 1) sequence: Int) = Unit
         fun onStateUpdated(state: State) = Unit
+        fun onRemainingTimeUpdated(remainingTime: Long?) = Unit
     }
 
     enum class State {

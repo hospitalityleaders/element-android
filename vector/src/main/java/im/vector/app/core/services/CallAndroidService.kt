@@ -29,6 +29,7 @@ import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import com.airbnb.mvrx.Mavericks
 import dagger.hilt.android.AndroidEntryPoint
 import im.vector.app.core.extensions.singletonEntryPoint
+import im.vector.app.core.extensions.startForegroundCompat
 import im.vector.app.features.call.CallArgs
 import im.vector.app.features.call.VectorCallActivity
 import im.vector.app.features.call.telecom.CallConnection
@@ -182,7 +183,7 @@ class CallAndroidService : VectorAndroidService() {
                 fromBg = fromBg
         )
         if (knownCalls.isEmpty()) {
-            startForeground(callId.hashCode(), notification)
+            startForegroundCompat(callId.hashCode(), notification)
         } else {
             notificationManager.notify(callId.hashCode(), notification)
         }
@@ -202,7 +203,7 @@ class CallAndroidService : VectorAndroidService() {
         }
         val notification = notificationUtils.buildCallEndedNotification(false)
         val notificationId = callId.hashCode()
-        startForeground(notificationId, notification)
+        startForegroundCompat(notificationId, notification)
         if (knownCalls.isEmpty()) {
             Timber.tag(loggerTag.value).v("No more call, stop the service")
             stopForegroundCompat()
@@ -237,7 +238,7 @@ class CallAndroidService : VectorAndroidService() {
                 title = callInformation.opponentMatrixItem?.getBestName() ?: callInformation.opponentUserId
         )
         if (knownCalls.isEmpty()) {
-            startForeground(callId.hashCode(), notification)
+            startForegroundCompat(callId.hashCode(), notification)
         } else {
             notificationManager.notify(callId.hashCode(), notification)
         }
@@ -261,7 +262,7 @@ class CallAndroidService : VectorAndroidService() {
                 title = callInformation.opponentMatrixItem?.getBestName() ?: callInformation.opponentUserId
         )
         if (knownCalls.isEmpty()) {
-            startForeground(callId.hashCode(), notification)
+            startForegroundCompat(callId.hashCode(), notification)
         } else {
             notificationManager.notify(callId.hashCode(), notification)
         }
@@ -274,9 +275,9 @@ class CallAndroidService : VectorAndroidService() {
         callRingPlayerOutgoing?.stop()
         val notification = notificationUtils.buildCallEndedNotification(false)
         if (callId != null) {
-            startForeground(callId.hashCode(), notification)
+            startForegroundCompat(callId.hashCode(), notification)
         } else {
-            startForeground(DEFAULT_NOTIFICATION_ID, notification)
+            startForegroundCompat(DEFAULT_NOTIFICATION_ID, notification)
         }
         if (knownCalls.isEmpty()) {
             mediaSession?.isActive = false

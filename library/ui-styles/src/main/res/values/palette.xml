@@ -50,6 +50,7 @@
     <color name="palette_black_950">#21262C</color>
 
 
+
     <!--extras -->
 
     <color name="palette_lighterrr">#2b375e</color>
@@ -57,6 +58,7 @@
     <color name="palette_chatscfab">#32a3fd</color>
     <color name="palette_chatsfab2">#32a3fd</color>
     <color name="palette_chatsfabeww">#32a3fd</color>
+
 
 
 </resources>

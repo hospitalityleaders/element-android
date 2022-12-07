@@ -66,7 +66,7 @@ class AudioMessageHelper @Inject constructor(
 
     fun startRecording(roomId: String) {
         stopPlayback()
-        playbackTracker.makeAllPlaybacksIdle()
+        playbackTracker.pauseAllPlaybacks()
         amplitudeList.clear()
 
         try {
@@ -149,7 +149,7 @@ class AudioMessageHelper @Inject constructor(
     }
 
     private fun startPlayback(id: String, file: File) {
-        val currentPlaybackTime = playbackTracker.getPlaybackTime(id)
+        val currentPlaybackTime = playbackTracker.getPlaybackTime(id) ?: 0
 
         try {
             FileInputStream(file).use { fis ->
@@ -253,8 +253,8 @@ class AudioMessageHelper @Inject constructor(
         playbackTicker = null
     }
 
-    fun clearTracker() {
-        playbackTracker.clear()
+    fun stopTracking() {
+        playbackTracker.unregisterListeners()
     }
 
     fun stopAllVoiceActions(deleteRecord: Boolean = true): MultiPickerAudioType? {

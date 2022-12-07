@@ -17,7 +17,8 @@ jobs:
       contains(github.event.issue.labels.*.name, 'Z-IA') ||
       contains(github.event.issue.labels.*.name, 'A-Themes-Custom') ||
       contains(github.event.issue.labels.*.name, 'A-E2EE-Dehydration') ||
-      contains(github.event.issue.labels.*.name, 'A-Tags')
+      contains(github.event.issue.labels.*.name, 'A-Tags') ||
+      contains(github.event.issue.labels.*.name, 'A-Rich-Text-Editor')
     steps:
       - uses: actions/github-script@v5
         with:
@@ -79,8 +80,8 @@ jobs:
           headers: '{"GraphQL-Features": "projects_next_graphql"}'
           query: |
             mutation add_to_project($projectid:ID!,$contentid:ID!) {
-              addProjectNextItem(input:{projectId:$projectid contentId:$contentid}) {
-                projectNextItem {
+              addProjectV2ItemById(input: {projectId: $projectid contentId: $contentid}) {
+                item {
                   id
                 }
               }
@@ -103,8 +104,8 @@ jobs:
           headers: '{"GraphQL-Features": "projects_next_graphql"}'
           query: |
             mutation add_to_project($projectid:ID!,$contentid:ID!) {
-              addProjectNextItem(input:{projectId:$projectid contentId:$contentid}) {
-                projectNextItem {
+              addProjectV2ItemById(input: {projectId: $projectid contentId: $contentid}) {
+                item {
                   id
                 }
               }
@@ -129,8 +130,8 @@ jobs:
           headers: '{"GraphQL-Features": "projects_next_graphql"}'
           query: |
             mutation add_to_project($projectid:ID!,$contentid:ID!) {
-              addProjectNextItem(input:{projectId:$projectid contentId:$contentid}) {
-                projectNextItem {
+              addProjectV2ItemById(input: {projectId: $projectid contentId: $contentid}) {
+                item {
                   id
                 }
               }
@@ -154,8 +155,8 @@ jobs:
           headers: '{"GraphQL-Features": "projects_next_graphql"}'
           query: |
             mutation add_to_project($projectid:ID!,$contentid:ID!) {
-              addProjectNextItem(input:{projectId:$projectid contentId:$contentid}) {
-                projectNextItem {
+              addProjectV2ItemById(input: {projectId: $projectid contentId: $contentid}) {
+                item {
                   id
                 }
               }
@@ -178,8 +179,8 @@ jobs:
           headers: '{"GraphQL-Features": "projects_next_graphql"}'
           query: |
             mutation add_to_project($projectid:ID!,$contentid:ID!) {
-              addProjectNextItem(input:{projectId:$projectid contentId:$contentid}) {
-                projectNextItem {
+              addProjectV2ItemById(input: {projectId: $projectid contentId: $contentid}) {
+                item {
                   id
                 }
               }
@@ -203,8 +204,8 @@ jobs:
           headers: '{"GraphQL-Features": "projects_next_graphql"}'
           query: |
             mutation add_to_project($projectid:ID!,$contentid:ID!) {
-              addProjectNextItem(input:{projectId:$projectid contentId:$contentid}) {
-                projectNextItem {
+              addProjectV2ItemById(input: {projectId: $projectid contentId: $contentid}) {
+                item {
                   id
                 }
               }
@@ -228,8 +229,8 @@ jobs:
           headers: '{"GraphQL-Features": "projects_next_graphql"}'
           query: |
             mutation add_to_project($projectid:ID!,$contentid:ID!) {
-              addProjectNextItem(input:{projectId:$projectid contentId:$contentid}) {
-                projectNextItem {
+              addProjectV2ItemById(input: {projectId: $projectid contentId: $contentid}) {
+                item {
                   id
                 }
               }
@@ -258,8 +259,8 @@ jobs:
           headers: '{"GraphQL-Features": "projects_next_graphql"}'
           query: |
             mutation add_to_project($projectid:ID!,$contentid:ID!) {
-              addProjectNextItem(input:{projectId:$projectid contentId:$contentid}) {
-                projectNextItem {
+              addProjectV2ItemById(input: {projectId: $projectid contentId: $contentid}) {
+                item {
                   id
                 }
               }
