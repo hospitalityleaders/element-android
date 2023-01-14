@@ -25,6 +25,9 @@ import android.os.Parcelable
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.browser.customtabs.CustomTabColorSchemeParams
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
@@ -82,6 +85,7 @@ import im.vector.app.features.spaces.invite.SpaceInviteBottomSheet
 import im.vector.app.features.spaces.share.ShareSpaceBottomSheet
 import im.vector.app.features.themes.ThemeUtils
 import im.vector.app.features.usercode.UserCodeActivity
+import im.vector.app.features.webview.VectorWebViewActivity
 import im.vector.app.features.workers.signout.ServerBackupStatusViewModel
 import im.vector.lib.core.utils.compat.getParcelableExtraCompat
 import kotlinx.coroutines.flow.launchIn
@@ -654,6 +658,36 @@ class HomeActivity :
                 launchQrCode()
                 true
             }
+
+            // from here - more holedo menu buttons added
+
+            R.id.hdo_about -> {
+                holedo_about_item()
+                true
+            }
+
+            R.id.hdo_news -> {
+                holedo_news_item()
+                true
+            }
+
+
+            R.id.hdo_jobs -> {
+                holedo_jobs_item()
+                true
+            }
+
+            R.id.hdo_profile -> {
+                holedo_profile_item()
+                true
+            }
+
+            R.id.hdo_help -> {
+                holedo_help_item()
+                true
+            }
+            // till here
+
             else -> false
         }
     }
@@ -746,4 +780,103 @@ class HomeActivity :
     override fun mxToBottomSheetSwitchToSpace(spaceId: String) {
         navigator.switchToSpace(this, spaceId, Navigator.PostSwitchSpaceAction.OpenRoomList)
     }
+
+
+    fun holedo_about_item() {
+
+        val calci12 = sharedActionViewModel.session.myUserId
+        val calci13 = calci12.replace(":Holedo Chat.com", "")
+        val calci14 = calci13.replace("@", "")
+
+
+
+        // 2nd way to create chrome custom tabs...imp -----/start
+        val uri = Uri.parse("https://about.holedo.im/?u=$calci14")
+        val intentBuilder = CustomTabsIntent.Builder()
+        val params = CustomTabColorSchemeParams.Builder()
+                .setNavigationBarColor(ContextCompat.getColor(this, R.color.palette_grape))
+                .setToolbarColor(ContextCompat.getColor(this, R.color.palette_prune))
+                .setSecondaryToolbarColor(ContextCompat.getColor(this, R.color.palette_melon))
+                .build()
+        intentBuilder.setColorSchemeParams(CustomTabsIntent.COLOR_SCHEME_DARK, params)
+        intentBuilder.setStartAnimations(this, R.anim.animation_slide_in_right, R.anim.animation_slide_out_left)
+        intentBuilder.setExitAnimations(this, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+        val customTabsIntent = intentBuilder.build()
+        customTabsIntent.launchUrl(this, uri)
+
+    }
+
+    fun holedo_news_item() {
+
+        val calci12 = sharedActionViewModel.session.myUserId
+        val calci13 = calci12.replace(":Holedo Chat.com", "")
+        val calci14 = calci13.replace("@", "")
+//            val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://news.Holedo Chat.im/?u=$calci14"))
+//            startActivity(i)
+
+        val  urll21 = "https://news.holedo.im/?u=$calci14"
+//            val intent13  = Intent(requireContext(), VectorWebViewActivity::class.java)
+//            intent13.putExtra("URL20",urll21)
+//            startActivity(intent13)
+
+        val intentae  = VectorWebViewActivity.getIntent(this, urll21)
+        startActivity(intentae)
+
+    }
+
+    fun holedo_jobs_item() {
+
+        val calci123 = sharedActionViewModel.session.myUserId
+        val calci135 = calci123.replace(":Holedo Chat.com", "")
+        val calci147 = calci135.replace("@", "")
+//            val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://jobs.Holedo Chat.im/?u=$calci147"))
+//            startActivity(i)
+
+        val  urll23 = "https://jobs.holedo.im/?u=$calci147"
+//            val intent13  = Intent(requireContext(), VectorWebViewActivity::class.java)
+//            intent13.putExtra("URL22",urll23)
+//            startActivity(intent13)
+
+        val intentaf  = VectorWebViewActivity.getIntent(this, urll23)
+        startActivity(intentaf)
+
+    }
+
+
+    fun holedo_profile_item() {
+
+        val usernameorigaa = sharedActionViewModel.session.myUserId
+        // usernameorigaa = @appsdev_tanmay:Holedo Chat.com
+        val usernamefinaa = usernameorigaa.replace(":Holedo Chat.com", "")
+        // usernamefinaa = @appsdev_tanmay
+        val usernamefinba = usernamefinaa.replace("@", "")
+        // usernamefinba = appsdev_tanmay
+
+//            val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://profile.Holedo Chat.im/$usernamefinba"))
+//            startActivity(i)
+
+        val  urll25 = "https://profile.holedo.im/$usernamefinba"
+
+        //urll25 = "https://profile.Holedo Chat.im/appsdev_tanmay"
+
+
+//            val intent13  = Intent(requireContext(), VectorWebViewActivity::class.java)
+//            intent13.putExtra("URL24",urll25)
+//            startActivity(intent13)
+
+        val intentag  = VectorWebViewActivity.getIntent(this, urll25)
+        startActivity(intentag)
+
+    }
+
+
+    fun holedo_help_item() {
+
+        val  urll19 = "https://www.holedo.im/help"
+
+        val intentad  = VectorWebViewActivity.getIntent(this, urll19)
+        startActivity(intentad)
+
+    }
+
 }

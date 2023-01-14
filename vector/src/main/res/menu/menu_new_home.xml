@@ -47,4 +47,35 @@
         android:title="@string/home_filter_placeholder_home"
         app:iconTint="?vctr_content_secondary"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/hdo_about"
+        android:icon="@drawable/ic_baseline_alternate_email_24"
+        android:title="@string/hdo_about"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/hdo_news"
+        android:icon="@drawable/ic_globe_solid"
+        android:title="@string/hdo_news"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/hdo_jobs"
+        android:icon="@drawable/ic_briefcase_solid"
+        android:title="@string/hdo_jobs"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/hdo_profile"
+        android:icon="@drawable/ic_address_card"
+        android:title="@string/hdo_profile"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/hdo_help"
+        android:icon="@drawable/ic_baseline_help_outline_24"
+        android:title="@string/hdo_help"
+        app:showAsAction="never" />
+
 </menu>

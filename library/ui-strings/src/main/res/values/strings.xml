@@ -3540,4 +3540,11 @@
     <string name="settings_access_token">Access Token</string>
     <string name="settings_access_token_summary">Your access token gives full access to your account. Do not share it with anyone.</string>
 
+
+    <!--Holedo Menu Buttons -->
+    <string name="hdo_about">About Holedo</string>
+    <string name="hdo_news">News</string>
+    <string name="hdo_jobs">Jobs</string>
+    <string name="hdo_profile">Profile</string>
+    <string name="hdo_help">Help</string>
 </resources>
