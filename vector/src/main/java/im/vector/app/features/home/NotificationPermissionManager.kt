@@ -72,5 +72,7 @@ class NotificationPermissionManager @Inject constructor(
     ) {
         if (!sdkIntProvider.isAtLeast(Build.VERSION_CODES.TIRAMISU)) return
         activity.revokeSelfPermissionOnKill(Manifest.permission.POST_NOTIFICATIONS)
+
+        //done fix 14 jan 2023
     }
 }
