@@ -782,6 +782,8 @@ class HomeActivity :
     }
 
 
+    //holedo menu functions
+
     fun holedo_about_item() {
 
         val calci12 = sharedActionViewModel.session.myUserId
