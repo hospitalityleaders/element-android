@@ -62,9 +62,10 @@ class SessionInfoView @JvmOverloads constructor(
             stringProvider: StringProvider,
     ) {
         renderDeviceInfo(
-                sessionInfoViewState.deviceFullInfo.deviceInfo.displayName.orEmpty(),
-                sessionInfoViewState.deviceFullInfo.deviceExtendedInfo.deviceType,
-                stringProvider,
+                sessionName = sessionInfoViewState.deviceFullInfo.deviceInfo.displayName
+                        ?: sessionInfoViewState.deviceFullInfo.deviceInfo.deviceId.orEmpty(),
+                deviceType = sessionInfoViewState.deviceFullInfo.deviceExtendedInfo.deviceType,
+                stringProvider = stringProvider,
         )
         renderVerificationStatus(
                 sessionInfoViewState.deviceFullInfo.roomEncryptionTrustLevel,
@@ -75,7 +76,7 @@ class SessionInfoView @JvmOverloads constructor(
         renderDeviceLastSeenDetails(
                 sessionInfoViewState.deviceFullInfo.isInactive,
                 sessionInfoViewState.deviceFullInfo.deviceInfo,
-                sessionInfoViewState.isLastSeenDetailsVisible,
+                sessionInfoViewState.isLastActivityVisible,
                 sessionInfoViewState.isShowingIpAddress,
                 dateFormatter,
                 drawableProvider,
@@ -85,13 +86,14 @@ class SessionInfoView @JvmOverloads constructor(
     }
 
     private fun renderVerificationStatus(
-            encryptionTrustLevel: RoomEncryptionTrustLevel,
+            encryptionTrustLevel: RoomEncryptionTrustLevel?,
             isCurrentSession: Boolean,
             hasLearnMoreLink: Boolean,
             isVerifyButtonVisible: Boolean,
     ) {
         views.sessionInfoVerificationStatusImageView.renderDeviceShield(encryptionTrustLevel)
         when {
+            encryptionTrustLevel == null -> renderCrossSigningEncryptionNotSupported()
             encryptionTrustLevel == RoomEncryptionTrustLevel.Trusted -> renderCrossSigningVerified(isCurrentSession)
             encryptionTrustLevel == RoomEncryptionTrustLevel.Default && !isCurrentSession -> renderCrossSigningUnknown()
             else -> renderCrossSigningUnverified(isCurrentSession, isVerifyButtonVisible)
@@ -149,6 +151,14 @@ class SessionInfoView @JvmOverloads constructor(
         views.sessionInfoVerifySessionButton.isVisible = false
     }
 
+    private fun renderCrossSigningEncryptionNotSupported() {
+        views.sessionInfoVerificationStatusTextView.text = context.getString(R.string.device_manager_verification_status_unverified)
+        views.sessionInfoVerificationStatusTextView.setTextColor(ThemeUtils.getColor(context, R.attr.colorError))
+        views.sessionInfoVerificationStatusDetailTextView.text =
+                context.getString(R.string.device_manager_verification_status_detail_session_encryption_not_supported)
+        views.sessionInfoVerifySessionButton.isVisible = false
+    }
+
     private fun renderDeviceInfo(sessionName: String, deviceType: DeviceType, stringProvider: StringProvider) {
         setDeviceTypeIconUseCase.execute(deviceType, views.sessionInfoDeviceTypeImageView, stringProvider)
         views.sessionInfoNameTextView.text = sessionName
@@ -188,7 +198,7 @@ class SessionInfoView @JvmOverloads constructor(
         } else {
             views.sessionInfoLastActivityTextView.isGone = true
         }
-        views.sessionInfoLastIPAddressTextView.setTextOrHide(deviceInfo.lastSeenIp?.takeIf { isLastSeenDetailsVisible && isShowingIpAddress })
+        views.sessionInfoLastIPAddressTextView.setTextOrHide(deviceInfo.lastSeenIp?.takeIf { isShowingIpAddress })
     }
 
     private fun renderDetailsButton(isDetailsButtonVisible: Boolean) {

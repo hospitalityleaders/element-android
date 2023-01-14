@@ -49,10 +49,12 @@ import im.vector.app.databinding.ComposerRichTextLayoutBinding
 import im.vector.app.databinding.ViewRichTextMenuButtonBinding
 import io.element.android.wysiwyg.EditorEditText
 import io.element.android.wysiwyg.inputhandlers.models.InlineFormat
+import io.element.android.wysiwyg.inputhandlers.models.LinkAction
+import io.element.android.wysiwyg.utils.RustErrorCollector
 import uniffi.wysiwyg_composer.ActionState
 import uniffi.wysiwyg_composer.ComposerAction
 
-class RichTextComposerLayout @JvmOverloads constructor(
+internal class RichTextComposerLayout @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
@@ -65,6 +67,7 @@ class RichTextComposerLayout @JvmOverloads constructor(
     // There is no need to persist these values since they're always updated by the parent fragment
     private var isFullScreen = false
     private var hasRelatedMessage = false
+    private var composerMode: MessageComposerMode? = null
 
     var isTextFormattingEnabled = true
         set(value) {
@@ -113,9 +116,15 @@ class RichTextComposerLayout @JvmOverloads constructor(
 
     private val dimensionConverter = DimensionConverter(resources)
 
-    fun setFullScreen(isFullScreen: Boolean) {
+    fun setFullScreen(isFullScreen: Boolean, animated: Boolean) {
+        if (!animated && views.composerLayout.layoutParams != null) {
+            views.composerLayout.updateLayoutParams<ViewGroup.LayoutParams> {
+                height =
+                        if (isFullScreen) ViewGroup.LayoutParams.MATCH_PARENT else ViewGroup.LayoutParams.WRAP_CONTENT
+            }
+        }
         editText.updateLayoutParams<ViewGroup.LayoutParams> {
-            height = if (isFullScreen) 0 else ViewGroup.LayoutParams.WRAP_CONTENT
+            height = if (isFullScreen) ViewGroup.LayoutParams.MATCH_PARENT else ViewGroup.LayoutParams.WRAP_CONTENT
         }
 
         updateTextFieldBorder(isFullScreen)
@@ -223,7 +232,30 @@ class RichTextComposerLayout @JvmOverloads constructor(
         addRichTextMenuItem(R.drawable.ic_composer_strikethrough, R.string.rich_text_editor_format_strikethrough, ComposerAction.STRIKE_THROUGH) {
             views.richTextComposerEditText.toggleInlineFormat(InlineFormat.StrikeThrough)
         }
+        addRichTextMenuItem(R.drawable.ic_composer_link, R.string.rich_text_editor_link, ComposerAction.LINK) {
+            views.richTextComposerEditText.getLinkAction()?.let {
+                when (it) {
+                    LinkAction.InsertLink -> callback?.onSetLink(isTextSupported = true, initialLink = null)
+                    is LinkAction.SetLink -> callback?.onSetLink(isTextSupported = false, initialLink = it.currentLink)
+                }
+            }
+        }
+        addRichTextMenuItem(R.drawable.ic_composer_bullet_list, R.string.rich_text_editor_bullet_list, ComposerAction.UNORDERED_LIST) {
+            views.richTextComposerEditText.toggleList(ordered = false)
+        }
+        addRichTextMenuItem(R.drawable.ic_composer_numbered_list, R.string.rich_text_editor_numbered_list, ComposerAction.ORDERED_LIST) {
+            views.richTextComposerEditText.toggleList(ordered = true)
+        }
     }
+
+    fun setLink(link: String?) =
+            views.richTextComposerEditText.setLink(link)
+
+    fun insertLink(link: String, text: String) =
+            views.richTextComposerEditText.insertLink(link, text)
+
+    fun removeLink() =
+            views.richTextComposerEditText.removeLink()
 
     @SuppressLint("ClickableViewAccessibility")
     private fun disallowParentInterceptTouchEvent(view: View) {
@@ -248,8 +280,13 @@ class RichTextComposerLayout @JvmOverloads constructor(
                 updateMenuStateFor(action, state)
             }
         }
-
         updateEditTextVisibility()
+    }
+
+    fun setOnErrorListener(onError: (e: RichTextEditorException) -> Unit) {
+        views.richTextComposerEditText.rustErrorCollector = RustErrorCollector {
+            onError(RichTextEditorException(it))
+        }
     }
 
     private fun updateEditTextVisibility() {
@@ -365,7 +402,11 @@ class RichTextComposerLayout @JvmOverloads constructor(
     override fun renderComposerMode(mode: MessageComposerMode) {
         if (mode is MessageComposerMode.Special) {
             views.composerModeGroup.isVisible = true
-            replaceFormattedContent(mode.defaultContent)
+            if (isTextFormattingEnabled) {
+                replaceFormattedContent(mode.defaultContent)
+            } else {
+                views.plainTextComposerEditText.setText(mode.defaultContent)
+            }
             hasRelatedMessage = true
             editText.showKeyboard(andRequestFocus = true)
         } else {
@@ -377,9 +418,13 @@ class RichTextComposerLayout @JvmOverloads constructor(
                     views.plainTextComposerEditText.setText(text)
                 }
             }
-            views.sendButton.contentDescription = resources.getString(R.string.action_send)
             hasRelatedMessage = false
         }
+
+        updateTextFieldBorder(isFullScreen)
+
+        if (this.composerMode == mode) return
+        this.composerMode = mode
 
         views.sendButton.apply {
             if (mode is MessageComposerMode.Edit) {
@@ -390,8 +435,6 @@ class RichTextComposerLayout @JvmOverloads constructor(
                 setImageResource(R.drawable.ic_rich_composer_send)
             }
         }
-
-        updateTextFieldBorder(isFullScreen)
 
         when (mode) {
             is MessageComposerMode.Edit -> {

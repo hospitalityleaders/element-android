@@ -25,7 +25,7 @@ import android.view.KeyEvent
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.media.session.MediaButtonReceiver
-import androidx.test.core.app.ApplicationProvider.getApplicationContext
+
 import com.airbnb.mvrx.Mavericks
 import dagger.hilt.android.AndroidEntryPoint
 import im.vector.app.core.extensions.singletonEntryPoint
@@ -43,6 +43,7 @@ import im.vector.app.features.popup.IncomingCallAlert
 import im.vector.app.features.popup.PopupAlertManager
 import im.vector.lib.core.utils.compat.getParcelableExtraCompat
 import im.vector.lib.core.utils.compat.getSerializableExtraCompat
+import io.realm.Realm.getApplicationContext
 import org.matrix.android.sdk.api.logger.LoggerTag
 import org.matrix.android.sdk.api.session.room.model.call.EndCallReason
 import org.matrix.android.sdk.api.util.MatrixItem
@@ -376,7 +377,7 @@ class CallAndroidService : VectorAndroidService() {
                         putExtra(EXTRA_END_CALL_REASON, endCallReason)
                         putExtra(EXTRA_END_CALL_REJECTED, rejected)
                     }
-            ContextCompat.startForegroundService(getApplicationContext(), intent)
+            getApplicationContext()?.let { ContextCompat.startForegroundService(it, intent) }
         }
     }
 
