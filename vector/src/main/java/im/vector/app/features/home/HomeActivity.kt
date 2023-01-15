@@ -22,9 +22,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
@@ -787,7 +789,7 @@ class HomeActivity :
     fun holedo_about_item() {
 
         val calci12 = sharedActionViewModel.session.myUserId
-        val calci13 = calci12.replace(":Holedo Chat.com", "")
+        val calci13 = calci12.replace(":holedo.com", "")
         val calci14 = calci13.replace("@", "")
 
 
@@ -811,7 +813,7 @@ class HomeActivity :
     fun holedo_news_item() {
 
         val calci12 = sharedActionViewModel.session.myUserId
-        val calci13 = calci12.replace(":Holedo Chat.com", "")
+        val calci13 = calci12.replace(":holedo.com", "")
         val calci14 = calci13.replace("@", "")
 //            val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://news.Holedo Chat.im/?u=$calci14"))
 //            startActivity(i)
@@ -829,7 +831,7 @@ class HomeActivity :
     fun holedo_jobs_item() {
 
         val calci123 = sharedActionViewModel.session.myUserId
-        val calci135 = calci123.replace(":Holedo Chat.com", "")
+        val calci135 = calci123.replace(":holedo.com", "")
         val calci147 = calci135.replace("@", "")
 //            val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://jobs.Holedo Chat.im/?u=$calci147"))
 //            startActivity(i)
@@ -848,16 +850,25 @@ class HomeActivity :
     fun holedo_profile_item() {
 
         val usernameorigaa = sharedActionViewModel.session.myUserId
+        Log.d("MyTag1", usernameorigaa);
         // usernameorigaa = @appsdev_tanmay:Holedo Chat.com
-        val usernamefinaa = usernameorigaa.replace(":Holedo Chat.com", "")
+        // usernameorigaa = @appsdev_tanmay:holedo.com
+        val usernamefinaa = usernameorigaa.replace(":holedo.com", "")
         // usernamefinaa = @appsdev_tanmay
         val usernamefinba = usernamefinaa.replace("@", "")
         // usernamefinba = appsdev_tanmay
 
-//            val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://profile.Holedo Chat.im/$usernamefinba"))
+//            val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://profile.holedo.im/$usernamefinba"))
 //            startActivity(i)
 
-        val  urll25 = "https://profile.holedo.im/$usernamefinba"
+        val  urll25 = "https://profile.holedo.im/?u=$usernamefinba"
+
+        Timber.d(urll25)
+
+        Log.d("MyTag", urll25);
+
+
+//        Toast.makeText(this,"here is the profile link $urll25", Toast.LENGTH_LONG).show()
 
         //urll25 = "https://profile.Holedo Chat.im/appsdev_tanmay"
 
