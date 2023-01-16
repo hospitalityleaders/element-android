@@ -289,6 +289,7 @@ class RoomMemberProfileFragment :
                     callingprofilefunction()
                 }
 
+                // extra link
                 headerViews.memberProfileextralink.setOnClickListener {
                     callingprofilefunction()
                 }
