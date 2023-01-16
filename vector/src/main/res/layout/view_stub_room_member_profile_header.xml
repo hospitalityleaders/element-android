@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@id/memberProfileIdView"
+            app:layout_constraintBottom_toTopOf="@id/memberProfileextralink"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/memberProfileAvatarView">
@@ -77,7 +77,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/memberProfileIdView"
+            android:id="@+id/memberProfileextralink"
             style="@style/Widget.Vector.TextView.Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -85,14 +85,14 @@
             android:layout_marginBottom="16dp"
             android:gravity="center"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/memberProfileextralink"
+            app:layout_constraintBottom_toTopOf="@id/memberProfileIdView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/memberProfileLinearLayout"
-            tools:text="@sample/users.json/data/id" />
+            tools:text="holedo.com/profile/username" />
 
         <TextView
-            android:id="@+id/memberProfileextralink"
+            android:id="@+id/memberProfileIdView"
             style="@style/Widget.Vector.TextView.Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -103,8 +103,9 @@
             app:layout_constraintBottom_toTopOf="@id/memberProfilePowerLevelView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/memberProfileIdView"
-            tools:text="holedo.com/profile/username" />
+            app:layout_constraintTop_toBottomOf="@id/memberProfileextralink"
+            tools:text="@sample/users.json/data/id" />
+
 
         <TextView
             android:id="@+id/memberProfilePowerLevelView"
