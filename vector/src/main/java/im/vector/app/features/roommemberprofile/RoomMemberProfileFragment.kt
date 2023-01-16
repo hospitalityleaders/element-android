@@ -17,6 +17,7 @@
 
 package im.vector.app.features.roommemberprofile
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
@@ -206,6 +207,7 @@ class RoomMemberProfileFragment :
         super.onDestroyView()
     }
 
+    @SuppressLint("SetTextI18n")
     override fun invalidate() = withState(viewModel) { state ->
         when (val asyncUserMatrixItem = state.userMatrixItem) {
             Uninitialized,
@@ -224,6 +226,17 @@ class RoomMemberProfileFragment :
                 val userMatrixItem = asyncUserMatrixItem()
                 headerViews.memberProfileStateView.state = StateView.State.Content
                 headerViews.memberProfileIdView.text = userMatrixItem.id
+
+                //getting username
+                val usernameorigaa =  headerViews.memberProfileIdView.text.toString()
+
+                val usernamefinaa = usernameorigaa.replace(":holedo.com", "")
+
+                val usernamefinba2 = usernamefinaa.replace("@", "")
+
+                headerViews.memberProfileextralink.text= "holedo.com/profile/$usernamefinba2" // extra link we added holedo tan
+
+
                 val bestName = userMatrixItem.getBestName()
                 headerViews.memberProfileNameView.text = bestName
                 headerViews.memberProfileNameView.setTextColor(matrixItemColorProvider.getColor(userMatrixItem))
@@ -268,6 +281,16 @@ class RoomMemberProfileFragment :
                 }
                 views.matrixProfileToolbarAvatarImageView.setOnClickListener {
                     onAvatarClicked()
+                }
+
+                // click on name will open link
+
+                headerViews.memberProfileNameView.setOnClickListener {
+                    callingprofilefunction()
+                }
+
+                headerViews.memberProfileextralink.setOnClickListener {
+                    callingprofilefunction()
                 }
             }
         }
