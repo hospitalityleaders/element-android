@@ -22,8 +22,10 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
+import android.widget.Switch
 import android.widget.TextView
 import androidx.core.animation.doOnEnd
+import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceViewHolder
 import androidx.preference.SwitchPreference
 import im.vector.app.R
@@ -52,6 +54,7 @@ class VectorSwitchPreference : SwitchPreference {
         set(value) {
             field = value
             notifyChanged()
+
         }
 
     var currentHighlightAnimator: Animator? = null
@@ -60,10 +63,15 @@ class VectorSwitchPreference : SwitchPreference {
         // display the title in multi-line to avoid ellipsis.
         (holder.findViewById(android.R.id.title) as? TextView)?.isSingleLine = false
 
+
+
         // cancel existing animation (find a way to resume if happens during anim?)
         currentHighlightAnimator?.cancel()
 
         val itemView = holder.itemView
+
+
+
         if (isHighlighted) {
             val colorFrom = Color.TRANSPARENT
             val colorTo = ThemeUtils.getColor(itemView.context, R.attr.colorControlHighlight)

@@ -50,6 +50,8 @@
             android:summary="@string/settings_send_markdown_summary"
             android:title="@string/settings_send_markdown" />
 
+
+
         <im.vector.app.core.preference.VectorSwitchPreference
             android:defaultValue="true"
             android:key="SETTINGS_SEND_TYPING_NOTIF_KEY"
