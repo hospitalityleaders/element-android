@@ -1,180 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@null">
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_carousel_page_4">
 
-    <WebView
-        android:id="@+id/webView"
-        android:visibility="invisible"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/splashCarousel"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/splashCarouselFloatingSection"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.65" />
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/carouselIndicator"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@null"
-        app:layout_constraintBottom_toTopOf="@id/loginSplashButtonsSpace"
-        app:layout_constraintTop_toBottomOf="@id/splashCarouselFloatingSection"
-        app:layout_constraintVertical_chainStyle="spread"
-        app:tabBackground="@drawable/indicator_onboarding_carousel_selector"
-        app:tabGravity="center"
-        app:tabIndicatorHeight="0dp"
-        app:tabPaddingEnd="4dp"
-        app:tabPaddingStart="4dp" />
+        android:background="@null">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/splashCarouselGutterStart"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="@dimen/ftue_auth_gutter_start_percent" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/splashCarouselGutterEnd"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="@dimen/ftue_auth_gutter_end_percent" />
-
-    <Space
-        android:id="@+id/loginSplashButtonsSpace"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/loginSplashSubmit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.0001"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/carouselIndicator" />
-
-    <Button
-        android:id="@+id/loginSplashSubmit"
-        style="@style/Widget.Vector.Button.Login"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textAllCaps="true"
-        android:transitionName="loginSubmitTransition"
-        app:layout_constraintBottom_toTopOf="@id/ll2"
-        app:layout_constraintEnd_toEndOf="@id/splashCarouselGutterEnd"
-        app:layout_constraintStart_toStartOf="@id/splashCarouselGutterStart"
-        app:layout_constraintTop_toBottomOf="@id/loginSplashButtonsSpace"
-        tools:text="@string/login_splash_create_account"
-        tools:ignore="VisualLintButtonSize" />
+        <WebView
+            android:id="@+id/webView"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:ignore="WebViewLayout" />
 
 
-    <LinearLayout
-        android:id="@+id/ll2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="1dp"
-        app:layout_constraintBottom_toTopOf="@id/loginSplashAlreadyHaveAccount"
-        app:layout_constraintEnd_toEndOf="@id/splashCarouselGutterEnd"
-        app:layout_constraintStart_toStartOf="@id/splashCarouselGutterStart"
-        app:layout_constraintTop_toBottomOf="@id/loginSplashSubmit">
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/splashCarousel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/splashCarouselFloatingSection"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.58" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/carouselIndicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:background="@null"
+            app:layout_constraintBottom_toTopOf="@id/loginSplashButtonsSpace"
+            app:layout_constraintTop_toBottomOf="@id/splashCarouselFloatingSection"
+            app:layout_constraintVertical_chainStyle="spread"
+            app:tabBackground="@drawable/indicator_onboarding_carousel_selector"
+            app:tabGravity="center"
+            app:tabIndicatorHeight="0dp"
+            app:tabPaddingEnd="14dp"
+            app:tabPaddingStart="14dp" />
 
-            <CheckBox
-                android:id="@+id/terms_and_conditions_checkbox2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                tools:ignore="RtlHardcoded" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/splashCarouselGutterStart"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="21dp" />
 
-            <TextView
-                android:id="@+id/termtextline"
-                android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/splashCarouselGutterEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="@dimen/ftue_auth_gutter_end_percent" />
+
+        <Space
+            android:id="@+id/loginSplashButtonsSpace"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/loginSplashSubmit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.0001"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/carouselIndicator" />
+
+        <Button
+            android:id="@+id/loginSplashSubmit"
+            style="@style/Widget.Vector.Button.Login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAllCaps="true"
+            android:transitionName="loginSubmitTransition"
+            app:layout_constraintBottom_toTopOf="@id/ll2"
+            app:layout_constraintEnd_toEndOf="@id/splashCarouselGutterEnd"
+            app:layout_constraintStart_toStartOf="@id/splashCarouselGutterStart"
+            app:layout_constraintTop_toBottomOf="@id/loginSplashButtonsSpace"
+            tools:ignore="VisualLintButtonSize"
+            tools:text="@string/login_splash_create_account" />
+
+
+        <LinearLayout
+            android:id="@+id/ll2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/loginSplashAlreadyHaveAccount"
+            app:layout_constraintEnd_toEndOf="@id/splashCarouselGutterEnd"
+            app:layout_constraintStart_toStartOf="@id/splashCarouselGutterStart"
+            app:layout_constraintTop_toBottomOf="@id/loginSplashSubmit">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorLink="#32a3fd"
-                android:layout_marginStart="5dp"
-                android:textColor="?vctr_content_secondary"
-                android:gravity="center_vertical"
-                android:text="test"
-                android:textSize="13sp" />
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/terms_and_conditions_checkbox2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    tools:ignore="RtlHardcoded" />
+
+                <TextView
+                    android:id="@+id/termtextline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center_vertical"
+                    android:text="test"
+                    android:textColor="?vctr_content_secondary"
+                    android:textColorLink="#32a3fd"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
 
-    </LinearLayout>
-
-
-    <Button
-        android:id="@+id/loginSplashAlreadyHaveAccount"
-        style="@style/Widget.Vector.Button.Text.Login"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/login_splash_already_have_account"
-        android:textAllCaps="true"
-        android:transitionName="loginSubmitTransition"
-        app:layout_constraintBottom_toTopOf="@id/termsHeaderTitle1"
-        app:layout_constraintEnd_toEndOf="@id/splashCarouselGutterEnd"
-        app:layout_constraintStart_toStartOf="@id/splashCarouselGutterStart"
-        app:layout_constraintTop_toBottomOf="@id/ll2" />
-
-
-
-    <TextView
-        android:id="@+id/termsHeaderTitle1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="18dp"
-        android:gravity="center"
-        android:textSize="15sp"
-        android:text="@string/ftue_auth_terms_title"
-        android:textColor="?vctr_content_secondary"
-        app:layout_constraintBottom_toTopOf="@id/loginSplashBottomSpace"
-        app:layout_constraintEnd_toEndOf="@id/splashCarouselGutterEnd"
-        app:layout_constraintStart_toStartOf="@id/splashCarouselGutterStart"
-        app:layout_constraintTop_toBottomOf="@id/loginSplashAlreadyHaveAccount" />
-
-    <Space
-        android:id="@+id/loginSplashBottomSpace"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.0001"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/loginSplashAlreadyHaveAccount" />
-
-    <TextView
-        android:id="@+id/loginSplashVersion"
-        style="@style/Widget.Vector.TextView.Micro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawablePadding="12dp"
-        android:textColor="?vctr_content_secondary"
-        android:visibility="gone"
-        app:drawableStartCompat="@drawable/ic_debug_icon"
-        app:drawableTint="?colorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/termsHeaderTitle1"
-        app:layout_constraintEnd_toEndOf="@id/splashCarouselGutterEnd"
-        app:layout_constraintStart_toStartOf="@id/splashCarouselGutterStart"
-        tools:text="@string/settings_version"
-        tools:visibility="visible" />
+        <Button
+            android:id="@+id/loginSplashAlreadyHaveAccount"
+            style="@style/Widget.Vector.Button.Text.Login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/login_splash_already_have_account"
+            android:textAllCaps="true"
+            android:layout_marginTop="6dp"
+            android:transitionName="loginSubmitTransition"
+            app:layout_constraintBottom_toTopOf="@id/loginSplashBottomSpace"
+            app:layout_constraintEnd_toEndOf="@id/splashCarouselGutterEnd"
+            app:layout_constraintStart_toStartOf="@id/splashCarouselGutterStart"
+            app:layout_constraintTop_toBottomOf="@id/ll2" />
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Space
+            android:id="@+id/loginSplashBottomSpace"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/termsHeaderTitle1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.06"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/loginSplashAlreadyHaveAccount" />
+
+
+
+        <TextView
+            android:id="@+id/termsHeaderTitle1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="18dp"
+            android:gravity="center"
+            android:text="@string/ftue_auth_terms_title"
+            android:textColor="?vctr_content_secondary"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toTopOf="@id/loginSplashVersion"
+            app:layout_constraintEnd_toEndOf="@id/splashCarouselGutterEnd"
+            app:layout_constraintStart_toStartOf="@id/splashCarouselGutterStart"
+            app:layout_constraintTop_toBottomOf="@id/loginSplashBottomSpace" />
+
+
+        <TextView
+            android:id="@+id/loginSplashVersion"
+            style="@style/Widget.Vector.TextView.Micro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="12dp"
+            android:textColor="?vctr_content_secondary"
+            android:visibility="gone"
+            app:drawableStartCompat="@drawable/ic_debug_icon"
+            app:drawableTint="?colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/splashCarouselGutterEnd"
+            app:layout_constraintStart_toStartOf="@id/splashCarouselGutterStart"
+            app:layout_constraintTop_toBottomOf="@id/termsHeaderTitle1"
+            tools:text="@string/settings_version"
+            tools:visibility="visible" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

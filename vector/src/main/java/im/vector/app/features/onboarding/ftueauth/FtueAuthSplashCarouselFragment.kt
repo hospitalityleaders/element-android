@@ -29,7 +29,11 @@ import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
+import android.widget.Button
+import android.widget.CheckBox
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -87,8 +91,9 @@ class FtueAuthSplashCarouselFragment :
         val spannableString = SpannableString(text)
         val clickableSpanTerms = object : ClickableSpan() {
             override fun onClick(widget: View) {
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(termsUrl))
-                requireActivity().startActivity(browserIntent)
+                val webView = requireView().findViewById<WebView>(R.id.webView)
+                webView.visibility = View.VISIBLE
+                webView.loadUrl(termsUrl)
             }
 
             override fun updateDrawState(ds: TextPaint) {
@@ -97,10 +102,17 @@ class FtueAuthSplashCarouselFragment :
                 ds.isUnderlineText = true
             }
         }
+
+
         val clickableSpanPrivacy = object : ClickableSpan() {
             override fun onClick(widget: View) {
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(privacyPolicyUrl))
-                requireActivity().startActivity(browserIntent)
+
+                val webView = requireView().findViewById<WebView>(R.id.webView)
+                        webView.visibility = View.VISIBLE
+                             webView.loadUrl(privacyPolicyUrl)
+
+                //                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(privacyPolicyUrl))
+//                requireActivity().startActivity(browserIntent)
             }
 
             override fun updateDrawState(ds: TextPaint) {
@@ -161,11 +173,24 @@ class FtueAuthSplashCarouselFragment :
         val isAlreadyHaveAccountEnabled = vectorFeatures.isOnboardingAlreadyHaveAccountSplashEnabled()
         views.loginSplashSubmit.apply {
             setText(if (isAlreadyHaveAccountEnabled) R.string.login_splash_create_account else R.string.login_splash_submit)
-            debouncedClicks { splashSubmit(isAlreadyHaveAccountEnabled) }
+
         }
         views.loginSplashAlreadyHaveAccount.apply {
             isVisible = isAlreadyHaveAccountEnabled
             debouncedClicks { alreadyHaveAnAccount() }
+        }
+
+        // checking check box mandatory
+        val checkbox: CheckBox = requireView().findViewById(R.id.terms_and_conditions_checkbox2)
+        val createAccountButton: Button = requireView().findViewById(R.id.loginSplashSubmit)
+        createAccountButton.setOnClickListener {
+            if (!checkbox.isChecked) {
+                Toast.makeText(requireContext(), "Please mark the checkbox before proceeding", Toast.LENGTH_SHORT).show()
+            } else {
+                // code to proceed with create account
+                 splashSubmit(isAlreadyHaveAccountEnabled)
+
+            }
         }
 
 //        views.ll2.setOnClickListener {
