@@ -63,6 +63,8 @@ class FtueAuthSplashFragment :
             debouncedClicks { alreadyHaveAnAccount() }
         }
 
+
+
         if (buildMeta.isDebug || vectorPreferences.developerMode()) {
             views.loginSplashVersion.isVisible = true
             @SuppressLint("SetTextI18n")

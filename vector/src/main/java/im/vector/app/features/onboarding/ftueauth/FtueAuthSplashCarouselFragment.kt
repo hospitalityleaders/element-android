@@ -17,10 +17,19 @@
 package im.vector.app.features.onboarding.ftueauth
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -64,6 +73,74 @@ class FtueAuthSplashCarouselFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
+        val termsUrl = "https://holedo.im/tos"
+        val privacyPolicyUrl = "https://holedo.im/privacy"
+        val textView = view.findViewById<TextView>(R.id.termtextline)
+        textView.movementMethod = LinkMovementMethod.getInstance()
+
+
+        val text = "By clicking Create Account, you agree to our Terms. Learn how we collect, use and share your data in our Privacy Policy."
+        val terms = "Terms"
+        val privacy = "Privacy Policy"
+        val termsIndex = text.indexOf(terms)
+        val privacyIndex = text.indexOf(privacy)
+        val spannableString = SpannableString(text)
+        val clickableSpanTerms = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(termsUrl))
+                requireActivity().startActivity(browserIntent)
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                super.updateDrawState(ds)
+                ds.color = Color.parseColor("#32a3fd")
+                ds.isUnderlineText = true
+            }
+        }
+        val clickableSpanPrivacy = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(privacyPolicyUrl))
+                requireActivity().startActivity(browserIntent)
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                super.updateDrawState(ds)
+                ds.color = Color.parseColor("#32a3fd")
+                ds.isUnderlineText = true
+            }
+        }
+        if (termsIndex != -1) {
+            spannableString.setSpan(clickableSpanTerms, termsIndex, termsIndex + terms.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+        if (privacyIndex != -1) {
+            spannableString.setSpan(clickableSpanPrivacy, privacyIndex, privacyIndex + privacy.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+        textView.text = spannableString
+        textView.movementMethod = LinkMovementMethod.getInstance()
+
+
+/*
+        textView.setOnClickListener { textview ->
+            when ((textview as TextView).text.toString()) {
+                "Terms" -> {
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(termsUrl))
+                    requireActivity().startActivity(browserIntent)
+
+//                    val webView = requireView().findViewById<WebView>(R.id.webView)
+//                    webView.visibility = View.VISIBLE
+//                    webView.loadUrl(termsUrl)
+                }
+                "Privacy Policy" -> {
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(privacyPolicyUrl))
+                    requireActivity().startActivity(browserIntent)
+//                    val webView = requireView().findViewById<WebView>(R.id.webView)
+//                    webView.visibility = View.VISIBLE
+//                    webView.loadUrl(privacyPolicyUrl)
+                }
+            }
+        }
+
+ */
     }
 
     override fun onDestroyView() {
@@ -90,6 +167,15 @@ class FtueAuthSplashCarouselFragment :
             isVisible = isAlreadyHaveAccountEnabled
             debouncedClicks { alreadyHaveAnAccount() }
         }
+
+//        views.ll2.setOnClickListener {
+//            openHoledoTerms()
+//
+//        }
+
+//        views.termsClick1.setOnClickListener {
+//            openHoledoTerms()
+//        }
 
         if (buildMeta.isDebug || vectorPreferences.developerMode()) {
             views.loginSplashVersion.isVisible = true
@@ -149,4 +235,19 @@ class FtueAuthSplashCarouselFragment :
     override fun resetViewModel() {
         // Nothing to do
     }
+
+//    private fun openHoledoTerms() {
+//
+//        //vectorwebview will only work for logged in client so use webview
+//
+////        val urlholedo = "https://holedo.im/tos"
+////        val intent  = VectorWebViewActivity.getIntent(requireContext(), urlholedo)
+////        startActivity(intent)
+//
+//        val webView = requireView().findViewById<WebView>(R.id.webView)
+//        webView.visibility = View.VISIBLE
+//        webView.loadUrl("https://holedo.im/tos")
+//
+//    }
+
 }

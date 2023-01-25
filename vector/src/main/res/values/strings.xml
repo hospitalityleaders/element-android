@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="terms_check_custom">Terms and Conditions</string>
+    <string name="terms_and_conditions">By clicking Create Account, you agree to our <a href='terms'>Terms</a>. Learn how we collect, use and share your data in our <a href='privacy_policy'>Privacy Policy</a>.</string>
+    <string name="holedo_com">holedo.com</string>
+</resources>

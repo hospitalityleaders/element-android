@@ -1981,7 +1981,7 @@
     <string name="ftue_auth_use_case_title">Who will you chat to the most?</string>
     <string name="ftue_auth_use_case_subtitle">We\'ll help you get connected</string>
     <string name="ftue_auth_use_case_option_one">Friends and family</string>
-    <string name="ftue_auth_use_case_option_two">Teams</string>
+    <string name="ftue_auth_use_case_option_two">Teams and Communities</string>
     <string name="ftue_auth_use_case_option_three">Communities</string>
     <!-- Note to translators: the %s is replaced by the content of ftue_auth_use_case_skip_partial -->
     <string name="ftue_auth_use_case_skip">Not sure yet? %s</string>
@@ -2018,6 +2018,11 @@
     <string name="ftue_auth_terms_title">Server policies</string>
     <!-- Note for translators, %s is the homeserver name, eg matrix.org -->
     <string name="ftue_auth_terms_subtitle">Please read through %s\'s terms and policies</string>
+    <string name="ftue_auth_terms_subtitle1">Please read through holedo.com\'s terms and policies</string>
+
+
+
+
 
     <string name="ftue_auth_email_title">Enter your email</string>
     <!-- Note for translators, %s is the homeserver name, eg matrix.org -->

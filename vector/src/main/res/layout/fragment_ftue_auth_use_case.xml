@@ -33,7 +33,7 @@
             android:id="@+id/useCaseHeaderIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="52dp"
+            android:layout_marginTop="12dp"
             android:contentDescription="@null"
             android:src="@drawable/ic_onboarding_use_case_icon"
             app:layout_constraintBottom_toTopOf="@id/useCaseHeaderTitle"
@@ -74,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@id/useCaseOptionOne"
-            app:layout_constraintHeight_percent="0.05"
+            app:layout_constraintHeight_percent="0.009"
             app:layout_constraintTop_toBottomOf="@id/useCaseHeaderSubtitle" />
 
         <TextView
@@ -148,10 +148,13 @@
         <Space
             android:id="@+id/contentFooterSpacing"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHeight_min="16dp"
+            android:layout_height="5dp"
+            app:layout_constraintBottom_toTopOf="@id/contentFooterSpacing"
+            app:layout_constraintHeight_min="0.04dp"
             app:layout_constraintTop_toBottomOf="@id/useCaseSkip" />
+
+
+
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/useCaseConnectToServerGroup"
