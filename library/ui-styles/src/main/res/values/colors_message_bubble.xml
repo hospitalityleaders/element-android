@@ -3,7 +3,7 @@
 
     <!-- Timeline bubble background colors -->
     <attr name="vctr_message_bubble_inbound" format="color" />
-    <color name="vctr_message_bubble_inbound_light">#dce0e3</color>
+    <color name="vctr_message_bubble_inbound_light">#E3E8F0</color>
     <color name="vctr_message_bubble_inbound_dark">#3B4059</color>
     <attr name="vctr_message_bubble_outbound" format="color" />
     <color name="vctr_message_bubble_outbound_light">#cce8fe</color>
