@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bg_carousel_page_4">
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:background="@null">
 
         <WebView
@@ -31,14 +26,14 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.58" />
+            app:layout_constraintGuide_percent="0.65" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/carouselIndicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            app:layout_constraintBottom_toTopOf="@id/loginSplashButtonsSpace"
+            app:layout_constraintBottom_toTopOf="@id/loginSplashSubmit"
             app:layout_constraintTop_toBottomOf="@id/splashCarouselFloatingSection"
             app:layout_constraintVertical_chainStyle="spread"
             app:tabBackground="@drawable/indicator_onboarding_carousel_selector"
@@ -67,7 +62,7 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@id/loginSplashSubmit"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.0001"
+            app:layout_constraintHeight_percent="0.00001"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/carouselIndicator" />
 
@@ -133,7 +128,7 @@
             android:layout_height="wrap_content"
             android:text="@string/login_splash_already_have_account"
             android:textAllCaps="true"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="3dp"
             android:transitionName="loginSubmitTransition"
             app:layout_constraintBottom_toTopOf="@id/loginSplashBottomSpace"
             app:layout_constraintEnd_toEndOf="@id/splashCarouselGutterEnd"
@@ -147,9 +142,9 @@
             android:id="@+id/loginSplashBottomSpace"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/termsHeaderTitle1"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.06"
+            app:layout_constraintHeight_percent="0.006"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/loginSplashAlreadyHaveAccount" />
 
@@ -160,15 +155,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:layout_marginBottom="18dp"
+            android:layout_marginBottom="4dp"
             android:gravity="center"
+            android:visibility="gone"
             android:text="@string/ftue_auth_terms_title"
             android:textColor="?vctr_content_secondary"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toTopOf="@id/loginSplashVersion"
-            app:layout_constraintEnd_toEndOf="@id/splashCarouselGutterEnd"
-            app:layout_constraintStart_toStartOf="@id/splashCarouselGutterStart"
-            app:layout_constraintTop_toBottomOf="@id/loginSplashBottomSpace" />
+            android:textSize="13sp"
+            tools:ignore="MissingConstraints" />
 
 
         <TextView
@@ -176,19 +169,14 @@
             style="@style/Widget.Vector.TextView.Micro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawablePadding="12dp"
+            android:drawablePadding="10dp"
             android:textColor="?vctr_content_secondary"
             android:visibility="gone"
             app:drawableStartCompat="@drawable/ic_debug_icon"
             app:drawableTint="?colorPrimary"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/splashCarouselGutterEnd"
-            app:layout_constraintStart_toStartOf="@id/splashCarouselGutterStart"
-            app:layout_constraintTop_toBottomOf="@id/termsHeaderTitle1"
-            tools:text="@string/settings_version"
-            tools:visibility="visible" />
+            tools:ignore="MissingConstraints" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</ScrollView>
+
