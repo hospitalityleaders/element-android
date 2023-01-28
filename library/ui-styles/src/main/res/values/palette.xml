@@ -10,6 +10,7 @@
 
     <!-- For all themes -->
     <color name="palette_azure">#7A49A5</color>
+    <color name="palette_greeno">#7dc81b</color>
     <color name="palette_kiwi">#A13755</color>
     <color name="palette_grape">#5D5BC5</color>
     <color name="palette_verde">#4974A5</color>
@@ -17,6 +18,7 @@
     <color name="palette_melon">#2DC2C5</color>
 
     <color name="palette_element_green">#32a3fd</color>
+    <color name="palette_element_greenoo">#BB23F7</color>
     <color name="palette_element_greenetc">#f6f7fd</color>
     <color name="palette_element_darkbluee">#2b375e</color>
     <color name="palette_white">#F7F8FB</color>

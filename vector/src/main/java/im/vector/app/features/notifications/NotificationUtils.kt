@@ -589,7 +589,7 @@ class NotificationUtils @Inject constructor(
             else -> buildOpenRoomIntent(roomInfo.roomId)
         }
 
-        val smallIcon = R.drawable.ic_notification
+        val smallIcon = R.drawable.holedo_notification_icon
 
         val channelID = if (roomInfo.shouldBing) NOISY_NOTIFICATION_CHANNEL_ID else SILENT_NOTIFICATION_CHANNEL_ID
         return NotificationCompat.Builder(context, channelID)
@@ -702,7 +702,7 @@ class NotificationUtils @Inject constructor(
     ): Notification {
         val accentColor = ContextCompat.getColor(context, R.color.notification_accent_color)
         // Build the pending intent for when the notification is clicked
-        val smallIcon = R.drawable.ic_notification
+        val smallIcon = R.drawable.holedo_notification_icon
 
         val channelID = if (inviteNotifiableEvent.noisy) NOISY_NOTIFICATION_CHANNEL_ID else SILENT_NOTIFICATION_CHANNEL_ID
 
@@ -782,7 +782,7 @@ class NotificationUtils @Inject constructor(
     ): Notification {
         val accentColor = ContextCompat.getColor(context, R.color.notification_accent_color)
         // Build the pending intent for when the notification is clicked
-        val smallIcon = R.drawable.ic_notification
+        val smallIcon = R.drawable.holedo_notification_icon
 
         val channelID = if (simpleNotifiableEvent.noisy) NOISY_NOTIFICATION_CHANNEL_ID else SILENT_NOTIFICATION_CHANNEL_ID
 
@@ -940,7 +940,7 @@ class NotificationUtils @Inject constructor(
             lastMessageTimestamp: Long
     ): Notification {
         val accentColor = ContextCompat.getColor(context, R.color.notification_accent_color)
-        val smallIcon = R.drawable.ic_notification
+        val smallIcon = R.drawable.holedo_notification_icon
 
         return NotificationCompat.Builder(context, if (noisy) NOISY_NOTIFICATION_CHANNEL_ID else SILENT_NOTIFICATION_CHANNEL_ID)
                 .setOnlyAlertOnce(true)
@@ -1030,8 +1030,8 @@ class NotificationUtils @Inject constructor(
                 NotificationCompat.Builder(context, NOISY_NOTIFICATION_CHANNEL_ID)
                         .setContentTitle(stringProvider.getString(R.string.app_name))
                         .setContentText(stringProvider.getString(R.string.settings_troubleshoot_test_push_notification_content))
-                        .setSmallIcon(R.drawable.ic_notification)
-                        .setLargeIcon(getBitmap(context, R.drawable.element_logo_green))
+                        .setSmallIcon(R.drawable.holedo_notification_icon)
+                        .setLargeIcon(getBitmap(context, R.drawable.holedo_logo_larger))
                         .setColor(ContextCompat.getColor(context, R.color.notification_accent_color))
                         .setPriority(NotificationCompat.PRIORITY_MAX)
                         .setCategory(NotificationCompat.CATEGORY_STATUS)
